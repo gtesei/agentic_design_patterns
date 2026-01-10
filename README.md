@@ -151,7 +151,7 @@ pip install -r requirements.txt
 ```bash
 # Try prompt chaining
 cd 1_prompt_chain
-uv run python src/chain_example.py
+bash run.sh
 
 # Try routing
 cd ../2_routing
@@ -159,25 +159,12 @@ uv run python src/routing_example.py
 
 # Try parallelization
 cd ../3_parallelization
-uv run python src/parallel_example.py
+bash run.sh
 
 # Try reflection (stateful loops)
 cd ../4_reflection
-uv run python src/reflection_stateful_loop.py
+bash run.sh
 ```
-
----
-
-## 📊 Performance Comparison
-
-| Pattern | Latency Impact | Cost Impact | Quality Gain | Complexity |
-|---------|---------------|-------------|--------------|------------|
-| **Prompt Chaining** | +20-50% | +30-60% | +15-30% | Low |
-| **Routing** | -30-70% | -40-80% | +10-20% | Low |
-| **Parallelization** | -50-80% | ±0% | ±0% | Medium |
-| **Reflection** | +300-700% | +200-400% | +50-100% | High |
-
-*Percentages are approximate and vary by use case. See individual pattern documentation for detailed benchmarks.*
 
 ---
 
@@ -231,10 +218,12 @@ agentic_design_patterns/
 │   │   └── reflection_stateful_loop.py # Iterative refinement
 │   ├── README.md
 │   └── SKILL.md
+
+...
+...
+
 │
-├── .env.example                       # Environment template
-├── requirements.txt                   # Python dependencies
-├── pyproject.toml                     # Project configuration
+├── .env                               # Environment variables
 └── README.md                          # This file
 ```
 
@@ -257,7 +246,7 @@ Each pattern builds on concepts from previous ones, so we recommend following th
 
 - **[LangChain](https://python.langchain.com/)** - Framework for LLM applications
 - **[LangGraph](https://langchain-ai.github.io/langgraph/)** - Stateful workflows and agents
-- **[OpenAI GPT-4/GPT-4o](https://openai.com/)** - Primary LLM (configurable)
+- **[OpenAI GPT-4/GPT-4o/GPT-5.2](https://openai.com/)** - Primary LLM (configurable)
 - **[Pydantic](https://docs.pydantic.dev/)** - Data validation and structured outputs
 - **[Python 3.11+](https://www.python.org/)** - Modern Python features
 
@@ -275,19 +264,6 @@ We're actively developing additional patterns:
 - **Guardrails** - Safety, compliance, and quality enforcement
 
 **Want a specific pattern?** [Open an issue](https://github.com/yourusername/agentic_design_patterns/issues) and let us know!
-
----
-
-## 🤝 Contributing
-
-We welcome contributions! Here's how you can help:
-
-- 🐛 Report bugs or issues
-- 💡 Suggest new patterns or improvements
-- 📝 Improve documentation
-- 🔧 Submit pull requests
-
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ---
 
@@ -324,20 +300,11 @@ Special thanks to:
 
 ---
 
-## 💬 Get Help
-
-- 📧 **Email**: your.email@example.com
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/yourusername/agentic_design_patterns/discussions)
-- 🐛 **Issues**: [GitHub Issues](https://github.com/yourusername/agentic_design_patterns/issues)
-- 🐦 **Twitter**: [@yourhandle](https://twitter.com/yourhandle)
-
----
-
 ## ⭐ Star History
 
 If you find this repository helpful, please consider giving it a star! It helps others discover these patterns.
 
-[![Star History Chart](https://api.star-history.com/svg?repos=yourusername/agentic_design_patterns&type=Date)](https://star-history.com/#yourusername/agentic_design_patterns&Date)
+[![Star History Chart](https://api.star-history.com/svg?repos=yourusername/agentic_design_patterns&type=Date)](https://star-history.com/gtesei/agentic_design_patterns&Date)
 
 ---
 
