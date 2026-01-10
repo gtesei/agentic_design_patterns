@@ -126,9 +126,6 @@ echo "OPENAI_API_KEY=your_api_key_here" > .env
 
 # Install dependencies (using uv)
 uv sync
-
-# Or with pip
-pip install -r requirements.txt
 ```
 
 ### Run Your First Pattern
