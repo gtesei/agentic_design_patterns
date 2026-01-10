@@ -174,28 +174,28 @@ bash run.sh
 agentic_design_patterns/
 ├── 1_prompt_chain/
 │   ├── src/
-│   │   ├── chain_example.py          # Basic chaining
-│   │   └── advanced_chain.py         # Complex workflows
+│   │   ├── chain_prompt.py            # Basic chaining
+│   │   └── advanced_chain.py          # Complex workflows
 │   ├── README.md                      # Pattern documentation
 │   └── SKILL.md                       # Implementation guide
 │
 ├── 2_routing/
 │   ├── src/
-│   │   ├── routing_example.py        # Intent-based routing
-│   │   └── semantic_routing.py       # Advanced routing
+│   │   ├── routing.py                 # Intent-based routing
+│   │   └── semantic_routing.py        # Advanced routing
 │   ├── README.md
 │   └── SKILL.md
 │
 ├── 3_parallelization/
 │   ├── src/
-│   │   ├── parallel_example.py       # LCEL parallelization
-│   │   └── async_parallel.py         # Async operations
+│   │   ├── parallel_example.py        # LCEL parallelization
+│   │   └── async_parallel.py          # Async operations
 │   ├── README.md
 │   └── SKILL.md
 │
 ├── 4_reflection/
 │   ├── src/
-│   │   ├── reflection.py             # Single-step reflection
+│   │   ├── reflection.py               # Single-step reflection
 │   │   └── reflection_stateful_loop.py # Iterative refinement
 │   ├── README.md
 │   └── SKILL.md
@@ -204,8 +204,8 @@ agentic_design_patterns/
 ...
 
 │
-├── .env                               # Environment variables
-└── README.md                          # This file
+├── .env                                # Environment variables
+└── README.md                           # This file
 ```
 
 ---
@@ -272,7 +272,7 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 
 This repository's structure and approach were inspired by:
 
-> **Gullí, Antonio.** *Agentic Design Patterns: A Hands-On Guide to Building Intelligent Systems*, Springer Nature Switzerland.
+> **Gullí, Antonio**, *Agentic Design Patterns: A Hands-On Guide to Building Intelligent Systems*, Springer Nature Switzerland.
 
 Special thanks to:
 - The LangChain team for building incredible tools
