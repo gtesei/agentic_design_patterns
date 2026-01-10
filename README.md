@@ -244,7 +244,7 @@ We're actively developing additional patterns:
 - **Human-in-the-Loop** - Interactive approval and refinement
 - **Guardrails** - Safety, compliance, and quality enforcement
 
-**Want a specific pattern?** [Open an issue](https://github.com/yourusername/agentic_design_patterns/issues) and let us know!
+**Want a specific pattern?** [Open an issue](https://github.com/gtesei/agentic_design_patterns/issues) and let us know!
 
 ---
 
