@@ -111,7 +111,7 @@ input → generate → done            input → generate → critique →
 # Python 3.11 or higher
 python --version
 
-# Install uv (recommended) or use pip
+# Install uv 
 curl -LsSf https://astral.sh/uv/install.sh | sh
 ```
 
