@@ -1,6 +1,15 @@
 #!/bin/bash
 set -euo pipefail  # Exit on error, undefined variables, and pipe failures
 
-echo ">>>>>>>>>>> Running <<<<<<<<<<<"
-uv run python src/chain_prompt.py
-echo ">>>>>>>>>>> Script completed successfully <<<<<<<<<<<"
+# Colors
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+run() {
+    echo -e "\n${BLUE}>>> $1 <<<${NC}"
+    uv run python "$1"
+    echo -e "${GREEN}>>> Completed <<<${NC}"
+}
+
+run "src/chain_prompt.py"
