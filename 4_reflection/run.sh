@@ -1,6 +1,16 @@
 #!/bin/bash
-set -euo pipefail  # Exit on error, undefined variables, and pipe failures
+set -euo pipefail
 
-echo ">>>>>>>>>>> Running <<<<<<<<<<<"
-uv run python src/reflection.py
-echo ">>>>>>>>>>> Script completed successfully <<<<<<<<<<<"
+# Colors
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+NC='\033[0m'
+
+run() {
+    echo -e "\n${BLUE}>>> $1 <<<${NC}"
+    uv run python "$1"
+    echo -e "${GREEN}>>> Completed <<<${NC}"
+}
+
+run "src/reflection.py"
+run "src/reflection_stateful_loop.py"
