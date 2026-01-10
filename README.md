@@ -11,22 +11,6 @@ A comprehensive, hands-on collection of design patterns for building robust agen
 
 ---
 
-## 🎯 Why This Repository?
-
-Building AI agents is easy. Building **reliable, scalable, production-ready** AI systems is hard.
-
-This repository bridges that gap by providing:
-
-- ✅ **Battle-tested patterns** used in production systems
-- ✅ **Complete implementations** with LangChain, LangGraph, and Google ADK
-- ✅ **Performance benchmarks** showing real cost/latency trade-offs
-- ✅ **Clear guidance** on when to use (and when NOT to use) each pattern
-- ✅ **Production-ready code** that you can adapt immediately
-
-Whether you're building chatbots, autonomous agents, or complex multi-agent workflows, these patterns will accelerate your development and help you avoid common pitfalls.
-
----
-
 ## 📚 Foundational Patterns
 
 ### 1️⃣ [Prompt Chaining](./1_prompt_chain/)
