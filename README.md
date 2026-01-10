@@ -285,8 +285,7 @@ Special thanks to:
 
 If you find this repository helpful, please consider giving it a star! It helps others discover these patterns.
 
-[![Star History Chart](https://api.star-history.com/svg?repos=yourusername/agentic_design_patterns&type=Date)](https://star-history.com/#gtesei/agentic_design_patterns)
-
+[![Star History Chart](https://api.star-history.com/svg?repos=gtesei/agentic_design_patterns&type=Date)](https://star-history.com/#gtesei/agentic_design_patterns&Date)
 ---
 
 <div align="center">
