@@ -291,7 +291,7 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 
 This repository's structure and approach were inspired by:
 
-> **Gullí, Antonio.** *Agentic Design Patterns: A Hands-On Guide to Building Intelligent Systems* Springer Nature Switzerland.
+> **Gullí, Antonio.** *Agentic Design Patterns: A Hands-On Guide to Building Intelligent Systems*, Springer Nature Switzerland.
 
 Special thanks to:
 - The LangChain team for building incredible tools
