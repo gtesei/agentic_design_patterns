@@ -6,7 +6,7 @@ from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 
 # Load environment variables
-load_dotenv(os.path.join(os.path.dirname(__file__), "../..", ".env"))
+load_dotenv(os.path.join(os.path.dirname(__file__), "../../..", ".env"))
 
 # Initialize the Language Model
 llm = ChatOpenAI(temperature=0, model="gpt-4")

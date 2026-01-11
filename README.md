@@ -13,7 +13,7 @@ A comprehensive, hands-on collection of design patterns for building robust agen
 
 ## 📚 Foundational Patterns
 
-### 1️⃣ [Prompt Chaining](./1_prompt_chain/)
+### 1️⃣ [Prompt Chaining](./foundational_design_patterns/1_prompt_chain/)
 **Break complex tasks into sequential, manageable steps**
 ```python
 # Transform a monolithic prompt into a chain of specialized prompts
@@ -30,11 +30,11 @@ input → extract_data → transform → validate → final_output
 - 🔍 Easier debugging with visible intermediate steps
 - 🔄 Reusable components across workflows
 
-[**📖 Learn More →**](./1_prompt_chain/README.md)
+[**📖 Learn More →**](./foundational_design_patterns/1_prompt_chain/README.md)
 
 ---
 
-### 2️⃣ [Routing](./2_routing/)
+### 2️⃣ [Routing](./foundational_design_patterns/2_routing/)
 **Intelligently direct queries to specialized handlers**
 ```python
 # Dynamic routing based on query classification
@@ -51,11 +51,11 @@ user_query → classifier → [technical_expert | sales_agent | support_bot]
 - ⚡ Performance gains (route simple queries to fast handlers)
 - 🎨 Specialized handling (domain experts for domain queries)
 
-[**📖 Learn More →**](./2_routing/README.md)
+[**📖 Learn More →**](./foundational_design_patterns/2_routing/README.md)
 
 ---
 
-### 3️⃣ [Parallelization](./3_parallelization/)
+### 3️⃣ [Parallelization](./foundational_design_patterns/3_parallelization/)
 **Execute independent operations simultaneously for dramatic speedups**
 ```python
 # Sequential: 15 seconds          # Parallel: 5 seconds
@@ -74,11 +74,11 @@ task_c(5s) → output               task_c(5s) ↗
 - 📈 Better resource utilization
 - 🚀 Improved user experience through reduced latency
 
-[**📖 Learn More →**](./3_parallelization/README.md)
+[**📖 Learn More →**](./foundational_design_patterns/3_parallelization/README.md)
 
 ---
 
-### 4️⃣ [Reflection](./4_reflection/)
+### 4️⃣ [Reflection](./foundational_design_patterns/4_reflection/)
 **Iteratively improve outputs through systematic critique and refinement**
 ```python
 # Single-shot: 5/10 quality        # With reflection: 8.5/10 quality
@@ -100,7 +100,7 @@ input → generate → done            input → generate → critique →
 - ⚠️ 3-5x higher token costs
 - ⏱️ 4-8x longer execution time
 
-[**📖 Learn More →**](./4_reflection/README.md)
+[**📖 Learn More →**](./foundational_design_patterns/4_reflection/README.md)
 
 ---
 
@@ -131,7 +131,7 @@ uv sync
 ### Run Your First Pattern
 ```bash
 # Try prompt chaining
-cd 1_prompt_chain
+cd foundational_design_patterns/1_prompt_chain
 bash run.sh
 
 # Try routing
@@ -172,39 +172,38 @@ bash run.sh
 ## 🏗️ Repository Structure
 ```
 agentic_design_patterns/
-├── 1_prompt_chain/
-│   ├── src/
-│   │   ├── chain_prompt.py            # Basic chaining
-│   │   └── advanced_chain.py          # Complex workflows
-│   ├── README.md                      # Pattern documentation
-│   └── SKILL.md                       # Implementation guide
-│
-├── 2_routing/
-│   ├── src/
-│   │   ├── routing.py                 # Intent-based routing
-│   │   └── semantic_routing.py        # Advanced routing
-│   ├── README.md
-│   └── SKILL.md
-│
-├── 3_parallelization/
-│   ├── src/
-│   │   ├── parallel_example.py        # LCEL parallelization
-│   │   └── async_parallel.py          # Async operations
-│   ├── README.md
-│   └── SKILL.md
-│
-├── 4_reflection/
-│   ├── src/
-│   │   ├── reflection.py               # Single-step reflection
-│   │   └── reflection_stateful_loop.py # Iterative refinement
-│   ├── README.md
-│   └── SKILL.md
-
+├── foundational_design_patterns/
+│   ├── 1_prompt_chain/
+│   │   ├── src/
+│   │   │   ├── chain_prompt.py            # Basic chaining
+│   │   │   └── advanced_chain.py          # Complex workflows
+│   │   ├── README.md                      # Pattern documentation
+│   │   └── SKILL.md                       # Implementation guide
+│   │
+│   ├── 2_routing/
+│   │   ├── src/
+│   │   │   ├── routing.py                 # Intent-based routing
+│   │   │   └── semantic_routing.py        # Advanced routing
+│   │   ├── README.md
+│   │   └── SKILL.md
+│   │
+│   ├── 3_parallelization/
+│   │   ├── src/
+│   │   │   ├── parallel_example.py        # LCEL parallelization
+│   │   │   └── async_parallel.py          # Async operations
+│   │   ├── README.md
+│   │   └── SKILL.md
+│   │
+│   └── 4_reflection/
+│       ├── src/
+│       │   ├── reflection.py               # Single-step reflection
+│       │   └── reflection_stateful_loop.py # Iterative refinement
+│       ├── README.md
+│       └── SKILL.md
 ...
 ...
-
-│
 ├── .env                                # Environment variables
+├── LICENSE                             # MIT License
 └── README.md                           # This file
 ```
 
@@ -214,10 +213,10 @@ agentic_design_patterns/
 
 ### Beginner → Intermediate → Advanced
 
-1. **Start here**: [Prompt Chaining](./1_prompt_chain/) - Foundation for everything
-2. **Next**: [Routing](./2_routing/) - Learn to optimize model selection
-3. **Then**: [Parallelization](./3_parallelization/) - Scale your applications
-4. **Finally**: [Reflection](./4_reflection/) - Master quality optimization
+1. **Start here**: [Prompt Chaining](./foundational_design_patterns/1_prompt_chain/) - Foundation for everything
+2. **Next**: [Routing](./foundational_design_patterns/2_routing/) - Learn to optimize model selection
+3. **Then**: [Parallelization](./foundational_design_patterns/3_parallelization/) - Scale your applications
+4. **Finally**: [Reflection](./foundational_design_patterns/4_reflection/) - Master quality optimization
 
 Each pattern builds on concepts from previous ones, so we recommend following this sequence.
 

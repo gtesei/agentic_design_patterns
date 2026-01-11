@@ -14,7 +14,7 @@ import operator
 from pydantic import BaseModel, Field
 
 # Load environment variables
-load_dotenv(os.path.join(os.path.dirname(__file__), "../..", ".env"))
+load_dotenv(os.path.join(os.path.dirname(__file__), "../../..", ".env"))
 
 # Initialize the Language Model
 llm = ChatOpenAI(temperature=0.7, model="gpt-5.2")  # Higher temperature for creativity

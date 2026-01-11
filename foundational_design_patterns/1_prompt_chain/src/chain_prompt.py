@@ -22,7 +22,7 @@ from langchain_core.output_parsers import StrOutputParser
 # ============================================================================
 
 # Load environment variables (requires OPENAI_API_KEY in .env file)
-load_dotenv(os.path.join(os.path.dirname(__file__), "../..", ".env"))
+load_dotenv(os.path.join(os.path.dirname(__file__), "../../..", ".env"))
 
 # LLM Configuration
 LLM_MODEL = "gpt-4o-mini"

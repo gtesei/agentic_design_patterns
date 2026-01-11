@@ -21,7 +21,7 @@ from langchain_core.runnables import Runnable, RunnableParallel, RunnablePassthr
 # ============================================================================
 
 # Load environment variables
-load_dotenv(os.path.join(os.path.dirname(__file__), "../..", ".env"))
+load_dotenv(os.path.join(os.path.dirname(__file__), "../../..", ".env"))
 
 # LLM Configuration
 LLM_MODEL = "gpt-4o-mini"
