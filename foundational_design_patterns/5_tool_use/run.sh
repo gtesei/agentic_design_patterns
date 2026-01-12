@@ -12,5 +12,5 @@ run() {
     echo -e "${GREEN}>>> Completed <<<${NC}"
 }
 
-run "src/reflection.py"
-run "src/reflection_stateful_loop.py"
+run "src/tool_use.py"
+run "src/tool_use_advanced.py"

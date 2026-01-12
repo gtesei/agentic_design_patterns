@@ -371,36 +371,6 @@ would I get, and what would be the total value?"""
     
     response6 = run_agent_with_tools(query6, agent)
     print(f"\nAgent: {response6}")
-    
-    print("\n" + "="*80)
-    print("TOOL USE METRICS")
-    print("="*80)
-    
-    print(f"""
-Tool Use Pattern Benefits Demonstrated:
-
-✓ Real-time Data Access: Agent retrieves current stock prices on demand
-✓ Precise Calculations: Financial math performed accurately via tools
-✓ Multi-Tool Orchestration: Agent chains multiple tools for complex queries
-✓ Dynamic Decision Making: Agent selects appropriate tools based on query
-✓ Structured Outputs: Clean, formatted responses with tool data
-
-Performance Characteristics:
-- Latency: +50-200% vs. static responses (due to tool execution)
-- Accuracy: +95% (precise calculations vs. LLM estimation)
-- Data Freshness: 100% (real-time data vs. stale training data)
-- Extensibility: Easy to add new financial tools (options, crypto, forex, etc.)
-
-Without Tool Use:
-- "I don't have access to real-time stock prices..."
-- Hallucinated or outdated price information
-- Approximate calculations with errors
-
-With Tool Use:
-- Accurate, current stock data
-- Precise financial calculations
-- Reliable portfolio analysis
-    """)
 
 if __name__ == "__main__":
     run_stock_agent()
