@@ -104,6 +104,34 @@ input → generate → done            input → generate → critique →
 
 ---
 
+### 5️⃣ [Tool Use](./foundational_design_patterns/5_tool_use/)
+**Enable LLMs to interact with external systems and APIs**
+```python
+# Without tools: Limited to training data
+# With tools: Access real-time data and take actions
+user_query → LLM decides → call_weather_api(location) → integrate_result → response
+```
+
+**When to use:**
+- Real-time data retrieval (weather, stock prices, news)
+- Private/proprietary data access (databases, CRM systems)
+- Precise calculations or code execution
+- External actions (send emails, update records, control devices)
+
+**Key benefits:**
+- 🌐 Access to live, dynamic information
+- 🎯 Precise calculations and data validation
+- 🔧 Integration with existing enterprise systems
+- 💰 Reduced token costs (fetch vs. embed in prompts)
+
+**Trade-offs:**
+- ⚠️ Added latency per tool call
+- 🔒 Security considerations (authentication, validation)
+
+[**📖 Learn More →**](./foundational_design_patterns/5_tool_use/README.md)
+
+---
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -166,6 +194,8 @@ bash run.sh
 **Independent concurrent tasks?** → **Parallelization** will give you massive speedups
 
 **High-stakes output?** → **Reflection** is worth the cost
+
+**External system integration?** → **Tool Use** enables real-world interaction
 
 ---
 
