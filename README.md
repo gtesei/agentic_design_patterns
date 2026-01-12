@@ -266,7 +266,6 @@ Each pattern builds on concepts from previous ones, so we recommend following th
 
 We're actively developing additional patterns:
 
-- **Tool Use** - Augment LLMs with external APIs and functions
 - **Planning** - Multi-step reasoning and task decomposition
 - **Multi-Agent Collaboration** - Coordinated agent workflows
 - **Retrieval-Augmented Generation (RAG)** - Knowledge-grounded responses
