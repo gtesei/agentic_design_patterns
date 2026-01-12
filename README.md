@@ -132,6 +132,34 @@ user_query → LLM decides → call_weather_api(location) → integrate_result �
 
 ---
 
+### 6️⃣ [Planning](./foundational_design_patterns/6_planning/)
+**Decompose complex goals into structured, executable action plans**
+```python
+# Without planning: Reactive, incomplete execution
+# With planning: Strategic breakdown and systematic execution
+complex_goal → analyze → decompose → plan_steps → execute_sequentially → final_result
+```
+
+**When to use:**
+- Multi-step workflows requiring orchestration (research reports, data pipelines)
+- Tasks with interdependent operations
+- Complex problem-solving requiring strategic thinking
+- Workflow automation (onboarding, procurement, project setup)
+
+**Key benefits:**
+- 🎯 Structured approach to complex objectives
+- 🧠 Strategic thinking vs. reactive responses
+- 🔄 Adaptability through dynamic replanning
+- 📊 Transparency into execution strategy
+
+**Trade-offs:**
+- ⚠️ Planning overhead (+20-40% tokens, 5-15s latency)
+- 🛠️ Requires sophisticated state management
+
+[**📖 Learn More →**](./foundational_design_patterns/6_planning/README.md)
+
+---
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -196,6 +224,9 @@ bash run.sh
 **High-stakes output?** → **Reflection** is worth the cost
 
 **External system integration?** → **Tool Use** enables real-world interaction
+
+**Multi-step automation requiring orchestration?** → **Planning** provides strategic execution
+
 
 ---
 
