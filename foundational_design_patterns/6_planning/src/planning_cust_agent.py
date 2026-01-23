@@ -188,9 +188,6 @@ if __name__ == "__main__":
     utils_cust_agent.print_json_pretty(inventory_tbl.all(), indent=2, title="Inventory Table")
     utils_cust_agent.print_json_pretty(transactions_tbl.all(), indent=2, title="Transactions Table")
 
-    for i in os.environ:
-        print(i,os.environ[i])
-
     question = "Do you have any round sunglasses in stock that are under $100?"
 
     raw = generate_llm_code(question, inventory_tbl, transactions_tbl)
