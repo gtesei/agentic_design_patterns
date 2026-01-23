@@ -15,6 +15,8 @@ dependencies = [
     "langchain-community>=0.4.1",
     "langchain-openai>=1.1.7",
     "langgraph>=1.0.5",
+    "tinydb",
+    "pandas"
 ]
 
 [project.optional-dependencies]
