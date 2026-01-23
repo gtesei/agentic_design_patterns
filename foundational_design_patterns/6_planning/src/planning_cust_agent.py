@@ -190,6 +190,10 @@ if __name__ == "__main__":
 
     question = "Do you have any round sunglasses in stock that are under $100?"
 
+    print()
+    print("\n=== User question ===\n")
+    print(question)
+
     raw = generate_llm_code(question, inventory_tbl, transactions_tbl)
     print("\n=== Plan with Code (Full Response) ===\n")
     print(raw)
