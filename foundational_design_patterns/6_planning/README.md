@@ -118,7 +118,7 @@ res = execute_generated_code(code, db, inventory_tbl, transactions_tbl)
 # 4) Inspect res["answer"], res["stdout"], res["error"], and table snapshots
 ```
 
-### Important constraints used in the lab\
+### Important constraints used in the lab example
 
 * answer_text (1–2 sentence user-friendly output) is mandatory
 
