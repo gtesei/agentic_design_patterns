@@ -160,6 +160,38 @@ complex_goal → analyze → decompose → plan_steps → execute_sequentially �
 
 ---
 
+### 7️⃣ [Multi-Agent Collaboration](./foundational_design_patterns/7_multi_agent_collaboration/)
+**Coordinate multiple specialized agents to solve complex tasks**
+```python
+# Agents as a team: specialize roles + coordinate communication
+user_goal → manager/planner → [researcher | coder | designer | writer | reviewer] → synthesize → final_output
+```
+
+**When to use:**
+- Complex tasks requiring diverse expertise (research + writing + QA)
+- Workflows with distinct stages (research → draft → edit → package)
+- Tool-specialized roles (web search, code execution, image generation)
+- Quality-critical pipelines (critic/reviewer loops)
+
+**Key benefits:**
+- 🧩 Modularity: build and improve one role at a time
+- 🛡️ Robustness: reviewers catch errors / reduce hallucinations
+- ⚡ Parallelism: split independent workstreams for speed
+- ♻️ Reuse: agents can be reused across multiple products
+
+**Common collaboration models:**
+- Sequential handoffs (linear pipeline)
+- Supervisor/manager orchestration (hierarchical)
+- Parallel workstreams (merge results)
+- Debate/consensus (evaluate options)
+- Critic–reviewer (quality enforcement)
+- Network/all-to-all (exploratory, less predictable)
+- Custom hybrids (fit domain constraints)
+
+[**📖 Learn More →**](./foundational_design_patterns/7_multi_agent_collaboration/README.md)
+
+---
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -227,6 +259,8 @@ bash run.sh
 
 **Multi-step automation requiring orchestration?** → **Planning** provides strategic execution
 
+**Need multiple roles working together?** → **Multi-Agent Collaboration** (specialists + coordinator)
+
 
 ---
 
@@ -278,6 +312,7 @@ agentic_design_patterns/
 2. **Next**: [Routing](./foundational_design_patterns/2_routing/) - Learn to optimize model selection
 3. **Then**: [Parallelization](./foundational_design_patterns/3_parallelization/) - Scale your applications
 4. **Finally**: [Reflection](./foundational_design_patterns/4_reflection/) - Master quality optimization
+5. **Advanced**: [Multi-Agent Collaboration](./foundational_design_patterns/7_multi_agent_collaboration/) - Build coordinated agent teams
 
 Each pattern builds on concepts from previous ones, so we recommend following this sequence.
 
@@ -297,8 +332,6 @@ Each pattern builds on concepts from previous ones, so we recommend following th
 
 We're actively developing additional patterns:
 
-- **Planning** - Multi-step reasoning and task decomposition
-- **Multi-Agent Collaboration** - Coordinated agent workflows
 - **Retrieval-Augmented Generation (RAG)** - Knowledge-grounded responses
 - **Human-in-the-Loop** - Interactive approval and refinement
 - **Guardrails** - Safety, compliance, and quality enforcement
