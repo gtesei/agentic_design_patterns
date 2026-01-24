@@ -5,9 +5,9 @@
 [![LangGraph](https://img.shields.io/badge/LangGraph-latest-orange.svg)](https://langchain-ai.github.io/langgraph/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> **Transform your AI applications from simple prompts to sophisticated, production-ready intelligent systems.**
+> **Transform your AI applications from simple prompts to sophisticated intelligent systems.**
 
-A comprehensive, hands-on collection of design patterns for building robust agentic AI systems. Each pattern is implemented with real-world examples, detailed documentation, and performance benchmarks to help you architect scalable, maintainable AI applications.
+A comprehensive, hands-on collection of design patterns for building robust agentic AI systems. Each pattern is implemented with real-world examples and detailed documentation to help you architect scalable, maintainable AI applications.
 
 ---
 
