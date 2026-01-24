@@ -160,6 +160,11 @@ def planner_agent(topic: str, model: str = "gpt-4o-mini") -> List[str]:
 
     if not isinstance(steps, list) or not all(isinstance(s, str) for s in steps):
         raise ValueError("planner_agent must return a Python list[str] (as text).")
+    
+    print("\n🚀 --- Research Execution Plan ---")
+    for i, step in enumerate(steps, 1):
+        print(f"{i}. {step}")
+    print("----------------------------------\n")
 
     return steps
 
