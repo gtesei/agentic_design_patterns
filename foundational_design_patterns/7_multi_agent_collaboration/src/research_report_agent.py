@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import ast
 import json
+import os
 import re
 from dataclasses import dataclass
 from datetime import datetime
@@ -29,6 +30,9 @@ from langchain_core.tools import tool
 from langchain_openai import ChatOpenAI
 
 import utils
+from dotenv import load_dotenv
+
+load_dotenv(os.path.join(os.path.dirname(__file__), "../../..", ".env"))
 
 
 # =============================================================================
@@ -130,6 +134,7 @@ Return a structured research result.
 def planner_agent(topic: str, model: str = "gpt-4o-mini") -> List[str]:
     """
     Generates a plan as a Python list[str] (returned as text by the LLM).
+    Handles Markdown code block formatting automatically.
     """
     llm = _make_llm(model=model, temperature=1.0)
     messages = [
@@ -139,8 +144,17 @@ def planner_agent(topic: str, model: str = "gpt-4o-mini") -> List[str]:
     resp = llm.invoke(messages)
     steps_str = (resp.content or "").strip()
 
+    # --- FIX: Clean Markdown code blocks ---
+    # This regex looks for text between ```python and ``` or just ``` and ```
+    match = re.search(r"```(?:python)?\s*(.*?)```", steps_str, re.DOTALL)
+    if match:
+        cleaned_str = match.group(1).strip()
+    else:
+        cleaned_str = steps_str
+
     try:
-        steps = ast.literal_eval(steps_str)
+        # Use the cleaned string instead of the raw LLM output
+        steps = ast.literal_eval(cleaned_str)
     except Exception as e:
         raise ValueError(f"planner_agent returned non-literal plan: {e}\nRaw:\n{steps_str}") from e
 

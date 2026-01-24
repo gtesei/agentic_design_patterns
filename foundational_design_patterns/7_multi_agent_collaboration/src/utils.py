@@ -8,7 +8,6 @@ from typing import Any, Callable, Dict, List, Optional
 
 # --- Third-party ---
 import requests
-from dotenv import load_dotenv
 from tavily import TavilyClient
 import wikipedia
 
