@@ -33,6 +33,7 @@ import utils
 from dotenv import load_dotenv
 
 load_dotenv(os.path.join(os.path.dirname(__file__), "../../..", ".env"))
+load_dotenv(os.path.join(os.path.dirname(__file__), "../", ".env"))
 
 
 # =============================================================================
@@ -332,13 +333,13 @@ def executor_agent(
     topic: str,
     model: str = "gpt-4o",
     limit_steps: bool = True,
+    max_steps:int = 10,
 ) -> List[Tuple[str, str, str]]:
     """
     Executes a planner-produced workflow by routing each step to the right agent,
     building context from history.
     """
     plan_steps = planner_agent(topic)
-    max_steps = 4
     if limit_steps:
         plan_steps = plan_steps[: min(len(plan_steps), max_steps)]
 
