@@ -11,6 +11,36 @@ A comprehensive, hands-on collection of design patterns for building robust agen
 
 ---
 
+## 📚 Academic Foundations
+
+This repository implements design patterns grounded in peer-reviewed research and industry best practices. Key academic contributions include:
+
+### Core Research Papers
+
+#### **Reasoning and Acting**
+- **[ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629)** (Yao et al., 2022, ICLR 2023)
+  Foundational paper demonstrating that interleaving reasoning traces with actions creates synergy superior to separate reasoning or acting approaches. Directly implemented in our [ReAct pattern](./foundational_design_patterns/8_react/).
+
+#### **Advanced Reasoning Frameworks**
+- **[Tree of Thoughts: Deliberate Problem Solving with Large Language Models](https://arxiv.org/abs/2305.10601)** (Yao et al., 2023, NeurIPS 2023)
+  Generalizes Chain-of-Thought by enabling exploration over coherent reasoning paths with self-evaluation and backtracking. Implemented in our [Tree of Thoughts pattern](./reasoning/tree_of_thoughts/).
+
+- **[Graph of Thoughts: Solving Elaborate Problems with Large Language Models](https://arxiv.org/abs/2308.09687)** (Besta et al., 2023)
+  Extends reasoning to arbitrary graph structures, enabling thought merging and non-hierarchical connections. Achieves 62% quality improvement with 31% cost reduction. Implemented in our [Graph of Thoughts pattern](./reasoning/graph_of_thoughts/).
+
+#### **Agentic RAG**
+- **[Agentic Retrieval-Augmented Generation: A Survey on Agentic RAG](https://arxiv.org/abs/2501.09136)** (Singh et al., 2025)
+  Comprehensive survey of autonomous AI agents managing retrieval strategies through reflection, planning, tool use, and multi-agent collaboration—transcending static RAG limitations. Informs our [RAG](./foundational_design_patterns/9_rag/) and [Multi-Agent](./foundational_design_patterns/7_multi_agent_collaboration/) patterns.
+
+### Research Impact
+
+These patterns represent the evolution from:
+- **Chain-of-Thought** (linear reasoning) → **Tree of Thoughts** (branching exploration) → **Graph of Thoughts** (networked reasoning)
+- **Static RAG** (fixed retrieval) → **Agentic RAG** (autonomous, adaptive retrieval)
+- **Single-agent systems** → **Multi-agent collaboration** with specialized roles and communication protocols
+
+---
+
 ## 📚 Foundational Patterns
 
 ### 1️⃣ [Prompt Chaining](./foundational_design_patterns/1_prompt_chain/)
@@ -80,6 +110,8 @@ task_c(5s) → output               task_c(5s) ↗
 
 ### 4️⃣ [Reflection](./foundational_design_patterns/4_reflection/)
 **Iteratively improve outputs through systematic critique and refinement**
+
+One of the four core agentic design patterns (Ng, 2024), reflection enables AI to systematically critique and improve its own outputs.
 ```python
 # Single-shot: 5/10 quality        # With reflection: 8.5/10 quality
 input → generate → done            input → generate → critique → 
@@ -106,6 +138,8 @@ input → generate → done            input → generate → critique →
 
 ### 5️⃣ [Tool Use](./foundational_design_patterns/5_tool_use/)
 **Enable LLMs to interact with external systems and APIs**
+
+Essential for grounding LLM outputs in real-world data and actions, tool use is a foundational capability of modern agentic systems (Ng, 2024; Yao et al., 2022).
 ```python
 # Without tools: Limited to training data
 # With tools: Access real-time data and take actions
@@ -134,6 +168,8 @@ user_query → LLM decides → call_weather_api(location) → integrate_result �
 
 ### 6️⃣ [Planning](./foundational_design_patterns/6_planning/)
 **Decompose complex goals into structured, executable action plans**
+
+A fundamental capability for agentic systems (Ng, 2024), enabling AI to decompose complex objectives strategically rather than responding reactively.
 ```python
 # Without planning: Reactive, incomplete execution
 # With planning: Strategic breakdown and systematic execution
@@ -162,6 +198,8 @@ complex_goal → analyze → decompose → plan_steps → execute_sequentially �
 
 ### 7️⃣ [Multi-Agent Collaboration](./foundational_design_patterns/7_multi_agent_collaboration/)
 **Coordinate multiple specialized agents to solve complex tasks**
+
+Multi-agent systems, highlighted in both the Agentic RAG survey (Singh et al., 2025) and production deployments (LangChain, 2024), enable sophisticated task distribution and specialized expertise.
 ```python
 # Agents as a team: specialize roles + coordinate communication
 user_goal → manager/planner → [researcher | coder | designer | writer | reviewer] → synthesize → final_output
@@ -192,8 +230,11 @@ user_goal → manager/planner → [researcher | coder | designer | writer | revi
 
 ---
 
-### 8️⃣ [ReAct (Reasoning and Acting)](./foundational_design_patterns/8_react/)
+### 8️⃣ [ReAct (Reasoning and Acting)](./foundational_design_patterns/8_react/) (Yao et al., 2022)
 **Interleave reasoning traces with tool execution for adaptive problem-solving**
+
+Originally introduced by Yao et al. (2022) in the paper "ReAct: Synergizing Reasoning and Acting in Language Models," this pattern demonstrates that interleaving reasoning traces with task-specific actions creates superior synergy compared to treating reasoning and acting as separate capabilities.
+
 ```python
 # Traditional: Direct action without explicit reasoning
 user_query → tool_call → response
@@ -228,6 +269,9 @@ user_query → Thought (reason) → Action (tool) → Observation (result) →
 
 ### 9️⃣ [RAG (Retrieval-Augmented Generation)](./foundational_design_patterns/9_rag/)
 **Ground LLM responses with relevant external knowledge**
+
+This approach, enhanced by agentic capabilities as described in the recent survey by Singh et al. (2025), enables autonomous AI agents to dynamically manage retrieval strategies through reflection, planning, and tool use—transcending the limitations of static RAG workflows.
+
 ```python
 # Without RAG: Limited to training data
 user_query → LLM → response (may hallucinate)
@@ -280,8 +324,11 @@ agent_proposal → human_review → [approve|reject|modify] → execute → resu
 
 ## 🧠 Advanced Reasoning Patterns
 
-### [Tree of Thoughts](./reasoning/tree_of_thoughts/)
+### [Tree of Thoughts](./reasoning/tree_of_thoughts/) (Yao et al., 2023)
 **Explore multiple reasoning paths systematically**
+
+Introduced at NeurIPS 2023, Tree of Thoughts (ToT) generalizes Chain-of-Thought prompting by enabling LLMs to explore multiple reasoning paths, self-evaluate choices, and backtrack when necessary—enabling deliberate problem solving for complex tasks.
+
 ```python
 # Chain of Thought: Linear reasoning
 input → step1 → step2 → step3 → answer
@@ -297,8 +344,11 @@ input → [thought1, thought2, thought3] → evaluate → expand_best →
 
 ---
 
-### [Graph of Thoughts](./reasoning/graph_of_thoughts/)
+### [Graph of Thoughts](./reasoning/graph_of_thoughts/) (Besta et al., 2023)
 **Enable non-hierarchical thought connections and merging**
+
+Building on ToT, Graph of Thoughts extends the reasoning paradigm from hierarchical trees to arbitrary graphs, enabling non-linear thought connections and aggregation—achieving 62% better quality on sorting tasks while reducing costs by 31% (Besta et al., 2023).
+
 ```python
 # Thoughts can reference and build on ANY other thought (not just parent-child)
 input → generate_perspectives → connect_thoughts → aggregate → synthesis
@@ -663,26 +713,129 @@ Each pattern builds on concepts from previous ones. Start with Phase 1, then exp
 
 ## 🛠️ Tech Stack
 
-- **[LangChain](https://python.langchain.com/)** - Framework for LLM applications
-- **[LangGraph](https://langchain-ai.github.io/langgraph/)** - Stateful workflows and agents
-- **[OpenAI GPT-4/GPT-4o/GPT-5.2](https://openai.com/)** - Primary LLM (configurable)
+### Core Frameworks
+- **[LangChain](https://python.langchain.com/)** - Comprehensive framework for LLM applications
+- **[LangGraph](https://langchain-ai.github.io/langgraph/)** - Stateful workflows and multi-agent orchestration
+- **[LangSmith](https://smith.langchain.com/)** - LLM application monitoring and evaluation
+
+### Models & APIs
+- **[OpenAI GPT-4/GPT-4o/o1](https://openai.com/)** - Primary LLM (configurable)
+- **[Anthropic Claude](https://anthropic.com/)** - Alternative LLM with extended context
+- **[Other LLM Providers](https://python.langchain.com/docs/integrations/llms/)** - Fully compatible
+
+### Development Tools
 - **[Pydantic](https://docs.pydantic.dev/)** - Data validation and structured outputs
-- **[Python 3.11+](https://www.python.org/)** - Modern Python features
+- **[Python 3.11+](https://www.python.org/)** - Modern Python features (match/case, typing)
+- **[uv](https://github.com/astral-sh/uv)** - Fast Python package manager
+
+### Observability & Evaluation
+- **[W&B Weave](https://wandb.ai/site/weave/)** - Agent evaluation and monitoring
+- **[LangSmith](https://smith.langchain.com/)** - Tracing and debugging
 
 ---
 
 
 ## 📖 Resources
 
-### Official Documentation
-- [LangChain Docs](https://python.langchain.com/docs/get_started/introduction)
-- [LangGraph Docs](https://langchain-ai.github.io/langgraph/)
-- [OpenAI API Reference](https://platform.openai.com/docs/api-reference)
+### 🎓 Academic Papers & Surveys
 
-### Related Projects
+**Reasoning & Planning:**
+- [ReAct: Synergizing Reasoning and Acting in Language Models](https://arxiv.org/abs/2210.03629) (Yao et al., 2022) - ICLR 2023
+- [Tree of Thoughts: Deliberate Problem Solving with Large Language Models](https://arxiv.org/abs/2305.10601) (Yao et al., 2023) - NeurIPS 2023
+- [Graph of Thoughts: Solving Elaborate Problems with Large Language Models](https://arxiv.org/abs/2308.09687) (Besta et al., 2023)
+
+**Retrieval-Augmented Generation:**
+- [Agentic Retrieval-Augmented Generation: A Survey on Agentic RAG](https://arxiv.org/abs/2501.09136) (Singh et al., 2025)
+- [Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks](https://arxiv.org/abs/2005.11401) (Lewis et al., 2020)
+
+### 📚 Books
+
+- **[Agentic Design Patterns: A Hands-On Guide to Building Intelligent Systems](https://link.springer.com/book/10.1007/978-3-031-87617-1)** - Antonio Gullí (Springer Nature, 2024) - Primary inspiration for this repository
+- **[Building LLM Powered Applications](https://www.oreilly.com/library/view/building-llm-powered/9781835462317/)** - Valentina Alto (Packt/O'Reilly, 2024)
+- **[Hands-On Large Language Models](https://www.oreilly.com/library/view/hands-on-large/9781098150952/)** - Jay Alammar & Maarten Grootendorst (O'Reilly, 2024)
+
+### 🎓 Courses & Educational Content
+
+**Foundational Courses:**
+- **[Agentic AI with Andrew Ng](https://www.deeplearning.ai/courses/agentic-ai/)** (DeepLearning.AI, 2024) - Covers reflection, tool use, planning, and multi-agent collaboration
+
+**Framework-Specific:**
+- [LangChain Academy](https://academy.langchain.com/) - Official LangChain courses
+- [LangGraph Tutorials](https://langchain-ai.github.io/langgraph/tutorials/) - Stateful agent workflows
+- [OpenAI Cookbook](https://cookbook.openai.com/) - Function calling and agent patterns
+- [Anthropic Prompt Engineering Interactive Tutorial](https://github.com/anthropics/prompt-eng-interactive-tutorial)
+
+### 🏭 Industry Documentation & Guides
+
+**Official Framework Documentation:**
+- [LangChain Documentation](https://python.langchain.com/docs/get_started/introduction)
+- [LangGraph Documentation](https://langchain-ai.github.io/langgraph/)
+- [Microsoft AutoGen](https://microsoft.github.io/autogen/stable/)
+- [OpenAI Function Calling Guide](https://platform.openai.com/docs/guides/function-calling)
+- [OpenAI Agents Platform](https://platform.openai.com/docs/guides/agents)
+- [Anthropic Prompt Engineering Guide](https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview)
+
+**Production Best Practices:**
+- [LangChain: Top 5 LangGraph Agents in Production 2024](https://www.blog.langchain.com/top-5-langgraph-agents-in-production-2024/) - Real-world deployments
+- [Weights & Biases: Agentic RAG Guide](https://wandb.ai/byyoung3/Generative-AI/reports/Agentic-RAG-Enhancing-retrieval-augmented-generation-with-AI-agents--VmlldzoxMTcyNjQ5Ng)
+
+### 🌐 Community Resources
+
+**Curated Collections:**
+- [Awesome-LangGraph](https://github.com/von-development/awesome-LangGraph) - Comprehensive LangGraph ecosystem index
+- [Prompt Engineering Guide](https://www.promptingguide.ai/) - Comprehensive guide covering latest papers and techniques
+- [Learn Prompting](https://learnprompting.org/) - Free generative AI guide
+
+**Related Projects:**
 - [LangChain Templates](https://github.com/langchain-ai/langchain/tree/master/templates)
-- [AutoGen](https://github.com/microsoft/autogen)
+- [Microsoft AutoGen](https://github.com/microsoft/autogen)
 - [CrewAI](https://github.com/joaomdmoura/crewAI)
+- [AG2 (formerly AutoGen)](https://github.com/ag2ai/ag2)
+
+### 🔬 Research Collections
+
+- [Papers with Code: Agents](https://paperswithcode.com/task/agents) - Latest research with implementations
+- [arXiv: Artificial Intelligence](https://arxiv.org/list/cs.AI/recent) - Recent AI papers
+- [Hugging Face Papers](https://huggingface.co/papers) - Trending ML research
+
+---
+
+## 🏛️ Standards & Compliance
+
+### NIST AI Risk Management Framework
+
+Organizations deploying agentic AI systems should consider the NIST AI Risk Management Framework and associated guidance:
+
+#### **Core Framework**
+- **[NIST AI Risk Management Framework (AI RMF 1.0)](https://www.nist.gov/itl/ai-risk-management-framework)** (January 2023)
+  Voluntary framework to manage AI risks based on four core functions: Govern, Map, Measure, and Manage.
+
+#### **Generative AI Profile**
+- **[NIST AI RMF: Generative AI Profile (NIST.AI.600-1)](https://www.nist.gov/publications/artificial-intelligence-risk-management-framework-generative-artificial-intelligence)** (July 2024)
+  Addresses risks unique to Generative AI, including governance, content provenance, pre-deployment testing, and incident disclosure. Includes catalog of 400+ mitigation actions.
+
+### Compliance Mapping
+
+| NIST AI RMF Function | Relevant Patterns |
+|---------------------|-------------------|
+| **Govern** | [Human-in-the-Loop](./foundational_design_patterns/10_hitl/), [Guardrails](./reliability/guardrails/) |
+| **Map** | [Planning](./foundational_design_patterns/6_planning/), [Goal Management](./orchestration/goal_management/) |
+| **Measure** | [Evaluation & Monitoring](./observability/evaluation_monitoring/), [Adaptive Learning](./learning/adaptive_learning/) |
+| **Manage** | [Error Recovery](./reliability/error_recovery/), [Guardrails](./reliability/guardrails/) |
+
+### Key Focus Areas for Agentic Systems
+
+- **Transparency:** ReAct pattern provides explicit reasoning traces for auditability
+- **Human Oversight:** HITL pattern enables approval workflows
+- **Safety Constraints:** Guardrails pattern enforces compliance boundaries
+- **Evaluation:** Monitoring pattern tracks quality and bias metrics
+- **Error Recovery:** Graceful degradation and incident response
+
+### Additional Resources
+
+- [AI Executive Order 14110](https://www.whitehouse.gov/briefing-room/presidential-actions/2023/10/30/executive-order-on-the-safe-secure-and-trustworthy-development-and-use-of-artificial-intelligence/)
+- [EU AI Act](https://artificialintelligenceact.eu/)
+- [ISO/IEC 42001:2023](https://www.iso.org/standard/81230.html) - AI Management System standard
 
 ---
 
@@ -696,14 +849,28 @@ This project is licensed under the MIT License - see the [LICENSE](./LICENSE) fi
 
 This repository's structure and approach were inspired by:
 
-> **Gullí, Antonio**, *Agentic Design Patterns: A Hands-On Guide to Building Intelligent Systems*, Springer Nature Switzerland.
+### Primary References
 
-> **Andrew Ng**, Agentic AI, DeepLearning.AI.
+> **Gullí, Antonio**, *Agentic Design Patterns: A Hands-On Guide to Building Intelligent Systems*, Springer Nature Switzerland, 2024.
+
+> **Ng, Andrew**, *Agentic AI*, DeepLearning.AI, 2024.
+
+### Academic Foundations
+
+We gratefully acknowledge the research contributions that ground these patterns:
+
+- **Yao, Shunyu et al.** - ReAct and Tree of Thoughts frameworks
+- **Singh, Aditi et al.** - Agentic RAG survey and taxonomy
+- **Besta, Maciej et al.** - Graph of Thoughts methodology
+- **Lewis, Patrick et al.** - Foundational RAG research
+
+### Community & Tools
 
 Special thanks to:
-- The LangChain team for building incredible tools
-- The open-source AI community for pushing the boundaries
-- All contributors who help improve these patterns
+- The **LangChain and LangGraph teams** for building production-grade agentic frameworks
+- The **open-source AI community** for advancing the state of the art
+- **NIST** for providing guidance on trustworthy AI development
+- All **contributors** who help improve these patterns
 
 ---
 
