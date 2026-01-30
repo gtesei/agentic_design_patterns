@@ -5,6 +5,12 @@
 [![LangGraph](https://img.shields.io/badge/LangGraph-latest-orange.svg)](https://langchain-ai.github.io/langgraph/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+[![GitHub stars](https://img.shields.io/github/stars/gtesei/agentic_design_patterns?style=social)](https://github.com/gtesei/agentic_design_patterns/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/gtesei/agentic_design_patterns?style=social)](https://github.com/gtesei/agentic_design_patterns/network)
+[![GitHub issues](https://img.shields.io/github/issues/gtesei/agentic_design_patterns)](https://github.com/gtesei/agentic_design_patterns/issues)
+[![GitHub last commit](https://img.shields.io/github/last-commit/gtesei/agentic_design_patterns)](https://github.com/gtesei/agentic_design_patterns/commits)
+[![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
+
 > **Transform your AI applications from simple prompts to sophisticated intelligent systems.**
 
 A comprehensive, hands-on collection of design patterns for building robust agentic AI systems. Each pattern is implemented with real-world examples and detailed documentation to help you architect scalable, maintainable AI applications.
