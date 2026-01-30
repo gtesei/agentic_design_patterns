@@ -1,0 +1,90 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentic_design_patterns"
+version = "0.1.0"
+description = "HITL (Human-in-the-Loop) Pattern Implementation"
+requires-python = ">=3.11"
+authors = [
+    { name = "Gino Tesei", email = "gteseil@yahoo.com" }
+]
+dependencies = [
+    "langchain>=1.2.3",
+    "langchain-community>=0.4.1",
+    "langchain-openai>=1.1.7",
+    "langgraph>=1.0.5",
+    "python-dotenv>=1.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.1.0",
+]
+
+[tool.ruff]
+src = ["src"]
+target-version = "py39"
+line-length = 120
+fix = true
+
+[tool.ruff.lint]
+select = [
+    # flake8-2020
+    "YTT",
+    # flake8-bandit
+    "S",
+    # flake8-bugbear
+    "B",
+    # flake8-builtins
+    "A",
+    # flake8-comprehensions
+    "C4",
+    # flake8-debugger
+    "T10",
+    # flake8-simplify
+    "SIM",
+    # isort
+    "I",
+    # mccabe
+    "C90",
+    # pycodestyle
+    "E", "W",
+    # pyflakes
+    "F",
+    # pygrep-hooks
+    "PGH",
+    # pyupgrade
+    "UP",
+    # ruff
+    "RUF",
+    # tryceratops
+    "TRY",
+]
+ignore = [
+    # LineTooLong
+    "E501",
+    # DoNotAssignLambda
+    "E731",
+    # Avoid specifying long messages outside the exception class
+    "TRY003",
+    # too complex
+    "C901",
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]
+"tests/*/*.py" = ["S101"]
+
+[tool.ruff.format]
+preview = true
+
+[tool.coverage.report]
+skip_empty = true
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+
+[tool.deptry.per_rule_ignores]
