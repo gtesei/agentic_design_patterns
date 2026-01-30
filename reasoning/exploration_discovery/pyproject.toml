@@ -1,0 +1,71 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "exploration_discovery"
+version = "0.1.0"
+description = "Exploration and Discovery Pattern Implementation"
+requires-python = ">=3.11"
+authors = [
+    { name = "Gino Tesei", email = "gteseil@yahoo.com" }
+]
+dependencies = [
+    "langchain>=1.2.3",
+    "langchain-openai>=1.1.7",
+    "python-dotenv>=1.0.0",
+    "numpy>=1.24.0",
+    "scikit-learn>=1.3.0",
+    "sentence-transformers>=2.2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.1.0",
+]
+
+[tool.ruff]
+src = ["src"]
+target-version = "py39"
+line-length = 120
+fix = true
+
+[tool.ruff.lint]
+select = [
+    "YTT",
+    "S",
+    "B",
+    "A",
+    "C4",
+    "T10",
+    "SIM",
+    "I",
+    "C90",
+    "E", "W",
+    "F",
+    "PGH",
+    "UP",
+    "RUF",
+    "TRY",
+]
+ignore = [
+    "E501",
+    "E731",
+    "TRY003",
+    "C901",
+    "S311",  # Allow random for non-security use
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["S101"]
+"tests/*/*.py" = ["S101"]
+
+[tool.ruff.format]
+preview = true
+
+[tool.coverage.report]
+skip_empty = true
+
+[tool.coverage.run]
+branch = true
+source = ["src"]

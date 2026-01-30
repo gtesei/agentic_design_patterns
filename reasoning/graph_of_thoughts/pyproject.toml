@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "graph_of_thoughts"
+version = "0.1.0"
+description = "Graph of Thoughts Pattern Implementation"
+requires-python = ">=3.11"
+authors = [
+    { name = "Gino Tesei", email = "gteseil@yahoo.com" }
+]
+dependencies = [
+    "langchain>=1.2.3",
+    "langchain-openai>=1.1.7",
+    "python-dotenv>=1.0.0",
+    "networkx>=3.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.1.0",
+]
+
+[tool.ruff]
+src = ["src"]
+target-version = "py311"
+line-length = 120
+fix = true
+
+[tool.ruff.lint]
+select = [
+    "E", "W",  # pycodestyle
+    "F",       # pyflakes
+    "I",       # isort
+    "B",       # flake8-bugbear
+    "C4",      # flake8-comprehensions
+    "UP",      # pyupgrade
+]
+ignore = [
+    "E501",    # line too long
+]
+
+[tool.ruff.format]
+preview = true
