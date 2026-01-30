@@ -192,6 +192,40 @@ user_goal → manager/planner → [researcher | coder | designer | writer | revi
 
 ---
 
+### 8️⃣ [ReAct (Reasoning and Acting)](./foundational_design_patterns/8_react/)
+**Interleave reasoning traces with tool execution for adaptive problem-solving**
+```python
+# Traditional: Direct action without explicit reasoning
+user_query → tool_call → response
+
+# ReAct: Explicit reasoning + grounded actions
+user_query → Thought (reason) → Action (tool) → Observation (result) →
+             Thought (adapt) → Action → Observation → Final Answer
+```
+
+**When to use:**
+- Multi-step research requiring information lookup and verification
+- Complex problem-solving where the solution path isn't predetermined
+- Tasks requiring adaptation based on intermediate results
+- Debugging and exploratory analysis
+- Need transparent reasoning for interpretability
+
+**Key benefits:**
+- 🧠 Explicit reasoning traces improve decision quality
+- 🎯 Grounded actions reduce hallucinations
+- 🔄 Dynamic adaptation based on observations
+- 🔍 Transparent and debuggable decision-making
+- ✓ Self-correction and error recovery
+
+**Trade-offs:**
+- ⚠️ Higher latency (multiple reasoning + action cycles)
+- 💰 Increased token costs (reasoning traces + tool calls)
+- 🔁 Risk of unproductive loops without iteration limits
+
+[**📖 Learn More →**](./foundational_design_patterns/8_react/README.md)
+
+---
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -233,6 +267,10 @@ bash run.sh
 # Try reflection (stateful loops)
 cd ../4_reflection
 bash run.sh
+
+# Try ReAct (reasoning and acting)
+cd ../8_react
+bash run.sh
 ```
 
 ---
@@ -260,6 +298,10 @@ bash run.sh
 **Multi-step automation requiring orchestration?** → **Planning** provides strategic execution
 
 **Need multiple roles working together?** → **Multi-Agent Collaboration** (specialists + coordinator)
+
+**Exploratory multi-step tasks with tools?** → **ReAct** combines reasoning with adaptive tool use
+
+**Need transparent, debuggable decision-making?** → **ReAct** shows explicit reasoning traces
 
 
 ---
@@ -289,13 +331,35 @@ agentic_design_patterns/
 │   │   ├── README.md
 │   │   └── SKILL.md
 │   │
-│   └── 4_reflection/
+│   ├── 4_reflection/
+│   │   ├── src/
+│   │   │   ├── reflection.py               # Single-step reflection
+│   │   │   └── reflection_stateful_loop.py # Iterative refinement
+│   │   ├── README.md
+│   │   └── SKILL.md
+│   │
+│   ├── 5_tool_use/
+│   │   ├── src/
+│   │   │   ├── tool_use.py                 # Basic tool use
+│   │   │   └── tool_use_advanced.py        # Advanced patterns
+│   │   └── README.md
+│   │
+│   ├── 6_planning/
+│   │   ├── src/
+│   │   │   └── planning_agent.py           # Strategic planning
+│   │   └── README.md
+│   │
+│   ├── 7_multi_agent_collaboration/
+│   │   ├── src/
+│   │   │   └── multi_agent.py              # Coordinated agents
+│   │   └── README.md
+│   │
+│   └── 8_react/
 │       ├── src/
-│       │   ├── reflection.py               # Single-step reflection
-│       │   └── reflection_stateful_loop.py # Iterative refinement
+│       │   ├── react_agent.py              # Basic ReAct
+│       │   └── react_agent_advanced.py     # Custom reasoning traces
 │       ├── README.md
-│       └── SKILL.md
-...
+│       └── run.sh
 ...
 ├── .env                                # Environment variables
 ├── LICENSE                             # MIT License
@@ -311,8 +375,11 @@ agentic_design_patterns/
 1. **Start here**: [Prompt Chaining](./foundational_design_patterns/1_prompt_chain/) - Foundation for everything
 2. **Next**: [Routing](./foundational_design_patterns/2_routing/) - Learn to optimize model selection
 3. **Then**: [Parallelization](./foundational_design_patterns/3_parallelization/) - Scale your applications
-4. **Finally**: [Reflection](./foundational_design_patterns/4_reflection/) - Master quality optimization
-5. **Advanced**: [Multi-Agent Collaboration](./foundational_design_patterns/7_multi_agent_collaboration/) - Build coordinated agent teams
+4. **Quality**: [Reflection](./foundational_design_patterns/4_reflection/) - Master quality optimization
+5. **Integration**: [Tool Use](./foundational_design_patterns/5_tool_use/) - Connect to external systems
+6. **Adaptive**: [ReAct](./foundational_design_patterns/8_react/) - Reasoning + acting for complex tasks
+7. **Orchestration**: [Planning](./foundational_design_patterns/6_planning/) - Strategic task decomposition
+8. **Advanced**: [Multi-Agent Collaboration](./foundational_design_patterns/7_multi_agent_collaboration/) - Build coordinated agent teams
 
 Each pattern builds on concepts from previous ones, so we recommend following this sequence.
 
