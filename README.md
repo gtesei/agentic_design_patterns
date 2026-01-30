@@ -226,6 +226,257 @@ user_query → Thought (reason) → Action (tool) → Observation (result) →
 
 ---
 
+### 9️⃣ [RAG (Retrieval-Augmented Generation)](./foundational_design_patterns/9_rag/)
+**Ground LLM responses with relevant external knowledge**
+```python
+# Without RAG: Limited to training data
+user_query → LLM → response (may hallucinate)
+
+# With RAG: Knowledge-grounded responses
+user_query → retrieve_relevant_docs → augment_context → LLM → grounded_response
+```
+
+**When to use:**
+- Dynamic or frequently updated information (documentation, product catalogs)
+- Private/proprietary knowledge bases
+- Domain-specific expertise beyond LLM training
+- Reducing hallucinations with factual grounding
+
+**Key benefits:**
+- 📚 Access to current and proprietary information
+- 🎯 Reduced hallucinations through grounding
+- 💰 No retraining needed for knowledge updates
+- 🔍 Source attribution and transparency
+
+[**📖 Learn More →**](./foundational_design_patterns/9_rag/README.md)
+
+---
+
+### 🔟 [Human-in-the-Loop (HITL)](./foundational_design_patterns/10_hitl/)
+**Integrate human oversight and approval into AI workflows**
+```python
+# Without HITL: Fully automated
+agent_action → execute → result
+
+# With HITL: Human checkpoint
+agent_proposal → human_review → [approve|reject|modify] → execute → result
+```
+
+**When to use:**
+- High-stakes decisions (financial transactions, legal actions)
+- Quality-critical content (publications, customer communications)
+- Compliance and regulatory requirements
+- Learning from human expertise
+
+**Key benefits:**
+- 🛡️ Safety and risk mitigation
+- ✅ Quality assurance and compliance
+- 🎓 Continuous learning from human feedback
+- 🤝 Building user trust
+
+[**📖 Learn More →**](./foundational_design_patterns/10_hitl/README.md)
+
+---
+
+## 🧠 Advanced Reasoning Patterns
+
+### [Tree of Thoughts](./reasoning/tree_of_thoughts/)
+**Explore multiple reasoning paths systematically**
+```python
+# Chain of Thought: Linear reasoning
+input → step1 → step2 → step3 → answer
+
+# Tree of Thoughts: Branching exploration
+input → [thought1, thought2, thought3] → evaluate → expand_best →
+        [refined_thoughts] → evaluate → solution
+```
+
+**Key benefits:** Better solutions through systematic exploration, backtracking capability, transparent decision trees
+
+[**📖 Learn More →**](./reasoning/tree_of_thoughts/README.md)
+
+---
+
+### [Graph of Thoughts](./reasoning/graph_of_thoughts/)
+**Enable non-hierarchical thought connections and merging**
+```python
+# Thoughts can reference and build on ANY other thought (not just parent-child)
+input → generate_perspectives → connect_thoughts → aggregate → synthesis
+```
+
+**Key benefits:** Multi-perspective analysis, thought merging, flexible reasoning paths
+
+[**📖 Learn More →**](./reasoning/graph_of_thoughts/README.md)
+
+---
+
+### [Exploration & Discovery](./reasoning/exploration_discovery/)
+**Discover novel solutions through guided exploration**
+```python
+# Epsilon-greedy: Balance exploration vs. exploitation
+query → [explore_new | exploit_best] → evaluate → update_strategy → iterate
+```
+
+**Key benefits:** Novel solution discovery, avoiding premature convergence, adaptive exploration
+
+[**📖 Learn More →**](./reasoning/exploration_discovery/README.md)
+
+---
+
+## 🛡️ Reliability Patterns
+
+### [Error Recovery](./reliability/error_recovery/)
+**Gracefully handle failures and self-correct**
+```python
+# Detect → Diagnose → Recover → Verify
+operation → [success | failure] → classify_error → [retry | fallback | self_correct] → verify
+```
+
+**Key benefits:** Resilience, graceful degradation, automatic self-healing, reduced downtime
+
+[**📖 Learn More →**](./reliability/error_recovery/README.md)
+
+---
+
+### [Guardrails](./reliability/guardrails/)
+**Enforce safety constraints and compliance**
+```python
+# Multi-layer validation
+input → validate → process → validate_output → [pass | block] → log
+```
+
+**Key benefits:** Safety assurance, compliance, brand protection, risk reduction
+
+[**📖 Learn More →**](./reliability/guardrails/README.md)
+
+---
+
+## 🎯 Orchestration Patterns
+
+### [Goal Management](./orchestration/goal_management/)
+**Decompose and track complex objectives**
+```python
+# Hierarchical decomposition with progress tracking
+complex_goal → decompose → [subgoal1, subgoal2, subgoal3] →
+              track_dependencies → execute → monitor → replan
+```
+
+**Key benefits:** Structured execution, progress visibility, adaptive planning, resource optimization
+
+[**📖 Learn More →**](./orchestration/goal_management/README.md)
+
+---
+
+### [Agent Communication (A2A)](./orchestration/agent_communication/)
+**Enable agents to coordinate through message passing**
+```python
+# Direct messaging, pub-sub, negotiation protocols
+agent1 → message → agent2 → response → agent1
+```
+
+**Key benefits:** Loose coupling, dynamic discovery, scalability, fault tolerance
+
+[**📖 Learn More →**](./orchestration/agent_communication/README.md)
+
+---
+
+### [Model Context Protocol (MCP)](./orchestration/mcp/)
+**Standardized tool and resource integration**
+```python
+# USB for AI: Standard interface for tools/data
+LLM → discover_tools → invoke_tool(params) → receive_result → integrate
+```
+
+**Key benefits:** Standardization, reusability, interoperability, composability
+
+[**📖 Learn More →**](./orchestration/mcp/README.md)
+
+---
+
+### [Prioritization](./orchestration/prioritization/)
+**Optimize task ordering and resource allocation**
+```python
+# Multi-criteria scoring with dynamic rebalancing
+tasks → score(urgency, impact, effort) → rank → schedule → execute
+```
+
+**Key benefits:** Resource optimization, deadline adherence, fairness, efficiency
+
+[**📖 Learn More →**](./orchestration/prioritization/README.md)
+
+---
+
+## 📊 Observability Patterns
+
+### [Evaluation & Monitoring](./observability/evaluation_monitoring/)
+**Track performance and quality metrics**
+```python
+# Quantitative + qualitative metrics
+operation → collect_metrics → evaluate_quality → aggregate → alert → visualize
+```
+
+**Key benefits:** Visibility, early detection, data-driven decisions, continuous improvement
+
+[**📖 Learn More →**](./observability/evaluation_monitoring/README.md)
+
+---
+
+### [Resource Optimization](./observability/resource_optimization/)
+**Reduce costs and improve performance**
+```python
+# Caching, batching, model routing
+request → [cache_hit | cache_miss] → [cheap_model | expensive_model] → optimize
+```
+
+**Key benefits:** 65-80% cost reduction, faster responses, better UX
+
+[**📖 Learn More →**](./observability/resource_optimization/README.md)
+
+---
+
+## 🧩 Memory Patterns
+
+### [Memory Management](./memory/memory_management/)
+**Maintain conversation history and long-term memory**
+```python
+# Buffer + semantic memory
+interaction → store → [buffer_memory | vector_memory] → retrieve_relevant → use
+```
+
+**Key benefits:** Context retention, personalization, learning from history
+
+[**📖 Learn More →**](./memory/memory_management/README.md)
+
+---
+
+### [Context Management](./memory/context_management/)
+**Optimize context window usage**
+```python
+# Dynamic selection and compression
+content → score_relevance → compress → fit_window → optimize
+```
+
+**Key benefits:** 70-90% cost reduction, focused responses, better performance
+
+[**📖 Learn More →**](./memory/context_management/README.md)
+
+---
+
+## 🎓 Learning Patterns
+
+### [Adaptive Learning](./learning/adaptive_learning/)
+**Improve through feedback and continuous learning**
+```python
+# Learn from outcomes
+action → feedback → analyze_patterns → adapt_strategy → improve
+```
+
+**Key benefits:** Continuous improvement, personalization, domain adaptation
+
+[**📖 Learn More →**](./learning/adaptive_learning/README.md)
+
+---
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -279,29 +530,41 @@ bash run.sh
 
 ### Choose Your Pattern Based on Your Needs:
 
-**Need speed?** → Start with **Routing** and **Parallelization**
+**Need speed?** → **Routing** + **Parallelization** + **Resource Optimization** (caching, batching)
 
-**Need quality?** → Use **Prompt Chaining** + **Reflection**
+**Need quality?** → **Reflection** + **RAG** (grounded knowledge) + **Evaluation & Monitoring**
 
-**Need cost optimization?** → Implement **Routing** to avoid expensive models
+**Need cost optimization?** → **Routing** + **Resource Optimization** (65-80% savings) + **Context Management**
 
-**Need both speed AND quality?** → Combine **Parallelization** + **Prompt Chaining**
+**Need both speed AND quality?** → **Parallelization** + **Prompt Chaining** + **RAG**
 
-**Complex multi-step workflow?** → **Prompt Chaining** is your foundation
+**Complex multi-step workflow?** → **Prompt Chaining** + **Planning** + **Goal Management**
 
 **Independent concurrent tasks?** → **Parallelization** will give you massive speedups
 
-**High-stakes output?** → **Reflection** is worth the cost
+**High-stakes output?** → **Reflection** + **HITL** (human approval) + **Guardrails** (safety)
 
-**External system integration?** → **Tool Use** enables real-world interaction
+**External system integration?** → **Tool Use** + **MCP** (standardized protocols)
 
-**Multi-step automation requiring orchestration?** → **Planning** provides strategic execution
+**Multi-step automation?** → **Planning** + **Goal Management** + **Agent Communication**
 
-**Need multiple roles working together?** → **Multi-Agent Collaboration** (specialists + coordinator)
+**Multiple roles working together?** → **Multi-Agent Collaboration** + **Agent Communication** (A2A)
 
-**Exploratory multi-step tasks with tools?** → **ReAct** combines reasoning with adaptive tool use
+**Exploratory multi-step tasks?** → **ReAct** (reasoning + actions) or **Tree of Thoughts** (exploration)
 
-**Need transparent, debuggable decision-making?** → **ReAct** shows explicit reasoning traces
+**Need transparent decision-making?** → **ReAct** (explicit reasoning) + **Evaluation & Monitoring**
+
+**Knowledge-grounded responses?** → **RAG** retrieves relevant documents before generation
+
+**Complex reasoning tasks?** → **Tree of Thoughts** (systematic) or **Graph of Thoughts** (multi-perspective)
+
+**Production reliability?** → **Error Recovery** + **Guardrails** + **Evaluation & Monitoring**
+
+**Long conversations?** → **Memory Management** + **Context Management** (optimize windows)
+
+**Continuous improvement?** → **Adaptive Learning** + **Evaluation & Monitoring** (feedback loops)
+
+**Resource constraints?** → **Prioritization** + **Resource Optimization** + **Context Management**
 
 
 ---
@@ -310,78 +573,91 @@ bash run.sh
 ```
 agentic_design_patterns/
 ├── foundational_design_patterns/
-│   ├── 1_prompt_chain/
-│   │   ├── src/
-│   │   │   ├── chain_prompt.py            # Basic chaining
-│   │   │   └── advanced_chain.py          # Complex workflows
-│   │   ├── README.md                      # Pattern documentation
-│   │   └── SKILL.md                       # Implementation guide
-│   │
-│   ├── 2_routing/
-│   │   ├── src/
-│   │   │   ├── routing.py                 # Intent-based routing
-│   │   │   └── semantic_routing.py        # Advanced routing
-│   │   ├── README.md
-│   │   └── SKILL.md
-│   │
-│   ├── 3_parallelization/
-│   │   ├── src/
-│   │   │   ├── parallel_example.py        # LCEL parallelization
-│   │   │   └── async_parallel.py          # Async operations
-│   │   ├── README.md
-│   │   └── SKILL.md
-│   │
-│   ├── 4_reflection/
-│   │   ├── src/
-│   │   │   ├── reflection.py               # Single-step reflection
-│   │   │   └── reflection_stateful_loop.py # Iterative refinement
-│   │   ├── README.md
-│   │   └── SKILL.md
-│   │
-│   ├── 5_tool_use/
-│   │   ├── src/
-│   │   │   ├── tool_use.py                 # Basic tool use
-│   │   │   └── tool_use_advanced.py        # Advanced patterns
-│   │   └── README.md
-│   │
-│   ├── 6_planning/
-│   │   ├── src/
-│   │   │   └── planning_agent.py           # Strategic planning
-│   │   └── README.md
-│   │
-│   ├── 7_multi_agent_collaboration/
-│   │   ├── src/
-│   │   │   └── multi_agent.py              # Coordinated agents
-│   │   └── README.md
-│   │
-│   └── 8_react/
-│       ├── src/
-│       │   ├── react_agent.py              # Basic ReAct
-│       │   └── react_agent_advanced.py     # Custom reasoning traces
-│       ├── README.md
-│       └── run.sh
-...
-├── .env                                # Environment variables
-├── LICENSE                             # MIT License
-└── README.md                           # This file
+│   ├── 1_prompt_chain/         # Sequential task decomposition
+│   ├── 2_routing/              # Intelligent query routing
+│   ├── 3_parallelization/      # Concurrent execution
+│   ├── 4_reflection/           # Iterative refinement
+│   ├── 5_tool_use/             # External system integration
+│   ├── 6_planning/             # Strategic task planning
+│   ├── 7_multi_agent_collaboration/  # Coordinated agents
+│   ├── 8_react/                # Reasoning and acting
+│   ├── 9_rag/                  # Retrieval-augmented generation
+│   └── 10_hitl/                # Human-in-the-loop
+│
+├── reasoning/                  # Advanced reasoning patterns
+│   ├── tree_of_thoughts/       # Systematic exploration
+│   ├── graph_of_thoughts/      # Non-hierarchical reasoning
+│   └── exploration_discovery/  # Novel solution discovery
+│
+├── reliability/                # Safety and resilience
+│   ├── error_recovery/         # Failure handling
+│   └── guardrails/             # Safety constraints
+│
+├── orchestration/              # Multi-agent coordination
+│   ├── goal_management/        # Objective decomposition
+│   ├── agent_communication/    # Inter-agent messaging
+│   ├── mcp/                    # Model Context Protocol
+│   └── prioritization/         # Task ranking
+│
+├── observability/              # Monitoring and optimization
+│   ├── evaluation_monitoring/  # Metrics and quality
+│   └── resource_optimization/  # Cost and performance
+│
+├── memory/                     # Context and history
+│   ├── memory_management/      # Long-term memory
+│   └── context_management/     # Context optimization
+│
+├── learning/                   # Continuous improvement
+│   └── adaptive_learning/      # Learning from feedback
+│
+├── .env                        # Environment variables
+├── LICENSE                     # MIT License
+└── README.md                   # This file
 ```
 
 ---
 
 ## 🎓 Learning Path
 
-### Beginner → Intermediate → Advanced
+### Beginner → Intermediate → Advanced → Expert
 
-1. **Start here**: [Prompt Chaining](./foundational_design_patterns/1_prompt_chain/) - Foundation for everything
-2. **Next**: [Routing](./foundational_design_patterns/2_routing/) - Learn to optimize model selection
-3. **Then**: [Parallelization](./foundational_design_patterns/3_parallelization/) - Scale your applications
-4. **Quality**: [Reflection](./foundational_design_patterns/4_reflection/) - Master quality optimization
-5. **Integration**: [Tool Use](./foundational_design_patterns/5_tool_use/) - Connect to external systems
-6. **Adaptive**: [ReAct](./foundational_design_patterns/8_react/) - Reasoning + acting for complex tasks
-7. **Orchestration**: [Planning](./foundational_design_patterns/6_planning/) - Strategic task decomposition
-8. **Advanced**: [Multi-Agent Collaboration](./foundational_design_patterns/7_multi_agent_collaboration/) - Build coordinated agent teams
+**Phase 1: Foundations (Start Here)**
+1. [Prompt Chaining](./foundational_design_patterns/1_prompt_chain/) - Foundation for everything
+2. [Routing](./foundational_design_patterns/2_routing/) - Learn to optimize model selection
+3. [Parallelization](./foundational_design_patterns/3_parallelization/) - Scale your applications
+4. [Reflection](./foundational_design_patterns/4_reflection/) - Master quality optimization
+5. [Tool Use](./foundational_design_patterns/5_tool_use/) - Connect to external systems
 
-Each pattern builds on concepts from previous ones, so we recommend following this sequence.
+**Phase 2: Core Patterns**
+6. [RAG](./foundational_design_patterns/9_rag/) - Knowledge-grounded responses
+7. [ReAct](./foundational_design_patterns/8_react/) - Reasoning + acting
+8. [Planning](./foundational_design_patterns/6_planning/) - Strategic decomposition
+9. [HITL](./foundational_design_patterns/10_hitl/) - Human oversight
+10. [Multi-Agent](./foundational_design_patterns/7_multi_agent_collaboration/) - Agent coordination
+
+**Phase 3: Advanced Reasoning**
+11. [Tree of Thoughts](./reasoning/tree_of_thoughts/) - Systematic exploration
+12. [Graph of Thoughts](./reasoning/graph_of_thoughts/) - Multi-perspective reasoning
+13. [Exploration & Discovery](./reasoning/exploration_discovery/) - Novel solutions
+
+**Phase 4: Production Patterns**
+14. [Error Recovery](./reliability/error_recovery/) - Resilience
+15. [Guardrails](./reliability/guardrails/) - Safety
+16. [Evaluation & Monitoring](./observability/evaluation_monitoring/) - Metrics
+17. [Resource Optimization](./observability/resource_optimization/) - Cost/performance
+
+**Phase 5: Orchestration & Memory**
+18. [Goal Management](./orchestration/goal_management/) - Objective tracking
+19. [Agent Communication](./orchestration/agent_communication/) - Messaging
+20. [MCP](./orchestration/mcp/) - Standardized integration
+21. [Prioritization](./orchestration/prioritization/) - Task ranking
+22. [Memory Management](./memory/memory_management/) - Context retention
+23. [Context Management](./memory/context_management/) - Optimization
+
+**Phase 6: Continuous Improvement**
+24. [Adaptive Learning](./learning/adaptive_learning/) - Learning from feedback
+
+Each pattern builds on concepts from previous ones. Start with Phase 1, then explore other phases based on your needs.
 
 ---
 
@@ -395,17 +671,6 @@ Each pattern builds on concepts from previous ones, so we recommend following th
 
 ---
 
-## 🔮 Coming Soon
-
-We're actively developing additional patterns:
-
-- **Retrieval-Augmented Generation (RAG)** - Knowledge-grounded responses
-- **Human-in-the-Loop** - Interactive approval and refinement
-- **Guardrails** - Safety, compliance, and quality enforcement
-
-**Want a specific pattern?** [Open an issue](https://github.com/gtesei/agentic_design_patterns/issues) and let us know!
-
----
 
 ## 📖 Resources
 
