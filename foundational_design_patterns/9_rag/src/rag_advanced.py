@@ -17,12 +17,13 @@ import ssl_fix  # Apply SSL bypass for corporate networks
 
 import numpy as np
 from dotenv import load_dotenv
-from langchain.chains import RetrievalQA
-from langchain.prompts import PromptTemplate
-from langchain_community.vectorstores import Qdrant
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
 from langchain_core.documents import Document
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from qdrant_client import QdrantClient
+from qdrant_client.models import Distance, PointStruct, VectorParams
 
 # Load environment variables
 load_dotenv(os.path.join(os.path.dirname(__file__), "../../..", ".env"))
@@ -52,8 +53,9 @@ class AdvancedRAG:
         print("   Connecting to OpenAI for generation")
         self.llm = ChatOpenAI(temperature=0.7, model="gpt-4")
 
-        # Vectorstore (will be created when documents are added)
-        self.vectorstore: Optional[Qdrant] = None
+        # Store documents for later retrieval
+        self.documents: List[Document] = []
+        self.doc_embeddings: Optional[np.ndarray] = None
 
         print("✅ Advanced RAG system initialized!\n")
 
@@ -70,17 +72,40 @@ class AdvancedRAG:
         if metadata is None:
             metadata = [{"source": f"doc_{i}"} for i in range(len(documents))]
 
-        docs = [
+        self.documents = [
             Document(page_content=doc, metadata=meta)
             for doc, meta in zip(documents, metadata)
         ]
 
-        # Create vectorstore with documents
-        self.vectorstore = Qdrant.from_documents(
-            docs,
-            self.embeddings,
-            location=":memory:",
+        # Generate embeddings for all documents
+        print("   Generating embeddings...")
+        doc_texts = [doc.page_content for doc in self.documents]
+        embeddings_list = self.embeddings.embed_documents(doc_texts)
+        self.doc_embeddings = np.array(embeddings_list)
+
+        # Get embedding dimension
+        embedding_dim = len(embeddings_list[0])
+
+        # Create Qdrant collection
+        self.qdrant_client.create_collection(
             collection_name=self.collection_name,
+            vectors_config=VectorParams(size=embedding_dim, distance=Distance.COSINE),
+        )
+
+        # Create points for Qdrant
+        points = [
+            PointStruct(
+                id=idx,
+                vector=embedding,
+                payload={"text": doc.page_content, **doc.metadata}
+            )
+            for idx, (doc, embedding) in enumerate(zip(self.documents, embeddings_list))
+        ]
+
+        # Upload to Qdrant
+        self.qdrant_client.upsert(
+            collection_name=self.collection_name,
+            points=points
         )
 
         print(f"✅ Successfully indexed {len(documents)} documents\n")
@@ -99,10 +124,30 @@ class AdvancedRAG:
         print(f"   Query: '{query}'")
         print(f"   Retrieving top {k} documents with similarity search...")
 
-        if self.vectorstore is None:
-            raise ValueError("Vectorstore not initialized. Call add_documents() first.")
+        if not self.documents:
+            raise ValueError("No documents loaded. Call add_documents() first.")
 
-        results = self.vectorstore.similarity_search_with_score(query, k=k)
+        # Embed the query
+        query_embedding = self.embeddings.embed_query(query)
+
+        # Search in Qdrant
+        search_results = self.qdrant_client.query_points(
+            collection_name=self.collection_name,
+            query=query_embedding,
+            limit=k
+        ).points
+
+        # Convert to Document objects with scores
+        results = []
+        for result in search_results:
+            if result.payload is None:
+                continue
+            # Reconstruct document from payload
+            doc = Document(
+                page_content=result.payload["text"],
+                metadata={k: v for k, v in result.payload.items() if k != "text"}
+            )
+            results.append((doc, result.score))
 
         print(f"\n   📊 Initial Retrieval Results:")
         for idx, (doc, score) in enumerate(results, 1):
@@ -215,11 +260,11 @@ class AdvancedRAG:
         else:
             return np.dot(vec2_norm, vec1_norm.T)
 
-    def create_qa_chain(self) -> RetrievalQA:
-        """Create a QA chain with custom prompt template.
+    def create_qa_chain(self):
+        """Create a QA chain with custom prompt template using LCEL.
 
         Returns:
-            Configured RetrievalQA chain
+            Configured LCEL chain and retrieval function
         """
         # Custom prompt template
         template = """You are an AI assistant specialized in explaining AI and machine learning concepts.
@@ -235,30 +280,37 @@ Question: {question}
 
 Detailed Answer:"""
 
-        prompt = PromptTemplate(
-            template=template,
-            input_variables=["context", "question"]
+        prompt = ChatPromptTemplate.from_template(template)
+
+        if not self.documents:
+            raise ValueError("No documents loaded. Call add_documents() first.")
+
+        # Custom retrieval function with MMR
+        def retrieve_mmr(query: str) -> List[Document]:
+            """Retrieve documents using MMR."""
+            # Get initial results
+            initial_results = self.retrieve_with_scores(query, k=5)
+            # Re-rank with MMR
+            reranked = self.mmr_rerank(query, initial_results, lambda_mult=0.5, k=3)
+            return [doc for doc, _ in reranked]
+
+        # Format documents helper
+        def format_docs(docs):
+            return "\n\n".join(doc.page_content for doc in docs)
+
+        # Create LCEL chain
+        qa_chain = (
+            {
+                "context": lambda q: format_docs(retrieve_mmr(q)),
+                "question": RunnablePassthrough()
+            }
+            | prompt
+            | self.llm
+            | StrOutputParser()
         )
 
-        # Create retriever with MMR
-        if self.vectorstore is None:
-            raise ValueError("Vectorstore not initialized. Call add_documents() first.")
-
-        retriever = self.vectorstore.as_retriever(
-            search_type="mmr",
-            search_kwargs={"k": 3, "lambda_mult": 0.5}
-        )
-
-        # Create QA chain
-        qa_chain = RetrievalQA.from_chain_type(
-            llm=self.llm,
-            chain_type="stuff",
-            retriever=retriever,
-            chain_type_kwargs={"prompt": prompt},
-            return_source_documents=True,
-        )
-
-        return qa_chain
+        # Return chain and retrieval function
+        return qa_chain, retrieve_mmr
 
     def query_with_comparison(self, query: str, k: int = 5, mmr_k: int = 3):
         """Execute RAG query showing before/after re-ranking comparison.
@@ -280,21 +332,26 @@ Detailed Answer:"""
 
         # Step 3: Generate answer using QA chain
         print(f"\n💡 GENERATION PHASE")
-        print(f"   Generating answer with LangChain QA chain...")
+        print(f"   Generating answer with LangChain LCEL chain...")
 
-        qa_chain = self.create_qa_chain()
-        result = qa_chain.invoke({"query": query})
+        qa_chain, retrieve_func = self.create_qa_chain()
+
+        # Get source documents
+        source_docs = retrieve_func(query)
+
+        # Generate answer
+        answer = qa_chain.invoke(query)
 
         print(f"\n📋 FINAL ANSWER:")
-        print(f"   {result['result']}")
+        print(f"   {answer}")
 
         print(f"\n📚 SOURCE DOCUMENTS USED:")
-        for idx, doc in enumerate(result['source_documents'], 1):
+        for idx, doc in enumerate(source_docs, 1):
             print(f"   {idx}. {doc.page_content[:100]}...")
 
         print(f"\n{'='*80}\n")
 
-        return result
+        return {"result": answer, "source_documents": source_docs}
 
     def query_simple(self, query: str) -> str:
         """Simple query using the QA chain with MMR retrieval.
@@ -309,13 +366,13 @@ Detailed Answer:"""
         print(f"🎯 QUERY: {query}")
         print(f"{'='*80}\n")
 
-        qa_chain = self.create_qa_chain()
-        result = qa_chain.invoke({"query": query})
+        qa_chain, _ = self.create_qa_chain()
+        answer = qa_chain.invoke(query)
 
-        print(f"📋 ANSWER: {result['result']}\n")
+        print(f"📋 ANSWER: {answer}\n")
         print(f"{'='*80}\n")
 
-        return result['result']
+        return answer
 
 
 def main():

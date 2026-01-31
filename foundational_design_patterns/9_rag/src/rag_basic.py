@@ -105,12 +105,12 @@ class BasicRAG:
         # Embed the query
         query_embedding = self.embedding_model.encode([query], show_progress_bar=False)[0]
 
-        # Search in Qdrant
-        search_results = self.qdrant_client.search(
+        # Search in Qdrant (using new query_points API)
+        search_results = self.qdrant_client.query_points(
             collection_name=self.collection_name,
-            query_vector=query_embedding.tolist(),
+            query=query_embedding.tolist(),
             limit=top_k
-        )
+        ).points
 
         # Format results
         retrieved_docs = []
