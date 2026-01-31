@@ -9,6 +9,14 @@ Problem: Complex project/incident management with deadlines, resource constraint
 Solution: Sophisticated multi-criteria scoring, EDF scheduling, resource allocation, real-time rebalancing
 """
 
+
+import sys
+
+# Add parent directory to path to import ssl_fix
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
+import ssl_fix  # Apply SSL bypass for corporate networks
+
+
 import heapq
 import os
 import time

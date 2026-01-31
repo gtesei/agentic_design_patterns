@@ -13,6 +13,14 @@ Problem: Complex project with uncertainties (e.g., software development, busines
 Solution: Adaptive goal management with parallel execution and continuous optimization
 """
 
+
+import sys
+
+# Add parent directory to path to import ssl_fix
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
+import ssl_fix  # Apply SSL bypass for corporate networks
+
+
 import os
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed

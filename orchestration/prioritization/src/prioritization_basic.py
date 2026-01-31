@@ -9,6 +9,14 @@ Problem: Prioritize incoming tasks (e.g., support tickets, feature requests, bug
 Solution: Assess urgency, impact, and effort; calculate weighted priority; execute in order
 """
 
+
+import sys
+
+# Add parent directory to path to import ssl_fix
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
+import ssl_fix  # Apply SSL bypass for corporate networks
+
+
 import heapq
 import os
 import time

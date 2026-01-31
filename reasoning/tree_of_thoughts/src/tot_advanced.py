@@ -4,6 +4,14 @@ This example demonstrates an advanced Tree of Thoughts pattern using Beam Search
 with aggressive pruning, backtracking, and path optimization for creative writing tasks.
 """
 
+
+import sys
+
+# Add parent directory to path to import ssl_fix
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
+import ssl_fix  # Apply SSL bypass for corporate networks
+
+
 import os
 from dataclasses import dataclass, field
 from typing import Optional

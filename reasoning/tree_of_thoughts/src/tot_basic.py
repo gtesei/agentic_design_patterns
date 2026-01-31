@@ -4,6 +4,14 @@ This example demonstrates the Tree of Thoughts pattern using Breadth-First Searc
 to solve the Game of 24 puzzle by exploring multiple reasoning paths.
 """
 
+
+import sys
+
+# Add parent directory to path to import ssl_fix
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
+import ssl_fix  # Apply SSL bypass for corporate networks
+
+
 import os
 from dataclasses import dataclass
 from typing import Optional

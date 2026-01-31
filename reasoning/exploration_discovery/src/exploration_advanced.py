@@ -4,6 +4,14 @@ This example demonstrates the UCB (Upper Confidence Bound) exploration strategy
 for optimized discovery with multi-dimensional evaluation and clustering.
 """
 
+
+import sys
+
+# Add parent directory to path to import ssl_fix
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
+import ssl_fix  # Apply SSL bypass for corporate networks
+
+
 import os
 import random
 from typing import List, Dict, Tuple

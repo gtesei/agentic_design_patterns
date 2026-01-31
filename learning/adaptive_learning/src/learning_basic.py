@@ -14,9 +14,14 @@ Key concepts:
 """
 
 import os
+import sys
 from collections import defaultdict
 from datetime import datetime
 from typing import Dict, List, Tuple
+
+# Add parent directory to path to import ssl_fix
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
+import ssl_fix  # Apply SSL bypass for corporate networks
 
 import matplotlib.pyplot as plt
 import numpy as np

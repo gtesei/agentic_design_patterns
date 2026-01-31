@@ -9,6 +9,14 @@ Demonstrates:
 - Memory consolidation (merge related memories)
 """
 
+
+import sys
+
+# Add parent directory to path to import ssl_fix
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
+import ssl_fix  # Apply SSL bypass for corporate networks
+
+
 import os
 import json
 import uuid

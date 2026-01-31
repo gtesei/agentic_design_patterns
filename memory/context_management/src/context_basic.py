@@ -12,6 +12,14 @@ Problem: How do we fit a long conversation into a limited context window?
 Solution: Use sliding window + summarization to keep recent messages and compress old ones.
 """
 
+
+import sys
+
+# Add parent directory to path to import ssl_fix
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
+import ssl_fix  # Apply SSL bypass for corporate networks
+
+
 import os
 from collections import deque
 from datetime import datetime

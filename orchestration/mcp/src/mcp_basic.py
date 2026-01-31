@@ -12,6 +12,14 @@ Key concepts:
 - Resource Access: Read data from exposed resources
 """
 
+
+import sys
+
+# Add parent directory to path to import ssl_fix
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
+import ssl_fix  # Apply SSL bypass for corporate networks
+
+
 import json
 import os
 from dataclasses import dataclass, field

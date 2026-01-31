@@ -4,6 +4,14 @@ This example demonstrates the epsilon-greedy exploration strategy for creative
 discovery tasks like brainstorming business ideas or generating research directions.
 """
 
+
+import sys
+
+# Add parent directory to path to import ssl_fix
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
+import ssl_fix  # Apply SSL bypass for corporate networks
+
+
 import os
 import random
 from typing import List, Dict, Tuple
