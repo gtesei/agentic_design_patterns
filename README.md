@@ -876,6 +876,7 @@ Special thanks to:
 - The **LangChain and LangGraph teams** for building production-grade agentic frameworks
 - The **open-source AI community** for advancing the state of the art
 - **NIST** for providing guidance on trustworthy AI development
+- **[Claude Code](https://claude.ai/claude-code)** for assistance in developing and refining the implementations in this repository
 - All **contributors** who help improve these patterns
 
 ---
