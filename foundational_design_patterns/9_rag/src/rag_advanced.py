@@ -473,11 +473,11 @@ def main():
     ║                 Advanced RAG Complete!                        ║
     ║                                                               ║
     ║  The advanced RAG system demonstrated:                        ║
-    ║  • MMR (Maximal Marginal Relevance) for diverse retrieval    ║
-    ║  • Re-ranking to balance relevance and diversity             ║
-    ║  • Before/after comparison of retrieval results              ║
-    ║  • LangChain QA chain with custom prompts                    ║
-    ║  • Source document tracking and attribution                  ║
+    ║  • MMR (Maximal Marginal Relevance) for diverse retrieval     ║
+    ║  • Re-ranking to balance relevance and diversity              ║
+    ║  • Before/after comparison of retrieval results               ║
+    ║  • LangChain QA chain with custom prompts                     ║
+    ║  • Source document tracking and attribution                   ║
     ╚═══════════════════════════════════════════════════════════════╝
     """)
 
