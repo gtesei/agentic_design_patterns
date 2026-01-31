@@ -159,7 +159,7 @@ if __name__ == "__main__":
     ╔═══════════════════════════════════════════════════════════════╗
     ║         ReAct Pattern - Basic Implementation                  ║
     ║                                                               ║
-    ║  The agent will Reason, Act, and Observe to answer queries   ║
+    ║  The agent will Reason, Act, and Observe to answer queries    ║
     ╚═══════════════════════════════════════════════════════════════╝
     """)
 
