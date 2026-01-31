@@ -358,8 +358,8 @@ if __name__ == "__main__":
     ╔════════════════════════════════════════════════════════════════════════════════╗
     ║              ReAct Pattern - Advanced Implementation                           ║
     ║                                                                                ║
-    ║  This version shows explicit Thought → Action → Observation traces            ║
-    ║  with iteration tracking and enhanced observability                           ║
+    ║  This version shows explicit Thought → Action → Observation traces             ║
+    ║  with iteration tracking and enhanced observability                            ║
     ╚════════════════════════════════════════════════════════════════════════════════╝
     """)
 
@@ -383,11 +383,11 @@ if __name__ == "__main__":
     ╔════════════════════════════════════════════════════════════════════════════════╗
     ║                          Examples Complete!                                    ║
     ║                                                                                ║
-    ║  The Advanced ReAct agent demonstrated:                                       ║
-    ║  • Explicit reasoning traces at each step                                     ║
-    ║  • Iteration tracking and limits                                              ║
-    ║  • Clear Thought → Action → Observation cycles                                ║
-    ║  • Enhanced observability for debugging                                       ║
-    ║  • Custom state management with LangGraph                                     ║
+    ║  The Advanced ReAct agent demonstrated:                                        ║
+    ║  • Explicit reasoning traces at each step                                      ║
+    ║  • Iteration tracking and limits                                               ║
+    ║  • Clear Thought → Action → Observation cycles                                 ║
+    ║  • Enhanced observability for debugging                                        ║
+    ║  • Custom state management with LangGraph                                      ║
     ╚════════════════════════════════════════════════════════════════════════════════╝
     """)
