@@ -205,7 +205,7 @@ def main():
     ╔═══════════════════════════════════════════════════════════════╗
     ║              RAG Pattern - Basic Implementation               ║
     ║                                                               ║
-    ║  Demonstrating: Retrieval → Augmentation → Generation        ║
+    ║  Demonstrating: Retrieval → Augmentation → Generation         ║
     ╚═══════════════════════════════════════════════════════════════╝
     """)
 
