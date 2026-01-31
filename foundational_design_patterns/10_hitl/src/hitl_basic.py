@@ -9,6 +9,11 @@ import os
 import sys
 from pathlib import Path
 from typing import Optional
+
+# Add parent directory to path to import ssl_fix
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
+import ssl_fix  # Apply SSL bypass for corporate networks
+
 from openai import OpenAI
 from dotenv import load_dotenv
 

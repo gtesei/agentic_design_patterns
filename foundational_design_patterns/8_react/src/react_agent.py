@@ -6,6 +6,12 @@ what to do and taking actions with tools.
 """
 
 import os
+import sys
+
+# Add parent directory to path to import ssl_fix
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
+import ssl_fix  # Apply SSL bypass for corporate networks
+
 from dotenv import load_dotenv
 from langchain_core.tools import tool
 from langchain_openai import ChatOpenAI

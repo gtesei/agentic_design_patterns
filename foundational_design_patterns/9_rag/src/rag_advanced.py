@@ -8,7 +8,12 @@ This example demonstrates advanced RAG techniques including:
 """
 
 import os
+import sys
 from typing import List, Tuple, Optional
+
+# Add parent directory to path to import ssl_fix
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
+import ssl_fix  # Apply SSL bypass for corporate networks
 
 import numpy as np
 from dotenv import load_dotenv

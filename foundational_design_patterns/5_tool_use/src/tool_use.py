@@ -1,12 +1,18 @@
 """
 Tool Use Pattern: Stock Market Agent
-This example demonstrates using LangChain tools to create an agent that can 
+This example demonstrates using LangChain tools to create an agent that can
 access real-time stock data, perform calculations, and provide market analysis.
 """
 
 import os
+import sys
 import json
 from datetime import datetime
+
+# Add parent directory to path to import ssl_fix
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
+import ssl_fix  # Apply SSL bypass for corporate networks
+
 from dotenv import load_dotenv
 from langchain_core.tools import tool
 from langchain_openai import ChatOpenAI

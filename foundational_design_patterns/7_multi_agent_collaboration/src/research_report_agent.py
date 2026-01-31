@@ -20,10 +20,15 @@ from __future__ import annotations
 import ast
 import json
 import os
+import sys
 import re
 from dataclasses import dataclass
 from datetime import datetime
 from typing import Any, Callable, Dict, List, Optional, Tuple
+
+# Add parent directory to path to import ssl_fix
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
+import ssl_fix  # Apply SSL bypass for corporate networks
 
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage, ToolMessage
 from langchain_core.tools import tool

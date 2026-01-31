@@ -5,7 +5,13 @@ with explicit reasoning traces, iteration tracking, and enhanced observability.
 """
 
 import os
+import sys
 from typing import Annotated, TypedDict, Sequence
+
+# Add parent directory to path to import ssl_fix
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
+import ssl_fix  # Apply SSL bypass for corporate networks
+
 from dotenv import load_dotenv
 from langchain_core.messages import BaseMessage, HumanMessage, AIMessage, ToolMessage, SystemMessage
 from langchain_core.tools import tool

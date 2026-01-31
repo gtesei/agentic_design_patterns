@@ -4,7 +4,13 @@ This example demonstrates using LangGraph for iterative reflection to write high
 """
 
 import os
+import sys
 from typing import TypedDict, Annotated, Literal
+
+# Add parent directory to path to import ssl_fix
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
+import ssl_fix  # Apply SSL bypass for corporate networks
+
 from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate

@@ -1,10 +1,16 @@
+import os
+import sys
+from typing import Dict, Any
+
+# Add parent directory to path to import ssl_fix
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
+import ssl_fix  # Apply SSL bypass for corporate networks
+
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough, RunnableBranch
 from langchain_openai import ChatOpenAI
 from dotenv import load_dotenv
-from typing import Dict, Any
-import os
 
 # Load environment variables
 load_dotenv(os.path.join(os.path.dirname(__file__), "../../..", ".env"))
