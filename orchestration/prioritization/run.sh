@@ -10,6 +10,13 @@ echo "  Prioritization Pattern Examples"
 echo "========================================="
 echo ""
 
+if [ -z "${AGENTIC_DISABLE_SSL:-}" ]; then
+    echo "Note: if you are on a corporate SSL-inspecting network and see"
+    echo "certificate verification failures, rerun with:"
+    echo "  AGENTIC_DISABLE_SSL=1 bash run.sh"
+    echo ""
+fi
+
 # Check if .env file exists
 if [ ! -f "../../.env" ]; then
     echo "Error: .env file not found in project root"

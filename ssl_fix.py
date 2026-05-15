@@ -34,8 +34,15 @@ def apply_ssl_bypass():
     if _PATCHED:
         return
 
-    # Disable default SSL verification
+    def _unverified_context(*args, **kwargs) -> ssl.SSLContext:
+        context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+        context.check_hostname = False
+        context.verify_mode = ssl.CERT_NONE
+        return context
+
+    # Disable default SSL verification across the common stdlib entry points.
     ssl._create_default_https_context = ssl._create_unverified_context
+    ssl.create_default_context = _unverified_context
 
     # Suppress SSL warnings
     warnings.filterwarnings("ignore", category=Warning)
@@ -44,10 +51,13 @@ def apply_ssl_bypass():
     # httpx is used by many modern libraries (OpenAI, Hugging Face Hub, etc.)
     try:
         import httpx
+        import httpcore
 
         # Store original __init__ methods
         _original_client_init = httpx.Client.__init__
         _original_async_client_init = httpx.AsyncClient.__init__
+        _original_create_ssl_context = httpx._config.create_ssl_context
+        _original_default_ssl_context = httpcore._ssl.default_ssl_context
 
         def _patched_client_init(self, *args, **kwargs):
             kwargs["verify"] = False
@@ -57,9 +67,17 @@ def apply_ssl_bypass():
             kwargs["verify"] = False
             _original_async_client_init(self, *args, **kwargs)
 
+        def _patched_create_ssl_context(*args, **kwargs):
+            return _unverified_context()
+
+        def _patched_default_ssl_context():
+            return _unverified_context()
+
         # Apply patches
         httpx.Client.__init__ = _patched_client_init
         httpx.AsyncClient.__init__ = _patched_async_client_init
+        httpx._config.create_ssl_context = _patched_create_ssl_context
+        httpcore._ssl.default_ssl_context = _patched_default_ssl_context
 
     except ImportError:
         # httpx not installed, skip patching
