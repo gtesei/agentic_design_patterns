@@ -1,21 +1,21 @@
 """
-RAG Pattern: Basic Implementation
-This example demonstrates a basic Retrieval-Augmented Generation (RAG) pattern using:
-- Qdrant in-memory vector database
-- sentence-transformers for embeddings
-- OpenAI for generation
+RAG Pattern: Hybrid retrieval baseline (BM25-ish + dense + RRF + rerank)
+
+Anchor scenario: support documentation assistant.
 """
 
+from __future__ import annotations
+
+import math
 import os
+import re
 import sys
-from typing import List
+from dataclasses import dataclass
+from typing import Iterable
 
 from pathlib import Path
 
-ROOT_DIR = next(
-    parent for parent in Path(__file__).resolve().parents
-    if (parent / "ssl_fix.py").exists()
-)
+ROOT_DIR = next(parent for parent in Path(__file__).resolve().parents if (parent / "ssl_fix.py").exists())
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
@@ -23,261 +23,156 @@ from repo_support import configure_example, get_default_model
 
 configure_example(__file__)
 
-from langchain_openai import ChatOpenAI
-from qdrant_client import QdrantClient
-from qdrant_client.models import Distance, PointStruct, VectorParams
-from sentence_transformers import SentenceTransformer
-
-# Load environment variables
+from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 
 
-class BasicRAG:
-    """Basic RAG implementation with Qdrant and sentence-transformers."""
+@dataclass
+class Chunk:
+    id: str
+    text: str
+    source: str
 
-    def __init__(self, model_name: str = "all-MiniLM-L6-v2"):
-        """Initialize the RAG system.
 
-        Args:
-            model_name: Name of the sentence-transformer model to use for embeddings
-        """
-        print("\n🔧 Initializing Basic RAG System...")
+class HybridRetriever:
+    """Simple hybrid retriever with RRF fusion and lightweight reranking."""
 
-        # Initialize embedding model
-        print(f"   Loading embedding model: {model_name}")
-        self.embedding_model = SentenceTransformer(model_name)
-        self.embedding_dim = self.embedding_model.get_sentence_embedding_dimension()
+    def __init__(self, chunks: list[Chunk]):
+        self.chunks = chunks
+        self.embeddings = OpenAIEmbeddings()
+        self.chunk_vectors = self.embeddings.embed_documents([c.text for c in chunks])
+        self.tokenized = [self._tokenize(c.text) for c in chunks]
+        self.idf = self._build_idf(self.tokenized)
 
-        # Initialize Qdrant in-memory
-        print("   Setting up Qdrant vector database (in-memory)")
-        self.qdrant_client = QdrantClient(":memory:")
-        self.collection_name = "ai_ml_docs"
+    @staticmethod
+    def _tokenize(text: str) -> list[str]:
+        return re.findall(r"[a-zA-Z0-9_]+", text.lower())
 
-        # Initialize OpenAI for generation
-        print("   Connecting to OpenAI for generation")
-        self.llm = ChatOpenAI(temperature=0.7, model=get_default_model())
+    @staticmethod
+    def _build_idf(docs: list[list[str]]) -> dict[str, float]:
+        df: dict[str, int] = {}
+        n = len(docs)
+        for doc in docs:
+            for tok in set(doc):
+                df[tok] = df.get(tok, 0) + 1
+        return {tok: math.log((n + 1) / (freq + 1)) + 1 for tok, freq in df.items()}
 
-        print("✅ RAG system initialized!\n")
+    @staticmethod
+    def _dot(a: Iterable[float], b: Iterable[float]) -> float:
+        return sum(x * y for x, y in zip(a, b))
 
-    def create_collection(self):
-        """Create a Qdrant collection for storing document embeddings."""
-        self.qdrant_client.create_collection(
-            collection_name=self.collection_name,
-            vectors_config=VectorParams(size=self.embedding_dim, distance=Distance.COSINE),
-        )
-        print(f"📦 Created collection: {self.collection_name}")
+    def _bm25ish_score(self, query_tokens: list[str], doc_tokens: list[str]) -> float:
+        score = 0.0
+        tf: dict[str, int] = {}
+        for tok in doc_tokens:
+            tf[tok] = tf.get(tok, 0) + 1
+        for tok in query_tokens:
+            if tok in tf:
+                score += (1 + math.log(tf[tok])) * self.idf.get(tok, 1.0)
+        return score
 
-    def add_documents(self, documents: List[str]):
-        """Add documents to the vector database.
+    def _dense_rank(self, query: str) -> list[tuple[int, float]]:
+        qv = self.embeddings.embed_query(query)
+        scored = [(idx, self._dot(qv, dv)) for idx, dv in enumerate(self.chunk_vectors)]
+        return sorted(scored, key=lambda x: x[1], reverse=True)
 
-        Args:
-            documents: List of text documents to add
-        """
-        print(f"\n📝 Adding {len(documents)} documents to the knowledge base...")
+    def _lexical_rank(self, query: str) -> list[tuple[int, float]]:
+        q_tokens = self._tokenize(query)
+        scored = [(idx, self._bm25ish_score(q_tokens, dt)) for idx, dt in enumerate(self.tokenized)]
+        return sorted(scored, key=lambda x: x[1], reverse=True)
 
-        # Generate embeddings for all documents
-        embeddings = self.embedding_model.encode(documents, show_progress_bar=False)
+    def retrieve(self, query: str, top_k: int = 5) -> list[tuple[Chunk, float]]:
+        lexical = self._lexical_rank(query)
+        dense = self._dense_rank(query)
 
-        # Create points for Qdrant
-        points = [
-            PointStruct(
-                id=idx,
-                vector=embedding.tolist(),
-                payload={"text": doc}
-            )
-            for idx, (doc, embedding) in enumerate(zip(documents, embeddings))
-        ]
+        rrf_scores: dict[int, float] = {}
+        k = 60.0
+        for rank, (idx, _) in enumerate(lexical, 1):
+            rrf_scores[idx] = rrf_scores.get(idx, 0.0) + 1.0 / (k + rank)
+        for rank, (idx, _) in enumerate(dense, 1):
+            rrf_scores[idx] = rrf_scores.get(idx, 0.0) + 1.0 / (k + rank)
 
-        # Upload to Qdrant
-        self.qdrant_client.upsert(
-            collection_name=self.collection_name,
-            points=points
-        )
+        fused = sorted(rrf_scores.items(), key=lambda x: x[1], reverse=True)[: top_k * 2]
 
-        print(f"✅ Successfully indexed {len(documents)} documents\n")
+        query_terms = set(self._tokenize(query))
+        reranked: list[tuple[Chunk, float]] = []
+        for idx, base_score in fused:
+            chunk = self.chunks[idx]
+            overlap = len(query_terms.intersection(set(self.tokenized[idx])))
+            reranked.append((chunk, base_score + 0.01 * overlap))
 
-    def retrieve(self, query: str, top_k: int = 3) -> List[dict]:
-        """Retrieve relevant documents for a query.
+        reranked.sort(key=lambda x: x[1], reverse=True)
+        return reranked[:top_k]
 
-        Args:
-            query: The search query
-            top_k: Number of documents to retrieve
 
-        Returns:
-            List of retrieved documents with their scores
-        """
-        print(f"🔍 RETRIEVAL PHASE")
-        print(f"   Query: '{query}'")
-        print(f"   Retrieving top {top_k} relevant documents...")
+def build_support_chunks() -> list[Chunk]:
+    docs = [
+        (
+            "billing_guide",
+            "Payment latency troubleshooting: check queue depth, retry backlog, and database write IOPS before rolling back.",
+        ),
+        (
+            "incident_runbook",
+            "For incident severity P1, page on-call immediately, assign incident commander, and publish customer status every 15 minutes.",
+        ),
+        (
+            "sla_policy",
+            "Enterprise tier customers require first response within 2 hours and escalation to senior support for payment pipeline incidents.",
+        ),
+        (
+            "release_notes",
+            "Release v2.8.4 introduced a new payment reconciliation worker with configurable concurrency and timeout settings.",
+        ),
+        (
+            "db_observability",
+            "If payment approval API latency exceeds 1.5 seconds p95, inspect lock contention and slow query logs.",
+        ),
+        (
+            "ops_playbook",
+            "During rollout failures, pause canary, compare error budgets, and decide rollback using incident commander approval.",
+        ),
+    ]
 
-        # Embed the query
-        query_embedding = self.embedding_model.encode([query], show_progress_bar=False)[0]
+    return [Chunk(id=f"doc-{i}", source=src, text=text) for i, (src, text) in enumerate(docs, 1)]
 
-        # Search in Qdrant (using new query_points API)
-        search_results = self.qdrant_client.query_points(
-            collection_name=self.collection_name,
-            query=query_embedding.tolist(),
-            limit=top_k
-        ).points
 
-        # Format results
-        retrieved_docs = []
-        for idx, result in enumerate(search_results, 1):
-            if result.payload is None:
-                continue
-            doc = {
-                "text": result.payload["text"],
-                "score": result.score
-            }
-            retrieved_docs.append(doc)
-            print(f"\n   📄 Document {idx} (Score: {result.score:.4f}):")
-            print(f"      {result.payload['text'][:100]}...")
+def answer_query(query: str, retrieved: list[tuple[Chunk, float]]) -> str:
+    llm = ChatOpenAI(model=get_default_model(), temperature=0)
+    context = "\n\n".join([f"[{chunk.source}] {chunk.text}" for chunk, _ in retrieved])
 
-        return retrieved_docs
-
-    def augment(self, query: str, retrieved_docs: List[dict]) -> str:
-        """Augment the query with retrieved context.
-
-        Args:
-            query: The original query
-            retrieved_docs: List of retrieved documents
-
-        Returns:
-            Augmented prompt with context
-        """
-        print(f"\n🔗 AUGMENTATION PHASE")
-        print(f"   Building prompt with {len(retrieved_docs)} context documents...")
-
-        # Build context from retrieved documents
-        context = "\n\n".join([
-            f"Context {idx}: {doc['text']}"
-            for idx, doc in enumerate(retrieved_docs, 1)
-        ])
-
-        # Create augmented prompt
-        augmented_prompt = f"""Based on the following context, please answer the question.
+    prompt = f"""
+You are a support documentation assistant.
+Use only the context below. If information is missing, say so.
 
 Context:
 {context}
 
 Question: {query}
-
-Answer:"""
-
-        print(f"   ✅ Prompt augmented with {len(context)} characters of context")
-        return augmented_prompt
-
-    def generate(self, augmented_prompt: str) -> str:
-        """Generate a response using the LLM.
-
-        Args:
-            augmented_prompt: The prompt with retrieved context
-
-        Returns:
-            Generated response
-        """
-        print(f"\n💡 GENERATION PHASE")
-        print(f"   Generating response with OpenAI...")
-
-        response = self.llm.invoke(augmented_prompt)
-        return response.content
-
-    def query(self, query: str, top_k: int = 3) -> str:
-        """Execute the full RAG pipeline: retrieve, augment, generate.
-
-        Args:
-            query: The user's question
-            top_k: Number of documents to retrieve
-
-        Returns:
-            Generated answer
-        """
-        print(f"\n{'='*80}")
-        print(f"🎯 RAG QUERY: {query}")
-        print(f"{'='*80}\n")
-
-        # Step 1: Retrieve relevant documents
-        retrieved_docs = self.retrieve(query, top_k)
-
-        # Step 2: Augment query with context
-        augmented_prompt = self.augment(query, retrieved_docs)
-
-        # Step 3: Generate response
-        answer = self.generate(augmented_prompt)
-
-        print(f"\n📋 FINAL ANSWER:")
-        print(f"   {answer}")
-        print(f"\n{'='*80}\n")
-
-        return answer
+"""
+    return llm.invoke(prompt).content
 
 
-def main():
-    """Main function demonstrating basic RAG usage."""
-    print("""
-    ╔═══════════════════════════════════════════════════════════════╗
-    ║              RAG Pattern - Basic Implementation               ║
-    ║                                                               ║
-    ║  Demonstrating: Retrieval → Augmentation → Generation         ║
-    ╚═══════════════════════════════════════════════════════════════╝
-    """)
+def main() -> None:
+    print("\n" + "=" * 80)
+    print("RAG BASIC — HYBRID RETRIEVAL (LEXICAL + DENSE + RRF)")
+    print("=" * 80)
 
-    # Initialize RAG system
-    rag = BasicRAG()
+    if not os.getenv("OPENAI_API_KEY"):
+        print("❌ OPENAI_API_KEY is required for this demo.")
+        return
 
-    # Create collection
-    rag.create_collection()
+    retriever = HybridRetriever(build_support_chunks())
 
-    # Sample documents about AI/ML topics
-    documents = [
-        "Machine Learning is a subset of artificial intelligence that enables systems to learn and improve from experience without being explicitly programmed. It focuses on developing computer programs that can access data and use it to learn for themselves.",
+    query = "How should we handle payment API latency for an enterprise customer during incident response?"
+    retrieved = retriever.retrieve(query, top_k=5)
 
-        "Deep Learning is a subset of machine learning based on artificial neural networks with multiple layers. These neural networks attempt to simulate the behavior of the human brain, allowing it to learn from large amounts of data. Deep learning drives many AI applications like image recognition and natural language processing.",
+    print("\n🔍 Top-5 retrieved chunks:")
+    for i, (chunk, score) in enumerate(retrieved, 1):
+        print(f"{i}. score={score:.4f} source={chunk.source}")
+        print(f"   {chunk.text}")
 
-        "Natural Language Processing (NLP) is a branch of AI that helps computers understand, interpret, and manipulate human language. NLP draws from many disciplines including computer science and linguistics to bridge the gap between human communication and computer understanding.",
-
-        "Computer Vision is a field of artificial intelligence that trains computers to interpret and understand the visual world. Using digital images and deep learning models, machines can accurately identify and classify objects, and react to what they see.",
-
-        "Reinforcement Learning is a type of machine learning where an agent learns to make decisions by performing actions and seeing the results. The agent receives rewards or penalties for its actions and learns to maximize rewards over time. It's used in robotics, game playing, and autonomous vehicles.",
-
-        "Transfer Learning is a machine learning technique where a model developed for one task is reused as the starting point for a model on a second task. It's a popular approach in deep learning where pre-trained models are used as the foundation for computer vision and NLP tasks.",
-
-        "Generative AI refers to artificial intelligence systems that can generate new content, including text, images, music, and code. These systems use neural networks trained on large datasets to learn patterns and create original outputs. Examples include GPT for text and DALL-E for images.",
-
-        "Neural Networks are computing systems inspired by biological neural networks in animal brains. They consist of interconnected nodes (neurons) organized in layers. Information passes through the network, with each connection having weights that are adjusted during training to make better predictions.",
-
-        "Supervised Learning is a machine learning approach where the model is trained on labeled data. The algorithm learns from input-output pairs and can then make predictions on new, unseen data. Common applications include spam detection, image classification, and price prediction.",
-
-        "Unsupervised Learning is a type of machine learning that finds hidden patterns or structures in unlabeled data. The system tries to learn without human supervision by discovering patterns on its own. Common techniques include clustering and dimensionality reduction.",
-    ]
-
-    # Add documents to the knowledge base
-    rag.add_documents(documents)
-
-    # Example queries
-    queries = [
-        "What is the difference between machine learning and deep learning?",
-        "How does reinforcement learning work?",
-        "Explain what generative AI is and give examples.",
-    ]
-
-    # Run queries
-    for query in queries:
-        try:
-            rag.query(query, top_k=3)
-        except Exception as e:
-            print(f"❌ Error processing query: {e}\n")
-
-    print("""
-    ╔═══════════════════════════════════════════════════════════════╗
-    ║                    Basic RAG Complete!                        ║
-    ║                                                               ║
-    ║  The RAG system demonstrated:                                 ║
-    ║  • Embedding documents into a vector database                 ║
-    ║  • Retrieving relevant documents based on semantic similarity ║
-    ║  • Augmenting prompts with retrieved context                  ║
-    ║  • Generating informed answers using LLM                      ║
-    ╚═══════════════════════════════════════════════════════════════╝
-    """)
+    answer = answer_query(query, retrieved)
+    print("\n📝 Final answer:")
+    print(answer)
 
 
 if __name__ == "__main__":

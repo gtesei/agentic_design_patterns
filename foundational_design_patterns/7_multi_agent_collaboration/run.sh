@@ -25,7 +25,6 @@ load_env_file() {
 }
 
 load_envs() {
-    # Priority: existing environment > local .env > repo-root .env
     load_env_file "$LOCAL_ENV_FILE" || true
     load_env_file "$ROOT_ENV_FILE" || true
 
@@ -37,17 +36,7 @@ load_envs() {
 
 require_tavily_key() {
     if [[ -z "${TAVILY_API_KEY:-}" ]]; then
-        echo -e "${RED}ERROR: TAVILY_API_KEY is not set.${NC}"
-        echo
-        echo "Set it in one of these places:"
-        echo "  1) Current shell environment"
-        echo "  2) $LOCAL_ENV_FILE"
-        echo "  3) $ROOT_ENV_FILE"
-        echo
-        echo "Example:"
-        echo '  export TAVILY_API_KEY="your_key_here"'
-        echo
-        exit 1
+        echo -e "${YELLOW}Note: TAVILY_API_KEY not set. Legacy research_report_agent may fail.${NC}"
     fi
 }
 
@@ -61,9 +50,27 @@ run() {
     echo -e "${GREEN}>>> Completed: $1 <<<${NC}"
 }
 
-# --- Pre-flight checks ---
 load_envs
 require_tavily_key
 
-# --- Run agents ---
-run "src/research_report_agent.py"
+echo "Select an example to run:"
+echo "1) Orchestrator-Worker topology (recommended)"
+echo "2) Peer/Swarm topology"
+echo "3) Legacy monolithic supervisor"
+read -r -p "Enter your choice (1-3): " choice
+
+case "$choice" in
+    1)
+        run "src/orchestrator_worker.py"
+        ;;
+    2)
+        run "src/peer_swarm.py"
+        ;;
+    3)
+        run "src/research_report_agent.py"
+        ;;
+    *)
+        echo -e "${RED}Invalid choice${NC}"
+        exit 1
+        ;;
+esac
