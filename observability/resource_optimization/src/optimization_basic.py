@@ -23,7 +23,7 @@ ROOT_DIR = next(
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from repo_support import configure_example
+from repo_support import configure_example, get_advanced_model, get_fast_model
 
 configure_example(__file__)
 
@@ -38,9 +38,9 @@ from langchain_openai import ChatOpenAI
 
 # Load environment variables
 
-# Initialize models
-gpt4 = ChatOpenAI(model="gpt-4", temperature=0)
-gpt35 = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+# Initialize models by semantic tier instead of pinning legacy names.
+advanced_llm = ChatOpenAI(model=get_advanced_model(), temperature=0)
+fast_llm = ChatOpenAI(model=get_fast_model(), temperature=0)
 
 
 # ===========================
@@ -112,7 +112,7 @@ class ResponseCache:
 # Prompt Optimization
 # ===========================
 
-def optimize_prompt(prompt: str) -> str:
+def compress_prompt(prompt: str) -> str:
     """Reduce token usage while preserving semantic meaning"""
 
     # Remove filler words
@@ -148,8 +148,8 @@ def calculate_token_estimate(text: str) -> int:
 def calculate_cost(tokens: int, model: str) -> float:
     """Estimate cost based on token count and model"""
     cost_per_1k = {
-        "gpt-4": 0.03,  # $0.03 per 1K tokens (average of input/output)
-        "gpt-3.5-turbo": 0.0005,  # $0.0005 per 1K tokens
+        "advanced": 0.03,  # Higher-capability tier
+        "fast": 0.0005,  # Lower-cost tier
     }
     return (tokens / 1000) * cost_per_1k.get(model, 0.03)
 
@@ -164,7 +164,7 @@ def analyze_complexity(query: str) -> str:
     query_lower = query.lower()
     query_length = len(query.split())
 
-    # Complex keywords that require GPT-4
+    # Complex keywords that benefit from the advanced tier
     complex_keywords = [
         "analyze",
         "compare",
@@ -176,10 +176,10 @@ def analyze_complexity(query: str) -> str:
         "argue",
     ]
 
-    # Medium keywords that work well with GPT-3.5
+    # Medium keywords that still work well with the fast tier
     medium_keywords = ["explain", "how does", "why", "summarize", "describe", "discuss"]
 
-    # Simple keywords that definitely work with GPT-3.5
+    # Simple keywords that definitely work with the fast tier
     simple_keywords = ["what is", "define", "who is", "when did", "where is"]
 
     # Check complexity
@@ -204,10 +204,10 @@ def select_model(query: str) -> tuple[ChatOpenAI, str]:
     complexity = analyze_complexity(query)
 
     if complexity == "complex":
-        return gpt4, "gpt-4"
+        return advanced_llm, "advanced"
     else:
-        # Both simple and medium use GPT-3.5 for cost efficiency
-        return gpt35, "gpt-3.5-turbo"
+        # Both simple and medium use the fast tier for cost efficiency
+        return fast_llm, "fast"
 
 
 # ===========================
@@ -232,7 +232,7 @@ class OptimizedLLM:
         # Step 1: Optimize prompt if enabled
         original_prompt = prompt
         if optimize_prompt:
-            prompt = optimize_prompt(prompt)
+            prompt = compress_prompt(prompt)
             token_savings = calculate_token_estimate(original_prompt) - calculate_token_estimate(prompt)
         else:
             token_savings = 0

@@ -20,7 +20,7 @@ ROOT_DIR = next(
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from repo_support import configure_example
+from repo_support import configure_example, get_default_model
 
 configure_example(__file__)
 
@@ -46,7 +46,7 @@ class ConversationMemory:
         self.buffer: deque = deque(maxlen=buffer_size)
         self.summaries: List[str] = []
         self.full_history: List[Dict[str, str]] = []
-        self.llm = llm or ChatOpenAI(model="gpt-4o-mini", temperature=0)
+        self.llm = llm or ChatOpenAI(model=get_default_model(), temperature=0)
 
     def add_message(self, role: str, content: str) -> None:
         """Add a message to memory"""
@@ -201,7 +201,7 @@ class BasicMemoryAgent:
 
     def __init__(self, memory: ConversationMemory):
         self.memory = memory
-        self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.7)
+        self.llm = ChatOpenAI(model=get_default_model(), temperature=0.7)
 
     def chat(self, user_message: str) -> str:
         """Process user message and generate response"""

@@ -196,15 +196,15 @@ combined = synthesize(results)
 ### Define Specialized Agents
 ```python
 # Research agent with search tools
-research_agent = create_react_agent(
-    llm,
+research_agent = create_agent(
+    model=llm,
     tools=[web_search, wikipedia_search],
     system_prompt="You are a research specialist..."
 )
 
 # Code agent with execution tools
-code_agent = create_react_agent(
-    llm,
+code_agent = create_agent(
+    model=llm,
     tools=[python_repl, code_validator],
     system_prompt="You are a coding expert..."
 )
@@ -223,7 +223,7 @@ Available agents:
 Delegate tasks to appropriate agents and synthesize results.
 """
 
-manager = create_react_agent(llm, [delegate_tool], manager_prompt)
+manager = create_agent(model=llm, tools=[delegate_tool], system_prompt=manager_prompt)
 ```
 
 ### Implement Handoffs

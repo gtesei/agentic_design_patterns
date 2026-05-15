@@ -12,8 +12,7 @@ Features:
 - Rule-based filtering (keyword lists, regex patterns)
 - Logging of violations
 """
-
-
+import argparse
 import sys
 
 from pathlib import Path
@@ -25,7 +24,7 @@ ROOT_DIR = next(
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from repo_support import configure_example
+from repo_support import configure_example, get_default_model
 
 configure_example(__file__)
 
@@ -38,6 +37,11 @@ from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, SystemMessage
 
 # Load environment variables
+
+
+def print_warning(text: str):
+    """Print warning message."""
+    print(f"⚠️  {text}")
 
 
 class BasicGuardrails:
@@ -315,6 +319,18 @@ def print_section(title: str):
 
 def main():
     """Run basic guardrails examples"""
+    parser = argparse.ArgumentParser(description="Basic rule-based guardrails demo")
+    parser.add_argument(
+        "--no-pause",
+        action="store_true",
+        help="Run through all test cases without waiting for Enter between them.",
+    )
+    parser.add_argument(
+        "--fail-on-processing-error",
+        action="store_true",
+        help="Exit non-zero if any LLM processing step fails.",
+    )
+    args = parser.parse_args()
 
     print_section("BASIC GUARDRAILS PATTERN - RULE-BASED FILTERING")
     print("\nDemonstrating rule-based content validation and safety checks")
@@ -322,7 +338,7 @@ def main():
 
     # Initialize LLM and guardrails
     llm = ChatOpenAI(
-        model="gpt-4o-mini",
+        model=get_default_model(),
         temperature=0.7,
         api_key=os.getenv("OPENAI_API_KEY")
     )
@@ -353,6 +369,8 @@ def main():
         }
     ]
 
+    had_processing_error = False
+
     # Run test cases
     for i, test_case in enumerate(test_cases, 1):
         print_section(f"TEST CASE {i}: {test_case['name']}")
@@ -370,9 +388,14 @@ def main():
         if not result["success"]:
             print(f"⚠️  Blocked at: {result.get('blocked_at', 'unknown')}")
             print(f"⚠️  Reason: {result.get('reason', 'unknown')}")
+            if result.get("blocked_at", "unknown") == "unknown":
+                had_processing_error = True
 
-        print("\n" + "⏸" * 80)
-        input("Press Enter to continue to next test case...")
+        if not args.no_pause:
+            print("\n" + "⏸" * 80)
+            input("Press Enter to continue to next test case...")
+        else:
+            print_warning("Pause disabled. Continuing automatically to next test case.")
 
     # Print violation summary
     print_section("VIOLATION SUMMARY")
@@ -400,6 +423,9 @@ def main():
     print("4. PII detection protects sensitive information")
     print("5. Violation logging enables audit trails and pattern analysis")
     print("\nFor more advanced guardrails with LLM-based validation, see guardrails_advanced.py")
+
+    if had_processing_error and args.fail_on_processing_error:
+        sys.exit(1)
 
 
 if __name__ == "__main__":

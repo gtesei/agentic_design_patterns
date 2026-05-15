@@ -22,7 +22,7 @@ ROOT_DIR = next(
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from repo_support import configure_example
+from repo_support import configure_example, get_advanced_model, get_default_model
 
 configure_example(__file__)
 
@@ -91,8 +91,8 @@ class ExtendedMetrics:
 class QualityEvaluator:
     """Uses LLM to evaluate the quality of agent responses."""
 
-    def __init__(self, judge_model: str = "gpt-4o-mini"):
-        self.judge_llm = ChatOpenAI(model=judge_model, temperature=0)
+    def __init__(self, judge_model: Optional[str] = None):
+        self.judge_llm = ChatOpenAI(model=judge_model or get_advanced_model(), temperature=0)
 
     def evaluate(self, query: str, response: str) -> QualityScores:
         """
@@ -326,15 +326,21 @@ class AlertManager:
 class AdvancedMonitoringSystem:
     """Comprehensive monitoring with quality evaluation and anomaly detection."""
 
-    def __init__(self, model: str = "gpt-4o-mini", evaluate_sample_rate: float = 1.0):
-        self.llm = ChatOpenAI(model=model, temperature=0)
-        self.evaluator = QualityEvaluator(judge_model="gpt-4o-mini")
+    def __init__(
+        self,
+        model: Optional[str] = None,
+        evaluate_sample_rate: float = 1.0,
+        judge_model: Optional[str] = None,
+    ):
+        resolved_model = model or get_default_model()
+        self.llm = ChatOpenAI(model=resolved_model, temperature=0)
+        self.evaluator = QualityEvaluator(judge_model=judge_model)
         self.anomaly_detector = AnomalyDetector()
         self.alert_manager = AlertManager()
         self.metrics_history: list[ExtendedMetrics] = []
         self.evaluate_sample_rate = evaluate_sample_rate
 
-        # Pricing (approximate for gpt-4o-mini)
+        # Pricing (approximate for the default OpenAI fast tier)
         self.input_price_per_1m = 0.150
         self.output_price_per_1m = 0.600
 
@@ -549,7 +555,6 @@ def run_advanced_monitoring_demo():
 
     # Initialize monitoring system
     system = AdvancedMonitoringSystem(
-        model="gpt-4o-mini",
         evaluate_sample_rate=1.0  # Evaluate all requests for demo
     )
 

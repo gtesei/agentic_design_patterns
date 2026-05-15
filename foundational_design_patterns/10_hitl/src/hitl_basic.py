@@ -5,9 +5,9 @@ This module demonstrates a simple HITL workflow for content generation
 with a human approval checkpoint before publishing.
 """
 
+import argparse
 import os
 import sys
-from pathlib import Path
 from typing import Optional
 
 from pathlib import Path
@@ -19,7 +19,7 @@ ROOT_DIR = next(
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from repo_support import configure_example
+from repo_support import configure_example, get_default_model
 
 configure_example(__file__)
 
@@ -100,7 +100,7 @@ class ContentGenerator:
 
         try:
             response = self.client.chat.completions.create(
-                model="gpt-4o-mini",
+                model=get_default_model(),
                 messages=[
                     {"role": "system", "content": "You are a professional content writer. Create engaging, clear, and concise content."},
                     {"role": "user", "content": prompt}
@@ -117,10 +117,17 @@ class ContentGenerator:
 class HITLWorkflow:
     """Basic Human-in-the-Loop workflow for content generation."""
 
-    def __init__(self, generator: ContentGenerator):
+    def __init__(
+        self,
+        generator: ContentGenerator,
+        auto_decision: Optional[str] = None,
+        auto_feedback: Optional[str] = None,
+    ):
         """Initialize the HITL workflow."""
         self.generator = generator
         self.decision_log = []
+        self.auto_decision = auto_decision.lower() if auto_decision else None
+        self.auto_feedback = auto_feedback
 
     def get_human_decision(self, content: str, content_type: str) -> tuple[str, Optional[str]]:
         """
@@ -138,6 +145,17 @@ class HITLWorkflow:
         print(f"  {Colors.GREEN}[A]{Colors.ENDC} Approve - Publish the content as-is")
         print(f"  {Colors.RED}[R]{Colors.ENDC} Reject - Discard the content")
         print(f"  {Colors.YELLOW}[M]{Colors.ENDC} Modify - Request changes to the content")
+
+        if self.auto_decision:
+            if self.auto_decision == "approve":
+                print_warning("Automatic review decision enabled: approve")
+                return "approve", self.auto_feedback
+            if self.auto_decision == "reject":
+                print_warning("Automatic review decision enabled: reject")
+                return "reject", self.auto_feedback or "Auto-rejected"
+            if self.auto_decision == "modify":
+                print_warning("Automatic review decision enabled: modify")
+                return "modify", self.auto_feedback or "Please tighten the draft and improve clarity."
 
         while True:
             decision = input(f"\n{Colors.BOLD}Your decision [A/R/M]:{Colors.ENDC} ").strip().upper()
@@ -253,6 +271,24 @@ class HITLWorkflow:
 
 def main():
     """Main function to demonstrate the HITL workflow."""
+    parser = argparse.ArgumentParser(description="Basic HITL content generation demo")
+    parser.add_argument(
+        "--scenario",
+        type=int,
+        choices=range(1, 4),
+        help="Run a specific scenario without interactive selection (1-3).",
+    )
+    parser.add_argument(
+        "--auto-decision",
+        choices=["approve", "reject", "modify"],
+        help="Provide an automatic review decision instead of waiting for human input.",
+    )
+    parser.add_argument(
+        "--auto-feedback",
+        help="Optional feedback text to use with --auto-decision.",
+    )
+    args = parser.parse_args()
+
     # Load environment variables
     env_path = Path(__file__).parent.parent.parent.parent / '.env'
     load_dotenv(env_path)
@@ -265,7 +301,11 @@ def main():
 
     # Initialize components
     generator = ContentGenerator(api_key)
-    workflow = HITLWorkflow(generator)
+    workflow = HITLWorkflow(
+        generator,
+        auto_decision=args.auto_decision,
+        auto_feedback=args.auto_feedback,
+    )
 
     # Example scenarios
     scenarios = [
@@ -283,22 +323,30 @@ def main():
     for i, (content_type, topic) in enumerate(scenarios, 1):
         print(f"{i}. {Colors.BOLD}{content_type.upper()}{Colors.ENDC}: {topic}")
 
-    while True:
-        try:
-            choice = input(f"\n{Colors.BOLD}Select a scenario (1-{len(scenarios)}) or 'q' to quit:{Colors.ENDC} ").strip()
+    if args.scenario is None:
+        while True:
+            try:
+                choice = input(
+                    f"\n{Colors.BOLD}Select a scenario (1-{len(scenarios)}) or 'q' to quit:{Colors.ENDC} "
+                ).strip()
 
-            if choice.lower() == 'q':
-                print("\nGoodbye!")
-                sys.exit(0)
+                if choice.lower() == 'q':
+                    print("\nGoodbye!")
+                    sys.exit(0)
 
-            choice_idx = int(choice) - 1
-            if 0 <= choice_idx < len(scenarios):
-                content_type, topic = scenarios[choice_idx]
-                break
-            else:
-                print_error(f"Please enter a number between 1 and {len(scenarios)}.")
-        except ValueError:
-            print_error("Invalid input. Please enter a number or 'q'.")
+                choice_idx = int(choice) - 1
+                if 0 <= choice_idx < len(scenarios):
+                    content_type, topic = scenarios[choice_idx]
+                    break
+                else:
+                    print_error(f"Please enter a number between 1 and {len(scenarios)}.")
+            except ValueError:
+                print_error("Invalid input. Please enter a number or 'q'.")
+    else:
+        content_type, topic = scenarios[args.scenario - 1]
+        print_warning(
+            f"Scenario override enabled. Auto-selecting scenario {args.scenario}: {content_type.upper()} - {topic}"
+        )
 
     # Run the workflow
     success = workflow.run_workflow(content_type, topic)
@@ -312,6 +360,8 @@ def main():
         print_success("Content was successfully published!")
     else:
         print_error("Content was not published.")
+        if args.scenario is not None or args.auto_decision is not None:
+            sys.exit(1)
 
     print(f"\nTotal decisions made: {len([e for e in workflow.decision_log if 'decision' in e])}")
 

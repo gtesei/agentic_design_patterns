@@ -5,13 +5,10 @@ This module demonstrates HITL using LangGraph's state management and
 interrupt capabilities for human checkpoints.
 """
 
-import os
 import sys
 from pathlib import Path
 from typing import TypedDict, Annotated, Literal
 from datetime import datetime
-
-from pathlib import Path
 
 ROOT_DIR = next(
     parent for parent in Path(__file__).resolve().parents
@@ -20,14 +17,13 @@ ROOT_DIR = next(
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from repo_support import configure_example
+from repo_support import configure_example, get_default_model
 
 configure_example(__file__)
 
-from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langgraph.graph import StateGraph, END
-from langgraph.checkpoint.memory import MemorySaver
+from langgraph.checkpoint.memory import InMemorySaver
 
 
 # Color codes for terminal output
@@ -97,7 +93,7 @@ def generate_content_node(state: WorkflowState) -> WorkflowState:
     print(f"Generating content for: {state['task']}")
 
     # Get LLM from state or create new one
-    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.7)
+    llm = ChatOpenAI(model=get_default_model(), temperature=0.7)
 
     # Build prompt based on whether this is a revision
     if state.get('human_feedback'):
@@ -327,9 +323,10 @@ def run_workflow_example(task: str):
     # Create the workflow
     workflow = create_hitl_workflow()
 
-    # Compile with memory saver for state persistence
-    memory = MemorySaver()
-    app = workflow.compile(checkpointer=memory)
+    # Use the in-memory checkpointer for demos. In production, prefer
+    # AsyncPostgresSaver so approvals and resume points survive process restarts.
+    checkpointer = InMemorySaver()
+    app = workflow.compile(checkpointer=checkpointer)
 
     # Initialize state
     initial_state = {

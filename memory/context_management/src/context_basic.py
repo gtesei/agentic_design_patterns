@@ -24,7 +24,7 @@ ROOT_DIR = next(
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from repo_support import configure_example
+from repo_support import configure_example, get_default_model
 
 configure_example(__file__)
 
@@ -41,10 +41,11 @@ from langchain_core.messages import HumanMessage, AIMessage, SystemMessage
 # Load environment variables from project root
 
 
-def count_tokens(text: str, model: str = "gpt-4") -> int:
+def count_tokens(text: str, model: Optional[str] = None) -> int:
     """Count tokens accurately using tiktoken"""
+    model_name = model or get_default_model()
     try:
-        encoding = tiktoken.encoding_for_model(model)
+        encoding = tiktoken.encoding_for_model(model_name)
     except KeyError:
         # Fallback for unknown models
         encoding = tiktoken.get_encoding("cl100k_base")
@@ -112,13 +113,13 @@ class BasicContextManager:
         max_tokens: int = 8000,
         window_size: int = 5,
         response_reserve: int = 2000,
-        model: str = "gpt-4o-mini"
+        model: Optional[str] = None
     ):
         self.max_tokens = max_tokens
         self.window_size = window_size
         self.response_reserve = response_reserve
-        self.model = model
-        self.llm = ChatOpenAI(model=model, temperature=0)
+        self.model = model or get_default_model()
+        self.llm = ChatOpenAI(model=self.model, temperature=0)
 
         # Storage
         self.messages: List[Message] = []

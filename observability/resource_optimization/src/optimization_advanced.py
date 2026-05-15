@@ -25,7 +25,12 @@ ROOT_DIR = next(
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from repo_support import configure_example
+from repo_support import (
+    configure_example,
+    get_advanced_model,
+    get_default_model,
+    get_fast_model,
+)
 
 configure_example(__file__)
 
@@ -43,10 +48,10 @@ from langchain_openai import ChatOpenAI
 
 # Load environment variables
 
-# Initialize models
-gpt4 = ChatOpenAI(model="gpt-4", temperature=0)
-gpt4_mini = ChatOpenAI(model="gpt-4o-mini", temperature=0)
-gpt35 = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
+# Initialize semantic model tiers instead of pinning old provider names.
+advanced_llm = ChatOpenAI(model=get_advanced_model(), temperature=0)
+default_llm = ChatOpenAI(model=get_default_model(), temperature=0)
+fast_llm = ChatOpenAI(model=get_fast_model(), temperature=0)
 
 
 # ===========================
@@ -193,9 +198,9 @@ class CostAwareRouter:
         self.budget = budget_per_request
         self.quality_threshold = quality_threshold
         self.model_costs = {
-            "gpt-4": 0.015,  # Estimated average cost per request
-            "gpt-4o-mini": 0.003,
-            "gpt-3.5-turbo": 0.0005,
+            "advanced": 0.015,  # Estimated average cost per request
+            "default": 0.003,
+            "fast": 0.0005,
         }
         self.fallback_count = 0
         self.total_requests = 0
@@ -237,22 +242,22 @@ class CostAwareRouter:
 
         # Route based on complexity
         if complexity >= 8:
-            return gpt4, "gpt-4", self.model_costs["gpt-4"]
+            return advanced_llm, "advanced", self.model_costs["advanced"]
         elif complexity >= 4:
-            return gpt4_mini, "gpt-4o-mini", self.model_costs["gpt-4o-mini"]
+            return default_llm, "default", self.model_costs["default"]
         else:
-            return gpt35, "gpt-3.5-turbo", self.model_costs["gpt-3.5-turbo"]
+            return fast_llm, "fast", self.model_costs["fast"]
 
     def should_fallback(self, quality_score: float, current_model: str) -> tuple[bool, Optional[str]]:
         """Determine if should fallback to better model"""
         if quality_score < self.quality_threshold:
             # Try next tier up
-            if current_model == "gpt-3.5-turbo":
+            if current_model == "fast":
                 self.fallback_count += 1
-                return True, "gpt-4o-mini"
-            elif current_model == "gpt-4o-mini":
+                return True, "default"
+            elif current_model == "default":
                 self.fallback_count += 1
-                return True, "gpt-4"
+                return True, "advanced"
 
         return False, None
 
@@ -302,7 +307,7 @@ class AdvancedOptimizedLLM:
         # Step 1: Check cache
         if use_cache:
             # Try with different models (check all cached versions)
-            for model_name in ["gpt-4", "gpt-4o-mini", "gpt-3.5-turbo"]:
+            for model_name in ["advanced", "default", "fast"]:
                 cached_response = self.cache.get(query, model_name)
                 if cached_response:
                     latency = time.time() - start_time
@@ -323,7 +328,7 @@ class AdvancedOptimizedLLM:
         if use_routing:
             model, model_name, estimated_cost = self.router.select_model(query)
         else:
-            model, model_name, estimated_cost = gpt4, "gpt-4", 0.015
+            model, model_name, estimated_cost = advanced_llm, "advanced", self.router.model_costs["advanced"]
 
         # Step 3: Execute LLM call
         response = model.invoke(query)
@@ -340,10 +345,10 @@ class AdvancedOptimizedLLM:
             if should_fallback and better_model_name:
                 fallback_used = True
                 # Use better model
-                if better_model_name == "gpt-4":
-                    model = gpt4
-                elif better_model_name == "gpt-4o-mini":
-                    model = gpt4_mini
+                if better_model_name == "advanced":
+                    model = advanced_llm
+                elif better_model_name == "default":
+                    model = default_llm
 
                 response = model.invoke(query)
                 response_content = response.content
@@ -377,7 +382,7 @@ class AdvancedOptimizedLLM:
 
         for query in predicted_queries:
             # Check if already cached
-            if not self.cache.get(query, "gpt-3.5-turbo"):
+            if not self.cache.get(query, "fast"):
                 # Prefetch with cheap model
                 try:
                     self.invoke(query, use_cache=True, use_routing=True)

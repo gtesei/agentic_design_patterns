@@ -22,7 +22,7 @@ ROOT_DIR = next(
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from repo_support import configure_example
+from repo_support import configure_example, get_reasoning_model
 
 configure_example(__file__)
 
@@ -431,7 +431,7 @@ def run_advanced_got(problem: str, max_rounds: int = 3) -> str:
     print(f"Configuration: {max_rounds} rounds, 4 agent personas\n")
 
     # Initialize
-    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.7)
+    llm = ChatOpenAI(model=get_reasoning_model(), temperature=0.7)
     graph = ThoughtGraph()
     agent_personas = ["optimist", "critic", "pragmatist", "innovator"]
 

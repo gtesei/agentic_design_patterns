@@ -197,7 +197,8 @@ def custom_compressor(text: str, target_tokens: int) -> str:
 **Solution**: Always use tiktoken with the correct model name
 ```python
 import tiktoken
-encoding = tiktoken.encoding_for_model("gpt-4")
+import os
+encoding = tiktoken.encoding_for_model(os.getenv("OPENAI_MODEL", "gpt-4o-mini"))
 tokens = len(encoding.encode(text))
 ```
 
@@ -337,14 +338,12 @@ SAVINGS: $12,000/month (80%)
 
 ## 🔍 Quick Reference
 
-### Token Limits by Model
-| Model | Context Window | Recommended Budget |
-|-------|----------------|-------------------|
-| GPT-4 | 8,192 | 6,000 |
-| GPT-4 Turbo | 128,000 | 100,000 |
-| GPT-4o | 128,000 | 100,000 |
-| Claude 3 Opus | 200,000 | 150,000 |
-| Claude 3.5 Sonnet | 200,000 | 150,000 |
+### Token Budgeting Guidelines
+| Model Class | Context Window | Recommended Budget |
+|-------------|----------------|-------------------|
+| Default chat model | Check provider docs | Keep prompts under ~75% of the hard limit |
+| Advanced reasoning model | Check provider docs | Reserve extra headroom for tool traces and outputs |
+| Long-context model | Check provider docs | Still leave 20-25% for the response and runtime overhead |
 
 ### Compression Guidelines
 | Original Size | Target Size | Strategy |

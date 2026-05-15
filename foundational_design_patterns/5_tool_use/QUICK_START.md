@@ -131,10 +131,10 @@ def calculator(expression: str) -> float:
 
 ### Creating an Agent
 ```python
-from langgraph.prebuilt import create_react_agent
+from langchain.agents import create_agent
 
 tools = [get_weather, calculator]
-agent = create_react_agent(llm, tools)
+agent = create_agent(model=llm, tools=tools)
 
 result = agent.invoke({
     "messages": [("user", "What's the weather in Tokyo?")]
@@ -214,7 +214,7 @@ def my_custom_tool(param: str) -> str:
 
 # Add to agent
 tools = [get_weather, calculator, my_custom_tool]
-agent = create_react_agent(llm, tools)
+agent = create_agent(model=llm, tools=tools)
 ```
 
 ### Tool with Multiple Parameters

@@ -425,7 +425,7 @@ class HybridMemory:
 **Mitigation**:
 - Intelligent retrieval (quality over quantity)
 - Hierarchical summarization
-- Use models with larger context (GPT-4, Claude 200K)
+- Use modern long-context models or retrieval-backed memory instead of assuming one giant prompt
 - Stream context in multiple rounds if needed
 
 ### ❌ Memory Errors

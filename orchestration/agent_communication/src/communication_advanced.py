@@ -28,7 +28,7 @@ ROOT_DIR = next(
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from repo_support import configure_example
+from repo_support import configure_example, get_default_model
 
 configure_example(__file__)
 
@@ -46,7 +46,7 @@ from langchain_openai import ChatOpenAI
 # Load environment variables
 
 # Initialize LLM
-llm = ChatOpenAI(temperature=0.3, model="gpt-4")
+llm = ChatOpenAI(temperature=0.3, model=get_default_model())
 
 
 # --- Enhanced Message Protocol ---

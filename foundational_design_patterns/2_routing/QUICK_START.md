@@ -118,11 +118,13 @@ Category:
 ### Use Different Models per Route
 
 ```python
+from repo_support import get_advanced_model, get_default_model
+
 # Fast model for simple queries
-support_llm = ChatOpenAI(model="gpt-4o-mini")
+support_llm = ChatOpenAI(model=get_default_model())
 
 # Powerful model for complex queries
-technical_llm = ChatOpenAI(model="gpt-4")
+technical_llm = ChatOpenAI(model=get_advanced_model())
 ```
 
 ---

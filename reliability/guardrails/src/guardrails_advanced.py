@@ -27,7 +27,7 @@ ROOT_DIR = next(
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from repo_support import configure_example
+from repo_support import configure_example, get_default_model
 
 configure_example(__file__)
 
@@ -545,7 +545,7 @@ def main():
 
     # Initialize LLM and guardrails
     llm = ChatOpenAI(
-        model="gpt-4o-mini",
+        model=get_default_model(),
         temperature=0.7,
         api_key=os.getenv("OPENAI_API_KEY")
     )

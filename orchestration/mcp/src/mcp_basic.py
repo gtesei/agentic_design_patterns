@@ -1,7 +1,7 @@
 """
 Model Context Protocol (MCP): Basic Implementation
 
-This example demonstrates a simplified implementation of the Model Context Protocol (MCP),
+This example demonstrates a pedagogical implementation of the Model Context Protocol (MCP),
 showing how to create an MCP server that exposes tools and resources through a standardized
 protocol, and how an LLM client can discover and use these capabilities.
 
@@ -24,7 +24,7 @@ ROOT_DIR = next(
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from repo_support import configure_example
+from repo_support import configure_example, get_default_model
 
 configure_example(__file__)
 
@@ -35,9 +35,9 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Callable
 
+from langchain.agents import create_agent
 from langchain_core.tools import tool
 from langchain_openai import ChatOpenAI
-from langgraph.prebuilt import create_react_agent
 from rich.console import Console
 from rich.panel import Panel
 from rich.table import Table
@@ -79,8 +79,9 @@ class SimpleMCPServer:
     """
     Simplified MCP Server implementation that exposes tools and resources.
 
-    In a real MCP implementation, this would use JSON-RPC 2.0 over stdio/HTTP/WebSocket.
-    This simplified version demonstrates the core concepts without the protocol complexity.
+    In a production MCP deployment, use the official protocol stack over stdio/HTTP
+    transports. This local version focuses on the core concepts without the SDK or
+    transport complexity.
     """
 
     name: str
@@ -299,6 +300,8 @@ def convert_mcp_to_langchain_tools(mcp_server: SimpleMCPServer) -> list:
                     return f"Error: {result['error']['message']}"
                 return str(result)
 
+            tool_func.__name__ = name
+            tool_func.__doc__ = tool_description
             return tool_func
 
         # Create LangChain tool
@@ -441,8 +444,8 @@ def run_demo():
     console.print(f"[cyan]Converted {len(langchain_tools)} MCP tools to LangChain tools[/cyan]\n")
 
     # Create LLM agent
-    llm = ChatOpenAI(model="gpt-4", temperature=0)
-    agent = create_react_agent(llm, langchain_tools)
+    llm = ChatOpenAI(model=get_default_model(), temperature=0)
+    agent = create_agent(model=llm, tools=langchain_tools)
 
     # Example query
     query = "List all files in the /config directory, read the settings.json file, and tell me what the theme setting is."

@@ -76,7 +76,7 @@ This directory contains three comprehensive Python implementations of the Human-
 
 **Key Features**:
 - LangGraph StateGraph implementation
-- State persistence with MemorySaver
+- State persistence with InMemorySaver in demos (AsyncPostgresSaver for production)
 - Multi-node workflow:
   - Generate content node
   - Human review node (interrupt point)

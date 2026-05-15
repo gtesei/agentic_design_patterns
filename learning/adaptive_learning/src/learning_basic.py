@@ -28,7 +28,7 @@ ROOT_DIR = next(
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from repo_support import configure_example
+from repo_support import configure_example, get_default_model
 
 configure_example(__file__)
 
@@ -434,7 +434,7 @@ if __name__ == "__main__":
     )
 
     # Initialize LLM
-    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.7)
+    llm = ChatOpenAI(model=get_default_model(), temperature=0.7)
 
     # Create adaptive learning agent
     agent = AdaptiveLearningAgent(llm)

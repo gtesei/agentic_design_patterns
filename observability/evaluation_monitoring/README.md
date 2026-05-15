@@ -210,7 +210,7 @@ Automated quality assessment:
 - Sentiment analysis
 
 **Model-based Evaluators:**
-- LLM-as-judge (GPT-4 evaluates GPT-3.5 outputs)
+- LLM-as-judge (advanced-tier model evaluates fast-tier outputs)
 - Embedding similarity (output vs. ground truth)
 - Classification (topic, intent, toxicity)
 
@@ -376,10 +376,11 @@ Use AI to evaluate AI:
 
 ```python
 from langchain_openai import ChatOpenAI
+from repo_support import get_advanced_model
 
 class LLMJudge:
     def __init__(self):
-        self.judge_llm = ChatOpenAI(model="gpt-4", temperature=0)
+        self.judge_llm = ChatOpenAI(model=get_advanced_model(), temperature=0)
 
     def evaluate_relevance(self, query: str, response: str) -> dict:
         prompt = f"""Evaluate the relevance of this response to the query.
@@ -415,7 +416,7 @@ Reasoning: [Your explanation]"""
 
 **Benefit**: Choose models, prompts, and architectures based on evidence, not intuition
 
-**Example**: A/B test shows GPT-4o-mini has 90% of GPT-4's quality at 10% of the cost
+**Example**: An A/B test shows the default tier delivers most of the advanced tier's quality at a fraction of the cost
 
 **Impact**: Optimize cost/quality tradeoffs systematically
 
@@ -918,9 +919,11 @@ class ABTestFramework:
         return results
 
 # Usage
+from repo_support import get_advanced_model, get_default_model
+
 ab_test = ABTestFramework()
-ab_test.register_variant("control", {"model": "gpt-4", "temperature": 0})
-ab_test.register_variant("experimental", {"model": "gpt-4o-mini", "temperature": 0})
+ab_test.register_variant("control", {"model": get_advanced_model(), "temperature": 0})
+ab_test.register_variant("experimental", {"model": get_default_model(), "temperature": 0})
 
 variant = ab_test.select_variant(user_id)
 result = run_agent_with_config(ab_test.variants[variant])

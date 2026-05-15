@@ -304,9 +304,10 @@ class SimpleMCPServer:
 Integrate MCP servers as LangChain tools:
 
 ```python
+from langchain.agents import create_agent
 from langchain_core.tools import Tool as LangChainTool
 from langchain_openai import ChatOpenAI
-from langgraph.prebuilt import create_react_agent
+from repo_support import get_default_model
 
 # Convert MCP tools to LangChain tools
 def mcp_to_langchain_tool(mcp_tool):
@@ -327,8 +328,8 @@ langchain_tools = [
 ]
 
 # Create agent with MCP tools
-llm = ChatOpenAI(model="gpt-4")
-agent = create_react_agent(llm, langchain_tools)
+llm = ChatOpenAI(model=get_default_model())
+agent = create_agent(model=llm, tools=langchain_tools)
 ```
 
 ### Approach 3: Multiple Server Composition

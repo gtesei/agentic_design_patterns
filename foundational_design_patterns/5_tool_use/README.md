@@ -115,8 +115,9 @@ Decision: Need external data?
 LangChain provides the `@tool` decorator and built-in tool utilities:
 ```python
 from langchain_core.tools import tool
+from langchain.agents import create_agent
 from langchain_openai import ChatOpenAI
-from langgraph.prebuilt import create_react_agent
+from repo_support import get_default_model
 
 # Define a tool
 @tool
@@ -145,10 +146,10 @@ def calculate(expression: str) -> float:
     return eval(expression)  # Use safely in production!
 
 # Create agent with tools
-llm = ChatOpenAI(model="gpt-4")
+llm = ChatOpenAI(model=get_default_model())
 tools = [get_weather, calculate]
 
-agent = create_react_agent(llm, tools)
+agent = create_agent(model=llm, tools=tools)
 
 # Use the agent
 response = agent.invoke({
@@ -242,7 +243,7 @@ tools = [
 ]
 
 response = openai.chat.completions.create(
-    model="gpt-4",
+    model=get_default_model(),
     messages=[{"role": "user", "content": "What's the weather in Paris?"}],
     tools=tools,
     tool_choice="auto"
