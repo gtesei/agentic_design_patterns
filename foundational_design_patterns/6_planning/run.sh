@@ -12,4 +12,5 @@ run() {
     echo -e "${GREEN}>>> Completed <<<${NC}"
 }
 
-run "src/planning_cust_agent.py"
+run "src/planning_plan_and_act.py"
+run "src/planning_hiplan.py"

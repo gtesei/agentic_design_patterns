@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # RAG Pattern Examples Runner
-# This script runs the different RAG pattern examples
 
 set -e  # Exit on error
 
@@ -10,7 +9,6 @@ echo "  RAG Pattern Examples"
 echo "========================================="
 echo ""
 
-# Check if .env file exists
 if [ ! -f "../../.env" ]; then
     echo "Error: .env file not found in project root"
     echo "Please create a .env file with your OPENAI_API_KEY"
@@ -18,39 +16,44 @@ if [ ! -f "../../.env" ]; then
 fi
 
 echo "Select an example to run:"
-echo "1) Basic RAG with Qdrant (In-Memory)"
-echo "2) Advanced RAG with Re-ranking"
-echo "3) Run All Examples"
+echo "1) Basic Hybrid RAG (lexical + dense + RRF + rerank)"
+echo "2) Advanced RAG (hosted file_search + local fallback)"
+echo "3) Agentic RAG loop (rewrite/retrieve/grade/fallback/self-check)"
+echo "4) RAG evaluation and failure modes"
+echo "5) Run All Examples"
 echo ""
-read -p "Enter your choice (1-3): " choice
+read -p "Enter your choice (1-5): " choice
+
+run_example() {
+    local file="$1"
+    echo "----------------------------------------"
+    uv run python "$file"
+    echo ""
+}
 
 case $choice in
     1)
-        echo ""
-        echo "Running Basic RAG with Qdrant..."
-        echo "----------------------------------------"
-        uv run python src/rag_basic.py
+        echo "\nRunning Basic Hybrid RAG..."
+        run_example src/rag_basic.py
         ;;
     2)
-        echo ""
-        echo "Running Advanced RAG with Re-ranking..."
-        echo "----------------------------------------"
-        uv run python src/rag_advanced.py
+        echo "\nRunning Advanced RAG..."
+        run_example src/rag_advanced.py
         ;;
     3)
-        echo ""
-        echo "Running All Examples..."
-        echo "========================================="
-        echo ""
-        echo "1. Basic RAG with Qdrant"
-        echo "----------------------------------------"
-        uv run python src/rag_basic.py
-        echo ""
-        echo "========================================="
-        echo ""
-        echo "2. Advanced RAG with Re-ranking"
-        echo "----------------------------------------"
-        uv run python src/rag_advanced.py
+        echo "\nRunning Agentic RAG..."
+        run_example src/rag_agentic.py
+        ;;
+    4)
+        echo "\nRunning RAG Eval + Failure Modes..."
+        run_example src/rag_eval_and_failure_modes.py
+        ;;
+    5)
+        echo "\nRunning All Examples..."
+        run_example src/rag_basic.py
+        run_example src/rag_advanced.py
+        run_example src/rag_agentic.py
+        run_example src/rag_eval_and_failure_modes.py
         ;;
     *)
         echo "Invalid choice. Exiting."
@@ -58,7 +61,6 @@ case $choice in
         ;;
 esac
 
-echo ""
 echo "========================================="
 echo "  Examples completed!"
 echo "========================================="
