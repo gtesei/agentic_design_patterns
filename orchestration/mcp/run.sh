@@ -15,8 +15,8 @@ NC='\033[0m' # No Color
 
 echo -e "${BLUE}"
 echo "╔═══════════════════════════════════════════════════════════════╗"
-echo "║     Model Context Protocol (MCP) Pattern                     ║"
-echo "║     Standardized tool integration for LLMs                   ║"
+echo "║     Model Context Protocol (MCP) Pattern                      ║"
+echo "║     Standardized tool integration for LLMs                    ║"
 echo "╚═══════════════════════════════════════════════════════════════╝"
 echo -e "${NC}"
 
@@ -27,21 +27,17 @@ if [ ! -f "../../.env" ]; then
     exit 1
 fi
 
-# Check if dependencies are installed
-if ! python3 -c "import langchain_openai" 2>/dev/null; then
-    echo -e "${YELLOW}Installing dependencies...${NC}"
-    pip install -q langchain langchain-openai langgraph python-dotenv pydantic rich 2>/dev/null || {
-        echo -e "${YELLOW}Note: Some dependencies may not be installed. Run: pip install langchain langchain-openai langgraph python-dotenv pydantic rich${NC}"
-    }
-fi
+echo -e "${YELLOW}Installing dependencies...${NC}"
+uv sync --quiet
 
-# Check Python version
-PYTHON_VERSION=$(python3 --version 2>&1 | awk '{print $2}')
-REQUIRED_VERSION="3.11"
-
-if [ "$(printf '%s\n' "$REQUIRED_VERSION" "$PYTHON_VERSION" | sort -V | head -n1)" != "$REQUIRED_VERSION" ]; then
-    echo -e "${YELLOW}Warning: Python 3.11+ required, found $PYTHON_VERSION${NC}"
-fi
+run_example() {
+    local script_path="$1"
+    SSL_CERT_FILE="${SSL_CERT_FILE:-}" \
+    REQUESTS_CA_BUNDLE="${REQUESTS_CA_BUNDLE:-}" \
+    CURL_CA_BUNDLE="${CURL_CA_BUNDLE:-}" \
+    AGENTIC_DISABLE_SSL="${AGENTIC_DISABLE_SSL:-}" \
+    uv run python "$script_path"
+}
 
 # Determine which example to run
 EXAMPLE=${1:-basic}
@@ -55,7 +51,7 @@ case $EXAMPLE in
         echo "  - File operations and calculations"
         echo "  - Basic resource exposure"
         echo ""
-        python3 src/mcp_basic.py
+        run_example src/mcp_basic.py
         ;;
 
     advanced)
@@ -67,7 +63,7 @@ case $EXAMPLE in
         echo "  - LangChain integration"
         echo "  - Rich monitoring dashboard"
         echo ""
-        python3 src/mcp_advanced.py
+        run_example src/mcp_advanced.py
         ;;
 
     *)
