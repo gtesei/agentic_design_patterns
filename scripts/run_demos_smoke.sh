@@ -427,7 +427,11 @@ else
     fi
 
     script_log="$LOG_DIR/$(echo "${rel}" | tr '/' '_').log"
-    mapfile -t script_cmd < <(build_smoke_command "$pattern_dir" "$script")
+    script_cmd=()
+    while IFS= read -r arg; do
+      script_cmd+=("$arg")
+    done < <(build_smoke_command "$pattern_dir" "$script")
+
     run_script_with_timeout "$pattern_dir" "$script_log" "${script_cmd[@]}"
     rc=$?
 
