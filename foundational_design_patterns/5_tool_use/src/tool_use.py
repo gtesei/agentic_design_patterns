@@ -9,20 +9,27 @@ import sys
 import json
 from datetime import datetime
 
-# Add parent directory to path to import ssl_fix
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
-import ssl_fix  # Apply SSL bypass for corporate networks
+from pathlib import Path
 
-from dotenv import load_dotenv
+ROOT_DIR = next(
+    parent for parent in Path(__file__).resolve().parents
+    if (parent / "ssl_fix.py").exists()
+)
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+from repo_support import configure_example, get_default_model
+
+configure_example(__file__)
+
 from langchain_core.tools import tool
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, AIMessage, ToolMessage
 
 # Load environment variables
-load_dotenv(os.path.join(os.path.dirname(__file__), "../../..", ".env"))
 
 # Initialize the Language Model
-llm = ChatOpenAI(temperature=0, model="gpt-4")
+llm = ChatOpenAI(temperature=0, model=get_default_model())
 
 # --- Define Stock Market Tools ---
 

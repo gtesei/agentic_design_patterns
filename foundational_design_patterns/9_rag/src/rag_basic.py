@@ -10,18 +10,25 @@ import os
 import sys
 from typing import List
 
-# Add parent directory to path to import ssl_fix
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
-import ssl_fix  # Apply SSL bypass for corporate networks
+from pathlib import Path
 
-from dotenv import load_dotenv
+ROOT_DIR = next(
+    parent for parent in Path(__file__).resolve().parents
+    if (parent / "ssl_fix.py").exists()
+)
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+from repo_support import configure_example, get_default_model
+
+configure_example(__file__)
+
 from langchain_openai import ChatOpenAI
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, PointStruct, VectorParams
 from sentence_transformers import SentenceTransformer
 
 # Load environment variables
-load_dotenv(os.path.join(os.path.dirname(__file__), "../../..", ".env"))
 
 
 class BasicRAG:
@@ -47,7 +54,7 @@ class BasicRAG:
 
         # Initialize OpenAI for generation
         print("   Connecting to OpenAI for generation")
-        self.llm = ChatOpenAI(temperature=0.7, model="gpt-4")
+        self.llm = ChatOpenAI(temperature=0.7, model=get_default_model())
 
         print("✅ RAG system initialized!\n")
 

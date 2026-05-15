@@ -1,25 +1,21 @@
-"""
-SSL Certificate Fix for Corporate Networks
+"""Optional SSL bypass for local corporate-network troubleshooting.
 
-This module provides a workaround for SSL certificate verification issues
-in corporate environments with SSL inspection/man-in-the-middle proxies.
-
-Usage:
-    Import this module at the top of your script (before any HTTP libraries):
-
-    import ssl_fix  # This automatically applies the SSL bypass
-
-    # Or call it explicitly:
-    import ssl_fix
-    ssl_fix.apply_ssl_bypass()
-
-Note:
-    This disables SSL certificate verification, which is acceptable for
-    development in corporate environments but should NOT be used in production.
+This module no longer disables certificate verification on import. To opt in,
+set ``AGENTIC_DISABLE_SSL=1`` or call ``apply_ssl_bypass()`` explicitly.
 """
 
+import os
 import ssl
 import warnings
+
+SSL_BYPASS_ENV_VAR = "AGENTIC_DISABLE_SSL"
+_PATCHED = False
+
+
+def ssl_bypass_requested(env_var: str = SSL_BYPASS_ENV_VAR) -> bool:
+    """Return ``True`` when the SSL bypass was explicitly requested."""
+    value = os.getenv(env_var, "")
+    return value.strip().lower() in {"1", "true", "yes", "on"}
 
 
 def apply_ssl_bypass():
@@ -34,11 +30,15 @@ def apply_ssl_bypass():
     This is necessary because corporate SSL inspection creates self-signed
     certificates that Python's SSL verification rejects.
     """
+    global _PATCHED
+    if _PATCHED:
+        return
+
     # Disable default SSL verification
     ssl._create_default_https_context = ssl._create_unverified_context
 
     # Suppress SSL warnings
-    warnings.filterwarnings('ignore', category=Warning)
+    warnings.filterwarnings("ignore", category=Warning)
 
     # Patch httpx to disable SSL verification
     # httpx is used by many modern libraries (OpenAI, Hugging Face Hub, etc.)
@@ -50,11 +50,11 @@ def apply_ssl_bypass():
         _original_async_client_init = httpx.AsyncClient.__init__
 
         def _patched_client_init(self, *args, **kwargs):
-            kwargs['verify'] = False
+            kwargs["verify"] = False
             _original_client_init(self, *args, **kwargs)
 
         def _patched_async_client_init(self, *args, **kwargs):
-            kwargs['verify'] = False
+            kwargs["verify"] = False
             _original_async_client_init(self, *args, **kwargs)
 
         # Apply patches
@@ -64,7 +64,9 @@ def apply_ssl_bypass():
     except ImportError:
         # httpx not installed, skip patching
         pass
+    finally:
+        _PATCHED = True
 
 
-# Automatically apply SSL bypass when module is imported
-apply_ssl_bypass()
+if ssl_bypass_requested():
+    apply_ssl_bypass()

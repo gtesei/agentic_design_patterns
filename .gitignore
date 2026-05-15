@@ -205,3 +205,13 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# macOS and local tooling noise
+.DS_Store
+.claude/
+
+# Local generated artifacts
+foundational_design_patterns/10_hitl/src/audit_log.json
+foundational_design_patterns/6_planning/store_db.json
+foundational_design_patterns/7_multi_agent_collaboration/run copy.sh
+IMPROVEMENT*.html

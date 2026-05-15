@@ -16,9 +16,18 @@ Solution: Adaptive goal management with parallel execution and continuous optimi
 
 import sys
 
-# Add parent directory to path to import ssl_fix
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
-import ssl_fix  # Apply SSL bypass for corporate networks
+from pathlib import Path
+
+ROOT_DIR = next(
+    parent for parent in Path(__file__).resolve().parents
+    if (parent / "ssl_fix.py").exists()
+)
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+from repo_support import configure_example
+
+configure_example(__file__)
 
 
 import os
@@ -29,13 +38,11 @@ from datetime import datetime
 from enum import Enum
 from typing import Dict, List, Optional, Set
 
-from dotenv import load_dotenv
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_openai import ChatOpenAI
 from langgraph.graph import END, StateGraph
 
 # Load environment variables
-load_dotenv(os.path.join(os.path.dirname(__file__), "../../..", ".env"))
 
 # Initialize the Language Model
 llm = ChatOpenAI(temperature=0, model="gpt-4o", streaming=False)

@@ -7,11 +7,19 @@ import os
 import sys
 from typing import TypedDict, Annotated, Literal
 
-# Add parent directory to path to import ssl_fix
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
-import ssl_fix  # Apply SSL bypass for corporate networks
+from pathlib import Path
 
-from dotenv import load_dotenv
+ROOT_DIR = next(
+    parent for parent in Path(__file__).resolve().parents
+    if (parent / "ssl_fix.py").exists()
+)
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+from repo_support import configure_example
+
+configure_example(__file__)
+
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import StrOutputParser
@@ -20,7 +28,6 @@ import operator
 from pydantic import BaseModel, Field
 
 # Load environment variables
-load_dotenv(os.path.join(os.path.dirname(__file__), "../../..", ".env"))
 
 # Initialize the Language Model
 llm = ChatOpenAI(temperature=0.7, model="gpt-5.2")  # Higher temperature for creativity

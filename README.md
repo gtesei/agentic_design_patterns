@@ -581,38 +581,80 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 ### Installation
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/agentic_design_patterns.git
+git clone https://github.com/gtesei/agentic_design_patterns.git
 cd agentic_design_patterns
 
-# Set up environment
+# Set up shared environment
 echo "OPENAI_API_KEY=your_api_key_here" > .env
+```
 
-# Install dependencies (using uv)
-uv sync
+### Repository Runtime Notes
+
+- The repository requires **Python 3.11+**.
+- Each pattern folder has its own `pyproject.toml`, so run `uv sync` inside the pattern you want to execute.
+- Example scripts now use a shared bootstrap helper in `repo_support.py` to:
+  - locate the repo root
+  - load the root `.env`
+  - make the repo importable from any pattern folder
+- Set `OPENAI_MODEL` in your environment if you want to override the default example model:
+
+```bash
+export OPENAI_MODEL=gpt-4o-mini
+```
+
+- If you are behind a corporate SSL interception proxy, SSL bypass is now **opt-in**:
+
+```bash
+export AGENTIC_DISABLE_SSL=1
 ```
 
 ### Run Your First Pattern
 ```bash
 # Try prompt chaining
 cd foundational_design_patterns/1_prompt_chain
-bash run.sh
+uv sync
+uv run python src/chain_prompt.py
 
 # Try routing
 cd ../2_routing
-uv run python src/routing_example.py
+uv sync
+uv run python src/routing.py
 
 # Try parallelization
 cd ../3_parallelization
-bash run.sh
+uv sync
+uv run python src/parallelization.py
 
 # Try reflection (stateful loops)
 cd ../4_reflection
-bash run.sh
+uv sync
+uv run python src/reflection_stateful_loop.py
 
 # Try ReAct (reasoning and acting)
 cd ../8_react
-bash run.sh
+uv sync
+uv run python src/react_agent.py
 ```
+
+### Run The Reliability Gate
+
+Use this from the repo root to verify the shared runtime/bootstrap layer:
+
+```bash
+python -m unittest discover -s tests -p "test_*.py" -v
+```
+
+What it checks:
+
+- repo bootstrap and root discovery
+- SSL bypass stays off unless explicitly enabled
+- repo-authored Python files compile cleanly
+
+### CI
+
+GitHub Actions runs the same smoke gate on pushes and pull requests:
+
+- `.github/workflows/reliability-gate.yml`
 
 ---
 
@@ -700,6 +742,9 @@ agentic_design_patterns/
 ├── learning/                   # Continuous improvement
 │   └── adaptive_learning/      # Learning from feedback
 │
+├── tests/                      # Repo-level reliability smoke tests
+├── .github/workflows/          # CI workflows
+├── repo_support.py             # Shared runtime/bootstrap helper
 ├── .env                        # Environment variables
 ├── LICENSE                     # MIT License
 └── README.md                   # This file

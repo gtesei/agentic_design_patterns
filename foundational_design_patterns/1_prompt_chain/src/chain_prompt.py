@@ -12,11 +12,19 @@ through multiple LLM processing steps.
 import os
 import sys
 from typing import Dict, Any
-from dotenv import load_dotenv
 
-# Add parent directory to path to import ssl_fix
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "../../.."))
-import ssl_fix  # Apply SSL bypass for corporate networks
+from pathlib import Path
+
+ROOT_DIR = next(
+    parent for parent in Path(__file__).resolve().parents
+    if (parent / "ssl_fix.py").exists()
+)
+if str(ROOT_DIR) not in sys.path:
+    sys.path.insert(0, str(ROOT_DIR))
+
+from repo_support import configure_example, get_default_model
+
+configure_example(__file__)
 
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import ChatPromptTemplate
@@ -27,10 +35,9 @@ from langchain_core.output_parsers import StrOutputParser
 # ============================================================================
 
 # Load environment variables (requires OPENAI_API_KEY in .env file)
-load_dotenv(os.path.join(os.path.dirname(__file__), "../../..", ".env"))
 
 # LLM Configuration
-LLM_MODEL = "gpt-4o-mini"
+LLM_MODEL = get_default_model()
 LLM_TEMPERATURE = 0
 
 # Initialize Language Model
