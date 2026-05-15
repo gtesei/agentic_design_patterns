@@ -300,6 +300,8 @@ def convert_mcp_to_langchain_tools(mcp_server: SimpleMCPServer) -> list:
                     return f"Error: {result['error']['message']}"
                 return str(result)
 
+            tool_func.__name__ = name
+            tool_func.__doc__ = tool_description
             return tool_func
 
         # Create LangChain tool

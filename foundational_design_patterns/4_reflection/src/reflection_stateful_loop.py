@@ -3,6 +3,7 @@ Reflection Pattern with Stateful Loops: Blog Post Writer
 This example demonstrates using LangGraph for iterative reflection to write high-quality blog posts.
 """
 
+import argparse
 import os
 import sys
 from typing import TypedDict, Annotated, Literal
@@ -16,7 +17,7 @@ ROOT_DIR = next(
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from repo_support import configure_example, get_reasoning_model
+from repo_support import configure_example, get_default_model, get_reasoning_model
 
 configure_example(__file__)
 
@@ -29,8 +30,10 @@ from pydantic import BaseModel, Field
 
 # Load environment variables
 
+REFLECTION_MODEL = get_reasoning_model()
+
 # Initialize the Language Model
-llm = ChatOpenAI(temperature=0.7, model=get_reasoning_model())  # Higher temperature for creativity
+llm = ChatOpenAI(temperature=0.7, model=REFLECTION_MODEL)  # Higher temperature for creativity
 
 # --- Define State Schema ---
 class BlogPostState(TypedDict):
@@ -227,7 +230,7 @@ def critic_node(state: BlogPostState) -> BlogPostState:
     print(f"{'='*80}")
     
     # Use structured output for reliable critique
-    llm_structured = ChatOpenAI(temperature=0, model=get_reasoning_model()).with_structured_output(BlogCritique)
+    llm_structured = ChatOpenAI(temperature=0, model=REFLECTION_MODEL).with_structured_output(BlogCritique)
     
     critique_result: BlogCritique = llm_structured.invoke(
         CRITIC_PROMPT.format(
@@ -526,27 +529,51 @@ def visualize_improvement(state: BlogPostState):
 # --- Run Examples ---
 
 if __name__ == "__main__":
-    
-    # EXAMPLE 1 ------------------------------
-    print("\n" + "#"*80)
-    print("# EXAMPLE 1: Technical Blog Post")
-    print("#"*80)
-    
-    result = write_blog_post(
-        topic="Understanding Agentic AI Frameworks: A Practical Guide",
-        target_audience="software developers and ML engineers",
-        tone="technical but accessible",
-        word_count_target=1200,
-        max_iterations=3
+    parser = argparse.ArgumentParser(description="Reflection-based blog post writer demo")
+    parser.add_argument(
+        "--quick",
+        action="store_true",
+        help="Run one shorter example with fewer iterations and the default model.",
     )
-    
-    visualize_improvement(result)
-    
-    # EXAMPLE 2 ------------------------------
-    print("\n" + "#"*80)
-    print("# EXAMPLE 2: Business Blog Post (Uncomment to run)")
-    print("#"*80)
+    args = parser.parse_args()
 
-    result = write_blog_post(**EXAMPLE_TOPICS["business"], max_iterations=3)
+    if args.quick:
+        REFLECTION_MODEL = get_default_model()
+        llm = ChatOpenAI(temperature=0.7, model=REFLECTION_MODEL)
+        print("\n" + "#" * 80)
+        print("# QUICK MODE: Compact Reflection Demo")
+        print("#" * 80)
+        print("Using one shorter example, fewer iterations, and the default model.\n")
 
-    visualize_improvement(result)
+        result = write_blog_post(
+            topic="Understanding Agentic AI Frameworks: A Practical Guide",
+            target_audience="software developers and ML engineers",
+            tone="technical but accessible",
+            word_count_target=450,
+            max_iterations=1,
+        )
+        visualize_improvement(result)
+    else:
+        # EXAMPLE 1 ------------------------------
+        print("\n" + "#"*80)
+        print("# EXAMPLE 1: Technical Blog Post")
+        print("#"*80)
+        
+        result = write_blog_post(
+            topic="Understanding Agentic AI Frameworks: A Practical Guide",
+            target_audience="software developers and ML engineers",
+            tone="technical but accessible",
+            word_count_target=1200,
+            max_iterations=3
+        )
+        
+        visualize_improvement(result)
+        
+        # EXAMPLE 2 ------------------------------
+        print("\n" + "#"*80)
+        print("# EXAMPLE 2: Business Blog Post (Uncomment to run)")
+        print("#"*80)
+
+        result = write_blog_post(**EXAMPLE_TOPICS["business"], max_iterations=3)
+
+        visualize_improvement(result)
