@@ -16,7 +16,7 @@ ROOT_DIR = next(
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from repo_support import configure_example
+from repo_support import configure_example, get_default_model
 
 configure_example(__file__)
 
@@ -30,7 +30,7 @@ import numpy as np
 # Load environment variables
 
 # Initialize the Language Model
-llm = ChatOpenAI(temperature=0.9, model="gpt-4o-mini")  # High temperature for creativity
+llm = ChatOpenAI(temperature=0.9, model=get_default_model())  # High temperature for creativity
 
 
 class NoveltyDetector:

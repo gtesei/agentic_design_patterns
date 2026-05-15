@@ -804,9 +804,9 @@ Each pattern builds on concepts from previous ones. Start with Phase 1, then exp
 - **[LangSmith](https://smith.langchain.com/)** - LLM application monitoring and evaluation
 
 ### Models & APIs
-- **[OpenAI GPT-4/GPT-4o/o1](https://openai.com/)** - Primary LLM (configurable)
-- **[Anthropic Claude](https://anthropic.com/)** - Alternative LLM with extended context
-- **[Other LLM Providers](https://python.langchain.com/docs/integrations/llms/)** - Fully compatible
+- **[OpenAI Models](https://openai.com/)** - Primary provider used throughout the examples, configured via environment variables
+- **[Anthropic Claude](https://anthropic.com/)** - Alternative frontier-model family with strong long-context support
+- **[Other LLM Providers](https://python.langchain.com/docs/integrations/llms/)** - Fully compatible through LangChain abstractions
 
 ### Development Tools
 - **[Pydantic](https://docs.pydantic.dev/)** - Data validation and structured outputs

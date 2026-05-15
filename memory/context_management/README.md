@@ -160,8 +160,9 @@ Accurate measurement of content size:
 
 ```python
 import tiktoken
+import os
 
-def count_tokens(text: str, model: str = "gpt-4") -> int:
+def count_tokens(text: str, model: str = os.getenv("OPENAI_MODEL", "gpt-4o-mini")) -> int:
     """Count tokens using model-specific tokenizer"""
     encoding = tiktoken.encoding_for_model(model)
     return len(encoding.encode(text))
@@ -511,7 +512,7 @@ LLMs exhibit "lost in the middle" phenomenon - they pay more attention to the be
 import tiktoken
 
 # Use model-specific tokenizer
-def count_tokens(text: str, model: str = "gpt-4") -> int:
+def count_tokens(text: str, model: str = os.getenv("OPENAI_MODEL", "gpt-4o-mini")) -> int:
     """Always use tiktoken for accurate counts"""
     try:
         encoding = tiktoken.encoding_for_model(model)
@@ -739,7 +740,7 @@ documents = [
     ("release_notes.pdf", 20000),
     ("api_docs.pdf", 35000),
 ]
-# Total: 125,000 tokens (exceeds GPT-4's 128K limit with no room for response!)
+# Total: 125,000 tokens (which may exceed many default-context models with no room for a response)
 
 query = "How do I configure OAuth authentication?"
 

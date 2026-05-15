@@ -105,8 +105,8 @@ LLM produces answer grounded in retrieved context:
             └───────┬───────┘
                     ↓
             ┌───────────────┐
-            │   LLM Model   │ Generate grounded answer
-            │  (GPT-4, etc) │ with source citations
+            │ Reasoning LLM │ Generate grounded answer
+            │ (provider-set)│ with source citations
             └───────┬───────┘
                     ↓
             ┌───────────────┐
@@ -228,6 +228,7 @@ from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, VectorParams, PointStruct
 from sentence_transformers import SentenceTransformer
 from openai import OpenAI
+from repo_support import get_advanced_model
 
 # Initialize components
 qdrant = QdrantClient(":memory:")  # In-memory for testing
@@ -274,7 +275,7 @@ def rag_query(question: str) -> str:
 
     # Generate
     response = llm.chat.completions.create(
-        model="gpt-4",
+        model=get_advanced_model(),
         messages=[{"role": "user", "content": prompt}]
     )
 
@@ -295,6 +296,7 @@ from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain.chains import RetrievalQA
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.document_loaders import TextLoader
+from repo_support import get_default_model
 
 # Load and chunk documents
 loader = TextLoader("knowledge_base.txt")
@@ -316,7 +318,7 @@ vectorstore = Qdrant.from_documents(
 )
 
 # Create RAG chain
-llm = ChatOpenAI(model="gpt-4", temperature=0)
+llm = ChatOpenAI(model=get_default_model(), temperature=0)
 qa_chain = RetrievalQA.from_chain_type(
     llm=llm,
     chain_type="stuff",
@@ -824,6 +826,8 @@ for parent in parent_chunks:
 Combine RAG with ReAct-style reasoning:
 
 ```python
+from langchain.agents import create_agent
+
 # Agent decides when to retrieve and what to search for
 @tool
 def search_knowledge_base(query: str) -> str:
@@ -831,7 +835,7 @@ def search_knowledge_base(query: str) -> str:
     results = retriever.get_relevant_documents(query)
     return format_results(results)
 
-agent = create_react_agent(llm, tools=[search_knowledge_base])
+agent = create_agent(model=llm, tools=[search_knowledge_base])
 
 # Agent can make multiple retrievals with refined queries
 result = agent.invoke({

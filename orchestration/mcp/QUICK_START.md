@@ -160,14 +160,15 @@ server.register_tool(my_tool)
 
 ```python
 from langchain_openai import ChatOpenAI
-from langgraph.prebuilt import create_react_agent
+from langchain.agents import create_agent
+from repo_support import get_default_model
 
 # Convert MCP tools to LangChain tools
 langchain_tools = convert_mcp_tools(server)
 
 # Create agent
-llm = ChatOpenAI(model="gpt-4")
-agent = create_react_agent(llm, langchain_tools)
+llm = ChatOpenAI(model=get_default_model())
+agent = create_agent(model=llm, tools=langchain_tools)
 
 # Use the agent
 result = agent.invoke({

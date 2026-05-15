@@ -156,14 +156,15 @@ After each action, the agent:
 
 ## Implementation Approaches
 
-### Approach 1: LangGraph PreBuilt ReAct Agent
+### Approach 1: LangChain `create_agent`
 
-The simplest way to implement ReAct using LangGraph's built-in agent:
+The simplest way to implement ReAct is with LangChain's built-in agent loop:
 
 ```python
+from langchain.agents import create_agent
 from langchain_openai import ChatOpenAI
 from langchain_core.tools import tool
-from langgraph.prebuilt import create_react_agent
+from repo_support import get_default_model
 
 @tool
 def search(query: str) -> str:
@@ -177,10 +178,10 @@ def calculator(expression: str) -> float:
     return eval(expression)
 
 # Create ReAct agent
-llm = ChatOpenAI(model="gpt-4")
+llm = ChatOpenAI(model=get_default_model())
 tools = [search, calculator]
 
-agent = create_react_agent(llm, tools)
+agent = create_agent(model=llm, tools=tools)
 
 # Use the agent
 result = agent.invoke({
@@ -340,13 +341,13 @@ Be systematic and thorough. Show your reasoning."""
 ### 3. Iteration Limits
 
 ```python
-agent = create_react_agent(
-    llm,
-    tools,
-    state_modifier="You have {remaining} iterations left."
+agent = create_agent(
+    model=llm,
+    tools=tools,
+    system_prompt="Be concise, use tools when needed, and stop once you can answer."
 )
 
-# Or in custom implementation
+# For explicit iteration counters, use a custom StateGraph
 max_iterations = 10
 current_iteration = 0
 

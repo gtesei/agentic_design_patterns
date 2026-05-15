@@ -26,7 +26,7 @@ ROOT_DIR = next(
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from repo_support import configure_example
+from repo_support import configure_example, get_default_model
 
 configure_example(__file__)
 
@@ -149,7 +149,7 @@ class RiskAnalyzer:
         # Description-based risk (using AI)
         try:
             response = self.client.chat.completions.create(
-                model="gpt-4o-mini",
+                model=get_default_model(),
                 messages=[
                     {"role": "system", "content": "You are a financial risk analyst. Analyze the transaction description and provide a risk score from 0-40 and list any concerning factors."},
                     {"role": "user", "content": f"Transaction: {description}\nAmount: ${amount:,.2f}\nProvide risk score (0-40) and factors in JSON format: {{\"score\": <number>, \"factors\": [<list of strings>]}}"}
@@ -198,7 +198,7 @@ class RiskAnalyzer:
         try:
             regulations_str = ", ".join(regulations)
             response = self.client.chat.completions.create(
-                model="gpt-4o-mini",
+                model=get_default_model(),
                 messages=[
                     {"role": "system", "content": "You are a compliance officer. Analyze content for potential regulatory violations."},
                     {"role": "user", "content": f"Content: {content}\n\nRegulations to check: {regulations_str}\n\nProvide risk assessment in JSON: {{\"score\": <0-100>, \"violations\": [<list>], \"concerns\": [<list>]}}"}

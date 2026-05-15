@@ -1,8 +1,8 @@
 """
 ReAct Pattern: Basic Implementation
-This example demonstrates the ReAct (Reasoning and Acting) pattern using LangGraph's
-prebuilt create_react_agent function. The agent alternates between reasoning about
-what to do and taking actions with tools.
+This example demonstrates the ReAct (Reasoning and Acting) pattern using
+LangChain's production `create_agent` API. The agent alternates between
+reasoning about what to do and taking actions with tools.
 """
 
 import os
@@ -21,9 +21,9 @@ from repo_support import configure_example, get_default_model
 
 configure_example(__file__)
 
+from langchain.agents import create_agent
 from langchain_core.tools import tool
 from langchain_openai import ChatOpenAI
-from langgraph.prebuilt import create_react_agent
 
 # Load environment variables
 
@@ -140,7 +140,7 @@ def get_word_count(text: str) -> str:
 
 tools = [search, calculator, get_word_count]
 
-agent = create_react_agent(llm, tools)
+agent = create_agent(model=llm, tools=tools)
 
 
 # --- Example Usage ---

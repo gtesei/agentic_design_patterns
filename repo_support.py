@@ -9,7 +9,17 @@ from pathlib import Path
 
 SSL_BYPASS_ENV_VAR = "AGENTIC_DISABLE_SSL"
 DEFAULT_MODEL_ENV_VAR = "OPENAI_MODEL"
+FAST_MODEL_ENV_VAR = "OPENAI_FAST_MODEL"
+ADVANCED_MODEL_ENV_VAR = "OPENAI_ADVANCED_MODEL"
+REASONING_MODEL_ENV_VAR = "OPENAI_REASONING_MODEL"
+EMBEDDINGS_MODEL_ENV_VAR = "OPENAI_EMBEDDINGS_MODEL"
 REPO_SENTINELS = ("ssl_fix.py", "README.md")
+
+DEFAULT_MODEL_NAME = "gpt-4o-mini"
+FAST_MODEL_NAME = "gpt-4o-mini"
+ADVANCED_MODEL_NAME = "gpt-5.2"
+REASONING_MODEL_NAME = "gpt-5.2"
+EMBEDDINGS_MODEL_NAME = "text-embedding-3-small"
 
 
 @lru_cache(maxsize=None)
@@ -72,4 +82,24 @@ def configure_example(start: str | Path) -> Path:
 
 def get_default_model(default: str = "gpt-4o-mini", env_var: str = DEFAULT_MODEL_ENV_VAR) -> str:
     """Resolve the default chat model for examples."""
+    return os.getenv(env_var, default)
+
+
+def get_fast_model(default: str = FAST_MODEL_NAME, env_var: str = FAST_MODEL_ENV_VAR) -> str:
+    """Resolve the lower-cost model used in fast-path examples."""
+    return os.getenv(env_var, os.getenv(DEFAULT_MODEL_ENV_VAR, default))
+
+
+def get_advanced_model(default: str = ADVANCED_MODEL_NAME, env_var: str = ADVANCED_MODEL_ENV_VAR) -> str:
+    """Resolve the higher-capability model used in advanced examples."""
+    return os.getenv(env_var, os.getenv(DEFAULT_MODEL_ENV_VAR, default))
+
+
+def get_reasoning_model(default: str = REASONING_MODEL_NAME, env_var: str = REASONING_MODEL_ENV_VAR) -> str:
+    """Resolve the model used for reasoning-heavy examples."""
+    return os.getenv(env_var, os.getenv(ADVANCED_MODEL_ENV_VAR, default))
+
+
+def get_embeddings_model(default: str = EMBEDDINGS_MODEL_NAME, env_var: str = EMBEDDINGS_MODEL_ENV_VAR) -> str:
+    """Resolve the embeddings model used in retrieval and memory examples."""
     return os.getenv(env_var, default)

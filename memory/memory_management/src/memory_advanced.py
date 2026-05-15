@@ -21,7 +21,7 @@ ROOT_DIR = next(
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from repo_support import configure_example
+from repo_support import configure_example, get_advanced_model, get_default_model, get_embeddings_model
 
 configure_example(__file__)
 
@@ -123,8 +123,8 @@ class SemanticMemory:
 
     def __init__(self, collection_name: str = "memories"):
         self.collection_name = collection_name
-        self.embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
-        self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0)
+        self.embeddings = OpenAIEmbeddings(model=get_embeddings_model())
+        self.llm = ChatOpenAI(model=get_default_model(), temperature=0)
 
         # Initialize Qdrant in-memory
         self.client = QdrantClient(":memory:")
@@ -456,7 +456,7 @@ class AdvancedMemoryAgent:
 
     def __init__(self, memory: SemanticMemory):
         self.memory = memory
-        self.llm = ChatOpenAI(model="gpt-4o", temperature=0.7)
+        self.llm = ChatOpenAI(model=get_advanced_model(), temperature=0.7)
 
     def chat(self, user_message: str, show_retrieval: bool = False) -> str:
         """Process user message with memory retrieval"""

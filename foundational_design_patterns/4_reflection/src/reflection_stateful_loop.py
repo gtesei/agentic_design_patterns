@@ -16,7 +16,7 @@ ROOT_DIR = next(
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from repo_support import configure_example
+from repo_support import configure_example, get_reasoning_model
 
 configure_example(__file__)
 
@@ -30,7 +30,7 @@ from pydantic import BaseModel, Field
 # Load environment variables
 
 # Initialize the Language Model
-llm = ChatOpenAI(temperature=0.7, model="gpt-5.2")  # Higher temperature for creativity
+llm = ChatOpenAI(temperature=0.7, model=get_reasoning_model())  # Higher temperature for creativity
 
 # --- Define State Schema ---
 class BlogPostState(TypedDict):
@@ -227,7 +227,7 @@ def critic_node(state: BlogPostState) -> BlogPostState:
     print(f"{'='*80}")
     
     # Use structured output for reliable critique
-    llm_structured = ChatOpenAI(temperature=0, model="gpt-5.2").with_structured_output(BlogCritique)
+    llm_structured = ChatOpenAI(temperature=0, model=get_reasoning_model()).with_structured_output(BlogCritique)
     
     critique_result: BlogCritique = llm_structured.invoke(
         CRITIC_PROMPT.format(

@@ -10,7 +10,8 @@ This example demonstrates advanced MCP concepts:
 - Comprehensive monitoring and logging
 - LangChain integration with complex workflows
 
-This shows how MCP enables building a rich ecosystem of composable AI tools.
+This shows how MCP enables building a rich ecosystem of composable AI tools around
+an open protocol standard.
 """
 
 
@@ -25,7 +26,7 @@ ROOT_DIR = next(
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from repo_support import configure_example
+from repo_support import configure_example, get_default_model
 
 configure_example(__file__)
 
@@ -38,9 +39,9 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Any, Callable
 
+from langchain.agents import create_agent
 from langchain_core.tools import tool
 from langchain_openai import ChatOpenAI
-from langgraph.prebuilt import create_react_agent
 from pydantic import BaseModel, Field
 from rich.console import Console
 from rich.layout import Layout
@@ -755,8 +756,8 @@ def run_demo():
     console.print(f"[cyan]Converted {len(langchain_tools)} MCP tools to LangChain tools[/cyan]\n")
 
     # Create agent
-    llm = ChatOpenAI(model="gpt-4", temperature=0)
-    agent = create_react_agent(llm, langchain_tools)
+    llm = ChatOpenAI(model=get_default_model(), temperature=0)
+    agent = create_agent(model=llm, tools=langchain_tools)
 
     # Complex query using multiple servers
     query = """Find all users in Seattle from the database, get the current weather for Seattle,

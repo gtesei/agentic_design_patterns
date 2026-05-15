@@ -20,7 +20,7 @@ ROOT_DIR = next(
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from repo_support import configure_example
+from repo_support import configure_example, get_default_model
 
 configure_example(__file__)
 
@@ -180,7 +180,7 @@ class ErrorRecoveryAgent:
     def __init__(self, max_retries: int = 3):
         self.max_retries = max_retries
         self.logger = ErrorLogger()
-        self.llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.7)
+        self.llm = ChatOpenAI(model=get_default_model(), temperature=0.7)
 
     def execute_with_recovery(
         self,

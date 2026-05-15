@@ -132,7 +132,7 @@ return result
 
 ### 3. LangGraph Planning Agent
 ```python
-from langgraph.prebuilt import create_react_agent
+from langchain.agents import create_agent
 
 # Define planning and execution nodes
 workflow = StateGraph(PlanExecute)

@@ -35,7 +35,7 @@ ROOT_DIR = next(
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from repo_support import configure_example
+from repo_support import configure_example, get_advanced_model, get_default_model
 
 configure_example(__file__)
 
@@ -145,12 +145,12 @@ Return a structured research result.
 # Agent implementations
 # =============================================================================
 
-def planner_agent(topic: str, model: str = "gpt-4o-mini") -> List[str]:
+def planner_agent(topic: str, model: Optional[str] = None) -> List[str]:
     """
     Generates a plan as a Python list[str] (returned as text by the LLM).
     Handles Markdown code block formatting automatically.
     """
-    llm = _make_llm(model=model, temperature=1.0)
+    llm = _make_llm(model=model or get_default_model(), temperature=1.0)
     messages = [
         SystemMessage(content=PLANNER_SYSTEM),
         HumanMessage(content=f'Topic: "{topic}"\n\nReturn ONLY the Python list.'),
@@ -230,7 +230,7 @@ def _run_tool_loop(
 
 def research_agent(
     task: str,
-    model: str = "gpt-4o",
+    model: Optional[str] = None,
     return_messages: bool = False,
 ) -> Any:
     """
@@ -242,7 +242,7 @@ def research_agent(
     print("==================================")
 
     current_time = datetime.now().strftime("%Y-%m-%d")
-    llm = _make_llm(model=model, temperature=0.2).bind_tools(RESEARCH_TOOLS)
+    llm = _make_llm(model=model or get_advanced_model(), temperature=0.2).bind_tools(RESEARCH_TOOLS)
 
     messages: List[Any] = [
         SystemMessage(content=f"{RESEARCH_SYSTEM}\n\nCurrent time: {current_time}"),
@@ -255,7 +255,7 @@ def research_agent(
     return (content, msgs) if return_messages else content
 
 
-def writer_agent(task: str, model: str = "gpt-4o") -> str:
+def writer_agent(task: str, model: Optional[str] = None) -> str:
     """
     Drafts/expands/summarizes text (no tools).
     """
@@ -263,7 +263,7 @@ def writer_agent(task: str, model: str = "gpt-4o") -> str:
     print("✍️ Writer Agent")
     print("==================================")
 
-    llm = _make_llm(model=model, temperature=1.0)
+    llm = _make_llm(model=model or get_advanced_model(), temperature=1.0)
     messages = [
         SystemMessage(content=WRITER_SYSTEM),
         HumanMessage(content=task),
@@ -272,7 +272,7 @@ def writer_agent(task: str, model: str = "gpt-4o") -> str:
     return resp.content or ""
 
 
-def editor_agent(task: str, model: str = "gpt-4o") -> str:
+def editor_agent(task: str, model: Optional[str] = None) -> str:
     """
     Critiques / suggests improvements (no tools).
     """
@@ -280,7 +280,7 @@ def editor_agent(task: str, model: str = "gpt-4o") -> str:
     print("🧠 Editor Agent")
     print("==================================")
 
-    llm = _make_llm(model=model, temperature=0.7)
+    llm = _make_llm(model=model or get_advanced_model(), temperature=0.7)
     messages = [
         SystemMessage(content=EDITOR_SYSTEM),
         HumanMessage(content=task),
@@ -317,11 +317,11 @@ class AgentDecision:
     task: str
 
 
-def _decide_agent(step: str, model: str = "gpt-4o") -> AgentDecision:
+def _decide_agent(step: str, model: Optional[str] = None) -> AgentDecision:
     """
     Uses an LLM to route a plan step to one of: research_agent, writer_agent, editor_agent.
     """
-    llm = _make_llm(model=model, temperature=0.0)
+    llm = _make_llm(model=model or get_advanced_model(), temperature=0.0)
     prompt = f"""
 You are an execution manager for a multi-agent research team.
 
@@ -344,7 +344,7 @@ Instruction: "{step}"
 
 def executor_agent(
     topic: str,
-    model: str = "gpt-4o",
+    model: Optional[str] = None,
     limit_steps: bool = True,
     max_steps:int = 10,
 ) -> List[Tuple[str, str, str]]:

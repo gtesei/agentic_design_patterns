@@ -71,7 +71,7 @@ Monitors:
 
 ### Research Question
 ```
-"What are the key differences between GPT-4 and Claude?"
+"What are the key differences between two leading frontier models?"
 ```
 
 Monitors:
@@ -188,7 +188,7 @@ ALERT_THRESHOLDS = {
 ### Issue: High Latency
 **Symptoms**: Responses taking > 5 seconds
 **Solutions**:
-- Use faster model (gpt-4o-mini vs gpt-4)
+- Use the fast tier for routine requests and reserve the advanced tier for hard ones
 - Reduce prompt size
 - Implement caching
 - Parallelize tool calls

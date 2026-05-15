@@ -103,7 +103,7 @@ The agent receives and processes the tool output:
 
 | Feature | Basic | Advanced |
 |---------|-------|----------|
-| Implementation | `create_react_agent()` | Custom `StateGraph` |
+| Implementation | `create_agent()` | Custom `StateGraph` |
 | Reasoning Traces | Implicit | Explicit |
 | Iteration Tracking | Automatic | Manual with limits |
 | Output Format | Simple | Formatted with boxes |

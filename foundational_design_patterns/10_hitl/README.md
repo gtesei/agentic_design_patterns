@@ -415,7 +415,7 @@ Integration with LangGraph workflow:
 
 ```python
 from langgraph.graph import StateGraph, MessagesState
-from langgraph.checkpoint.memory import MemorySaver
+from langgraph.checkpoint.memory import InMemorySaver
 
 def agent_node(state: MessagesState):
     """Agent generates proposed action"""
@@ -459,7 +459,7 @@ workflow.add_edge("agent", "human_approval")
 workflow.add_conditional_edges("human_approval", should_continue)
 
 # Add checkpointing for persistence
-memory = MemorySaver()
+memory = InMemorySaver()  # Use AsyncPostgresSaver for production persistence
 app = workflow.compile(checkpointer=memory)
 ```
 

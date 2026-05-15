@@ -45,7 +45,7 @@ Then select:
 ### Without Optimization
 ```
 Query: "What is Python?"
-→ GPT-4 call every time
+→ Advanced-tier call every time
 → 800ms latency, $0.015 cost
 → 100K daily queries = $1,500/day = $45K/month
 ```
@@ -53,7 +53,7 @@ Query: "What is Python?"
 ### With Optimization
 ```
 Query 1: "What is Python?"
-→ GPT-4 call: 800ms, $0.015 (cache miss)
+→ Advanced-tier call: 800ms, $0.015 (cache miss)
 → ✅ Cached for 1 hour
 
 Query 2: "What is Python?" (5 min later)
@@ -63,7 +63,7 @@ Query 3: "Explain Python" (similar)
 → Semantic cache hit: 150ms, $0.002 (adapted from cache)
 
 Query 4: "What's 2+2?" (simple)
-→ Routed to GPT-3.5: 300ms, $0.002 (60x cheaper than GPT-4)
+→ Routed to fast tier: 300ms, $0.002 (much cheaper than the advanced tier)
 
 Average: 65% cache hit rate + 75% cheap model routing
 → $525/day = $15.7K/month
@@ -77,7 +77,7 @@ Average: 65% cache hit rate + 75% cheap model routing
 ### Basic Optimization (`optimization_basic.py`)
 - **Response Caching**: LRU cache with TTL (Time-To-Live)
 - **Prompt Optimization**: Reduce token usage by 20-40%
-- **Model Selection**: Route simple queries to GPT-3.5-turbo
+- **Model Selection**: Route simple queries to the fast tier
 - **Metrics Tracking**: Cost savings, cache hit rate, latency improvements
 - **Visualization**: Before/after comparison charts
 
@@ -116,7 +116,7 @@ Average: 65% cache hit rate + 75% cheap model routing
 
 ## 💡 Example Queries to Try
 
-### Simple Queries (Should use GPT-3.5-turbo)
+### Simple Queries (Should use the Fast Tier)
 ```
 "What is Python?"
 "Define machine learning"
@@ -124,14 +124,14 @@ Average: 65% cache hit rate + 75% cheap model routing
 "Who invented the telephone?"
 ```
 
-### Medium Queries (Should use GPT-4o-mini)
+### Medium Queries (Should use the Default Tier)
 ```
 "Explain how neural networks work"
 "Summarize the benefits of cloud computing"
 "Why is Python popular for data science?"
 ```
 
-### Complex Queries (Should use GPT-4)
+### Complex Queries (Should use the Advanced Tier)
 ```
 "Compare Python and Java for enterprise applications"
 "Design a microservices architecture for e-commerce"
@@ -165,11 +165,11 @@ def select_model(query: str) -> str:
     complexity = analyze_complexity(query)
 
     if complexity < 3:
-        return "gpt-3.5-turbo"  # Simple queries
+        return "fast"  # Simple queries
     elif complexity < 7:
-        return "gpt-4o-mini"    # Medium queries
+        return "default"  # Medium queries
     else:
-        return "gpt-4"          # Complex queries
+        return "advanced"  # Complex queries
 ```
 
 ### Modify Batch Size

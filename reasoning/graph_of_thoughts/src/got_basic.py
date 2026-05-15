@@ -21,7 +21,7 @@ ROOT_DIR = next(
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from repo_support import configure_example
+from repo_support import configure_example, get_reasoning_model
 
 configure_example(__file__)
 
@@ -265,7 +265,7 @@ def run_basic_got(problem: str) -> str:
     print(f"\nProblem: {problem}\n")
 
     # Initialize LLM
-    llm = ChatOpenAI(model="gpt-4o-mini", temperature=0.7)
+    llm = ChatOpenAI(model=get_reasoning_model(), temperature=0.7)
 
     # Initialize graph and data structures
     graph = nx.DiGraph()

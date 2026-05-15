@@ -20,7 +20,7 @@ ROOT_DIR = next(
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from repo_support import configure_example
+from repo_support import configure_example, get_default_model
 
 configure_example(__file__)
 
@@ -208,12 +208,13 @@ class MetricsCollector:
 class MonitoredAgent:
     """Agent wrapper with built-in metrics collection."""
 
-    def __init__(self, model: str = "gpt-4o-mini"):
-        self.llm = ChatOpenAI(model=model, temperature=0)
+    def __init__(self, model: Optional[str] = None):
+        resolved_model = model or get_default_model()
+        self.llm = ChatOpenAI(model=resolved_model, temperature=0)
         self.metrics_collector = MetricsCollector()
         self.tools = [search_knowledge_base, get_current_time, simple_calculator]
 
-        # Pricing (per 1M tokens) - approximate for gpt-4o-mini
+        # Pricing (per 1M tokens) - approximate for the default OpenAI fast tier
         self.input_price_per_1m = 0.150
         self.output_price_per_1m = 0.600
 
@@ -360,7 +361,7 @@ def run_basic_monitoring_demo():
     print("\n" + "="*60)
 
     # Initialize monitored agent
-    agent = MonitoredAgent(model="gpt-4o-mini")
+    agent = MonitoredAgent()
 
     # Test queries
     test_queries = [

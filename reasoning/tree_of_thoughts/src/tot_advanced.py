@@ -16,7 +16,7 @@ ROOT_DIR = next(
 if str(ROOT_DIR) not in sys.path:
     sys.path.insert(0, str(ROOT_DIR))
 
-from repo_support import configure_example
+from repo_support import configure_example, get_reasoning_model
 
 configure_example(__file__)
 
@@ -29,7 +29,7 @@ from langchain_openai import ChatOpenAI
 # Load environment variables from project root
 
 # Initialize the Language Model
-llm = ChatOpenAI(temperature=0.8, model="gpt-4o-mini")
+llm = ChatOpenAI(temperature=0.8, model=get_reasoning_model())
 
 
 # --- Advanced Data Structures ---

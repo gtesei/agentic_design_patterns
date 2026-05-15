@@ -284,7 +284,7 @@ results = [r for r in results if r.score > 0.5]  # Instead of 0.7
 **Solutions**:
 - Make prompt explicit: "Answer ONLY based on context"
 - Format context clearly with source labels
-- Use a better LLM (GPT-4 instead of GPT-3.5)
+- Use a stronger reasoning model instead of the cheapest available tier
 - Add few-shot examples of good answers
 
 ```python

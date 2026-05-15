@@ -31,20 +31,20 @@ This pattern solves these by:
 ```
 Without Optimization:
 User 1: "What's Python?"
-→ GPT-4 call: 800ms, $0.015
+→ Advanced-tier call: 800ms, $0.015
 User 2: "What's Python?"
-→ GPT-4 call: 850ms, $0.015 (duplicate!)
+→ Advanced-tier call: 850ms, $0.015 (duplicate!)
 User 3: "Explain Python programming"
-→ GPT-4 call: 900ms, $0.018 (similar query!)
+→ Advanced-tier call: 900ms, $0.018 (similar query!)
 User 4: "What's 2+2?"
-→ GPT-4 call: 700ms, $0.012 (overkill for simple task!)
+→ Advanced-tier call: 700ms, $0.012 (overkill for simple task!)
 
 Total: 3250ms, $0.060 for 4 requests
 Daily @ 100K requests: $1,500/day = $45K/month
 
 With Resource Optimization:
 User 1: "What's Python?"
-→ GPT-4 call: 800ms, $0.015 (cache miss)
+→ Advanced-tier call: 800ms, $0.015 (cache miss)
 → ✅ Cached response (TTL: 1 hour)
 
 User 2: "What's Python?"
@@ -55,7 +55,7 @@ User 3: "Explain Python programming"
 → Cache hit with rewrite: 150ms, $0.002 (adapted from User 1)
 
 User 4: "What's 2+2?"
-→ Routed to GPT-3.5-turbo: 300ms, $0.002 (complexity analysis)
+→ Routed to fast tier: 300ms, $0.002 (complexity analysis)
 
 Total: 1300ms, $0.019 for 4 requests (60% faster, 68% cheaper)
 Daily @ 100K requests: Cache hit rate 65% → $525/day = $15.7K/month
@@ -227,9 +227,9 @@ prompt_optimized = "Explain Python programming language concisely."
 Choose the most cost-effective model based on query complexity:
 
 **Complexity Tiers:**
-- **Simple** (Tier 1): Factual questions, basic math, definitions → GPT-3.5-turbo ($0.0005/1K tokens)
-- **Medium** (Tier 2): Analysis, summarization, explanations → GPT-4o-mini ($0.003/1K tokens)
-- **Complex** (Tier 3): Reasoning, creative tasks, code generation → GPT-4 ($0.03/1K tokens)
+- **Simple** (Tier 1): Factual questions, basic math, definitions → fast tier ($0.0005/1K tokens)
+- **Medium** (Tier 2): Analysis, summarization, explanations → default tier ($0.003/1K tokens)
+- **Complex** (Tier 3): Reasoning, creative tasks, code generation → advanced tier ($0.03/1K tokens)
 
 **Routing Logic:**
 ```python
@@ -237,11 +237,11 @@ def route_to_model(query: str) -> str:
     complexity_score = analyze_complexity(query)
 
     if complexity_score < 3:
-        return "gpt-3.5-turbo"  # 60x cheaper than GPT-4
+        return "fast"  # Lowest-cost tier
     elif complexity_score < 7:
-        return "gpt-4o-mini"    # 10x cheaper than GPT-4
+        return "default"  # Balanced tier
     else:
-        return "gpt-4"          # Most capable, highest cost
+        return "advanced"  # Most capable, highest cost
 
 def analyze_complexity(query: str) -> int:
     """Score query complexity 1-10 based on:
@@ -307,7 +307,7 @@ from functools import lru_cache
 import hashlib
 
 @lru_cache(maxsize=1000)
-def cached_llm_call(prompt: str, model: str = "gpt-4") -> str:
+def cached_llm_call(prompt: str, model: str = "advanced") -> str:
     """Cache LLM responses in memory"""
     return llm.invoke(prompt, model=model)
 
@@ -356,13 +356,14 @@ Route queries to appropriate models based on complexity:
 
 ```python
 from langchain_openai import ChatOpenAI
+from repo_support import get_advanced_model, get_default_model, get_fast_model
 
 class ModelRouter:
     def __init__(self):
         self.models = {
-            "fast": ChatOpenAI(model="gpt-3.5-turbo", temperature=0),
-            "balanced": ChatOpenAI(model="gpt-4o-mini", temperature=0),
-            "powerful": ChatOpenAI(model="gpt-4", temperature=0),
+            "fast": ChatOpenAI(model=get_fast_model(), temperature=0),
+            "balanced": ChatOpenAI(model=get_default_model(), temperature=0),
+            "powerful": ChatOpenAI(model=get_advanced_model(), temperature=0),
         }
 
     def route_and_execute(self, query: str) -> tuple[str, str, float]:
@@ -453,7 +454,7 @@ class BatchProcessor:
 
 **How**:
 - Cache hits return in < 100ms vs. 500-2000ms for API calls
-- Cheaper models respond faster (GPT-3.5: 300ms vs. GPT-4: 800ms)
+- Lower-cost tiers usually respond faster than advanced reasoning tiers
 - Batching increases throughput
 - Predictive prefetching serves likely queries instantly
 
@@ -545,7 +546,7 @@ def profile_request(query: str):
     latency = time.time() - start
 
     tokens = estimate_tokens(query, response)
-    cost = calculate_cost(tokens, model="gpt-4")
+    cost = calculate_cost(tokens, model="advanced")
 
     print(f"Latency: {latency:.3f}s | Tokens: {tokens} | Cost: ${cost:.4f}")
     return response
@@ -576,7 +577,7 @@ def cached_llm_call(cache_key: str) -> str:
     return llm.invoke(extract_prompt_from_key(cache_key))
 
 # Usage
-key = cache_key("What is Python?", model="gpt-4", temperature=0)
+key = cache_key("What is Python?", model="advanced", temperature=0)
 response = cached_llm_call(key)  # Cached on subsequent calls
 ```
 
@@ -625,14 +626,14 @@ def select_model(query: str) -> str:
 
     # Check for complex keywords
     if any(kw in query_lower for kw in COMPLEXITY_KEYWORDS["complex"]):
-        return "gpt-4"
+        return "advanced"
 
     # Check for medium keywords
     if any(kw in query_lower for kw in COMPLEXITY_KEYWORDS["medium"]):
         return "gpt-4o-mini"
 
     # Default to fast model
-    return "gpt-3.5-turbo"
+    return "fast"
 ```
 
 ### 5. Optimize Prompts Systematically
@@ -687,7 +688,7 @@ def optimization_enabled(user_id: str, feature: str) -> bool:
 if optimization_enabled(user_id, "model_routing"):
     model = select_optimal_model(query)
 else:
-    model = "gpt-4"  # Default
+    model = "advanced"  # Default
 ```
 
 ## Performance Metrics
@@ -733,16 +734,16 @@ Track these metrics to measure optimization effectiveness:
 **Analysis**:
 - 60% of queries are FAQ-style (highly repetitive)
 - 80% of queries are simple (definitions, status checks)
-- All queries use GPT-4 ($0.03/1K tokens)
+- All queries use the advanced tier ($0.03/1K tokens)
 
 **Optimization Strategy**:
 1. **Caching**: LRU cache with 1-hour TTL for FAQ responses
-2. **Model routing**: Route simple queries to GPT-3.5-turbo
+2. **Model routing**: Route simple queries to the fast tier
 3. **Prompt optimization**: Compress system prompts by 40%
 
 **Results**:
 - Cache hit rate: 58%
-- Model distribution: 75% GPT-3.5, 20% GPT-4o-mini, 5% GPT-4
+- Model distribution: 75% fast, 20% default, 5% advanced
 - Cost: $525/day (65% reduction, $29K/month savings)
 - P95 latency: 600ms (76% improvement)
 - Quality: 94% user satisfaction (vs. 96% baseline, acceptable)
@@ -765,7 +766,7 @@ Track these metrics to measure optimization effectiveness:
 - Processing time: 4 hours → 25 minutes (9.6x faster)
 - Cost per article: $0.025 → $0.008 (68% reduction)
 - Token usage: 800 → 500 tokens/article (37% reduction)
-- Quality: 91% comparable to GPT-4 outputs (blind evaluation)
+- Quality: 91% comparable to advanced-tier outputs (blind evaluation)
 
 ### Scenario 3: Multi-Language Translation Service
 
@@ -773,12 +774,12 @@ Track these metrics to measure optimization effectiveness:
 
 **Analysis**:
 - Many repeated phrases (common UI strings)
-- Simple phrases use expensive GPT-4 unnecessarily
+- Simple phrases use the advanced tier unnecessarily
 - No caching (translations re-done daily)
 
 **Optimization Strategy**:
 1. **Semantic caching**: Cache translations with similarity matching
-2. **Tiered models**: Simple phrases → GPT-3.5, complex → GPT-4
+2. **Tiered models**: Simple phrases → fast tier, complex → advanced tier
 3. **Batch processing**: Group translations by language for efficiency
 
 **Results**:
@@ -870,22 +871,22 @@ class CostAwareRouter:
         """Try cheap model first, fallback to expensive if quality insufficient"""
 
         # Try cheap model
-        cheap_response = await llm_call_async(query, model="gpt-3.5-turbo")
+        cheap_response = await llm_call_async(query, model="fast")
         cheap_cost = 0.002
 
         # Evaluate quality
         quality_score = await evaluate_quality_async(query, cheap_response)
 
         if quality_score >= self.quality_threshold:
-            return cheap_response, cheap_cost, "gpt-3.5-turbo"
+            return cheap_response, cheap_cost, "fast"
 
         # Quality insufficient, try better model
         if cheap_cost + 0.015 <= self.budget:  # Within budget
-            better_response = await llm_call_async(query, model="gpt-4")
-            return better_response, cheap_cost + 0.015, "gpt-4"
+            better_response = await llm_call_async(query, model="advanced")
+            return better_response, cheap_cost + 0.015, "advanced"
 
         # Over budget, return cheap response
-        return cheap_response, cheap_cost, "gpt-3.5-turbo (budget limit)"
+        return cheap_response, cheap_cost, "fast (budget limit)"
 ```
 
 ### 4. Multi-Tier Caching
