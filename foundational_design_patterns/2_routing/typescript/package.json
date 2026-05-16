@@ -1,0 +1,12 @@
+{
+  "name": "adp-routing-typescript",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "demo:basic": "bun run src/routing_basic.ts",
+    "demo:advanced": "bun run src/routing_advanced.ts",
+    "demo": "bun run src/routing_basic.ts",
+    "test": "bun test"
+  }
+}

@@ -1,0 +1,22 @@
+name: TypeScript Demo Smoke (Bun)
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 4 * * 1" # weekly Monday 04:00 UTC
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.9"
+
+      - name: Run TypeScript demo smoke (basic)
+        run: scripts/run_demos_smoke_typescript.sh --mode basic --with-tests

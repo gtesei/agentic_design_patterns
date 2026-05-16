@@ -4,6 +4,19 @@
 
 The **Routing Pattern** provides a standardized solution for building intelligent, context-aware agent systems by introducing conditional logic into an agent's operational framework.
 
+## TypeScript Companion
+
+This chapter includes a Bun-based TypeScript companion implementation in:
+
+- `./typescript/`
+
+Run it with:
+
+```bash
+cd typescript
+bash run.sh
+```
+
 ## How It Works
 
 The pattern operates through three key steps:

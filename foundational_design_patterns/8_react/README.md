@@ -6,6 +6,19 @@ The **ReAct Pattern** (Reasoning and Acting) is a synergistic approach that inte
 
 Unlike pure action-based agents that jump straight to tool use, or pure reasoning agents that only think without external interaction, ReAct combines both: the agent explicitly reasons about what to do, takes actions using tools, observes the results, and continues reasoning based on those observations.
 
+## TypeScript Companion
+
+This chapter includes a Bun-based TypeScript companion implementation in:
+
+- `./typescript/`
+
+Run it with:
+
+```bash
+cd typescript
+bash run.sh
+```
+
 ## Why Use This Pattern?
 
 Traditional approaches have limitations:

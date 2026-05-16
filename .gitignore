@@ -215,3 +215,7 @@ foundational_design_patterns/10_hitl/src/audit_log.json
 foundational_design_patterns/6_planning/store_db.json
 foundational_design_patterns/7_multi_agent_collaboration/run copy.sh
 IMPROVEMENT*.html
+
+# TypeScript companion artifacts
+**/typescript/node_modules/
+**/typescript/.bun/

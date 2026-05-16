@@ -4,6 +4,19 @@
 
 The **Tool Use Pattern** (also known as Function Calling) enables agentic systems to break out of the LLM's internal knowledge and interact with the external world through structured API calls, database queries, code execution, and real-world actions.
 
+## TypeScript Companion
+
+This chapter includes a Bun-based TypeScript companion implementation in:
+
+- `./typescript/`
+
+Run it with:
+
+```bash
+cd typescript
+bash run.sh
+```
+
 ## Why Use This Pattern?
 
 LLMs are trained on static datasets with knowledge cutoffs, making them unable to:
