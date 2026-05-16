@@ -960,3 +960,12 @@ The Adaptive Learning pattern enables AI agents to continuously improve through 
 ---
 
 *Adaptive learning transforms static AI agents into evolving systems that get smarter with every interaction—continuously optimizing to serve users better while adapting to changing needs and environments.*
+
+## Corporate SSL proxy note
+
+If you're behind a corporate SSL-inspecting proxy, run examples with:
+
+```bash
+AGENTIC_DISABLE_SSL=1 bash run.sh
+```
+

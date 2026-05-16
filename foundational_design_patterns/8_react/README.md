@@ -561,3 +561,12 @@ The ReAct pattern represents a significant advance in agentic AI by combining th
 ---
 
 *ReAct transforms LLMs from passive responders into active problem-solvers that think, act, and learn—making them capable of tackling complex, real-world tasks with transparency and adaptability.*
+
+## Corporate SSL proxy note
+
+If you're behind a corporate SSL-inspecting proxy, run examples with:
+
+```bash
+AGENTIC_DISABLE_SSL=1 bash run.sh
+```
+

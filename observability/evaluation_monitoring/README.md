@@ -1152,3 +1152,12 @@ The Evaluation and Monitoring pattern is essential for building reliable, high-q
 ---
 
 *Evaluation and Monitoring transforms AI agents from opaque systems into observable, measurable, and continuously improving applications—enabling confident deployment and systematic optimization in production environments.*
+
+## Corporate SSL proxy note
+
+If you're behind a corporate SSL-inspecting proxy, run examples with:
+
+```bash
+AGENTIC_DISABLE_SSL=1 bash run.sh
+```
+

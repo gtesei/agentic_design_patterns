@@ -1313,3 +1313,12 @@ The Prioritization pattern is essential for making intelligent decisions about r
 ---
 
 *Prioritization transforms chaotic task queues into strategic, value-optimized execution—ensuring that resources flow to where they matter most, deadlines are met, and no task is left behind indefinitely.*
+
+## Corporate SSL proxy note
+
+If you're behind a corporate SSL-inspecting proxy, run examples with:
+
+```bash
+AGENTIC_DISABLE_SSL=1 bash run.sh
+```
+

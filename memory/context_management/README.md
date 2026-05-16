@@ -1084,3 +1084,12 @@ Context Management is essential for building production-grade LLM applications t
 ---
 
 *Context Management transforms how LLMs handle information—moving from "fit everything" to "fit the right things"—enabling scalable, cost-effective, and high-quality applications that gracefully handle the complexity of real-world data.*
+
+## Corporate SSL proxy note
+
+If you're behind a corporate SSL-inspecting proxy, run examples with:
+
+```bash
+AGENTIC_DISABLE_SSL=1 bash run.sh
+```
+

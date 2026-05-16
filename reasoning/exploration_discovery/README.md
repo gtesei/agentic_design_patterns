@@ -1164,3 +1164,12 @@ The Exploration and Discovery pattern represents a fundamental shift from determ
 ---
 
 *The Exploration and Discovery pattern empowers AI agents to venture beyond the obvious, systematically uncovering novel, diverse, and valuable solutions in open-ended problem spaces—turning uncertainty from a challenge into an opportunity for creative breakthrough.*
+
+## Corporate SSL proxy note
+
+If you're behind a corporate SSL-inspecting proxy, run examples with:
+
+```bash
+AGENTIC_DISABLE_SSL=1 bash run.sh
+```
+

@@ -1116,3 +1116,12 @@ The Model Context Protocol (MCP) represents a paradigm shift in how we integrate
 ---
 
 *MCP transforms LLMs from closed systems into open platforms—enabling a future where AI capabilities can be shared, discovered, and composed as easily as we use apps on our phones or packages in programming languages.*
+
+## Corporate SSL proxy note
+
+If you're behind a corporate SSL-inspecting proxy, run examples with:
+
+```bash
+AGENTIC_DISABLE_SSL=1 bash run.sh
+```
+

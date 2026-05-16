@@ -73,3 +73,12 @@ User Input → Router (Intent Classification) → Handler Selection → Executio
 ---
 
 *This pattern is essential for building sophisticated agent systems that can intelligently handle diverse user needs.*
+
+## Corporate SSL proxy note
+
+If you're behind a corporate SSL-inspecting proxy, run examples with:
+
+```bash
+AGENTIC_DISABLE_SSL=1 bash run.sh
+```
+

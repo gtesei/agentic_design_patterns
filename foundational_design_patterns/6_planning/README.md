@@ -226,3 +226,12 @@ The Planning Pattern—especially when combined with code-as-plan—is a powerfu
 ---
 
 *Planning elevates agents from reactive executors to strategic problem-solvers capable of tackling complex, real-world objectives.*
+
+## Corporate SSL proxy note
+
+If you're behind a corporate SSL-inspecting proxy, run examples with:
+
+```bash
+AGENTIC_DISABLE_SSL=1 bash run.sh
+```
+

@@ -1086,3 +1086,12 @@ The Goal Management pattern provides a powerful framework for orchestrating comp
 ---
 
 *Goal Management transforms complex, overwhelming objectives into structured, trackable, and adaptable execution plans—enabling agents to tackle long-running projects with clarity, efficiency, and resilience.*
+
+## Corporate SSL proxy note
+
+If you're behind a corporate SSL-inspecting proxy, run examples with:
+
+```bash
+AGENTIC_DISABLE_SSL=1 bash run.sh
+```
+
