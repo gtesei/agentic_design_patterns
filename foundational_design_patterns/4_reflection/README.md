@@ -324,3 +324,12 @@ Reflection is an essential pattern for agentic systems requiring high-quality, a
 ---
 
 *Reflection transforms good-enough outputs into polished, production-ready results—but reserve it for tasks where quality truly matters.*
+
+## Corporate SSL proxy note
+
+If you're behind a corporate SSL-inspecting proxy, run examples with:
+
+```bash
+AGENTIC_DISABLE_SSL=1 bash run.sh
+```
+

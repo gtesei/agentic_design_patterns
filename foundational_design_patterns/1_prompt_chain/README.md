@@ -162,3 +162,12 @@ This "divide-and-conquer" strategy is essential for developing robust, context-a
 ---
 
 *Prompt chaining transforms complex AI tasks from monolithic operations into manageable, reliable pipelines.*
+
+## Corporate SSL proxy note
+
+If you're behind a corporate SSL-inspecting proxy, run examples with:
+
+```bash
+AGENTIC_DISABLE_SSL=1 bash run.sh
+```
+

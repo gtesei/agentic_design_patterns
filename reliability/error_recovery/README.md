@@ -917,3 +917,12 @@ The Error Recovery pattern is essential for building resilient, production-ready
 ---
 
 *Error Recovery transforms fragile systems into resilient ones—enabling autonomous operation, graceful degradation, and continuous improvement in the face of inevitable failures.*
+
+## Corporate SSL proxy note
+
+If you're behind a corporate SSL-inspecting proxy, run examples with:
+
+```bash
+AGENTIC_DISABLE_SSL=1 bash run.sh
+```
+

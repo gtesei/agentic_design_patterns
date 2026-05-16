@@ -1047,3 +1047,12 @@ The Resource Optimization Pattern is essential for building cost-effective, high
 ---
 
 *Resource Optimization transforms expensive, slow AI systems into cost-effective, high-performance applications—enabling sustainable scaling without compromising user experience.*
+
+## Corporate SSL proxy note
+
+If you're behind a corporate SSL-inspecting proxy, run examples with:
+
+```bash
+AGENTIC_DISABLE_SSL=1 bash run.sh
+```
+

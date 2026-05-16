@@ -1067,3 +1067,12 @@ The Agent-to-Agent Communication pattern provides the infrastructure for buildin
 ---
 
 *Agent-to-Agent Communication transforms isolated AI agents into collaborative ecosystems—enabling them to discover, coordinate, and work together dynamically while maintaining independence and observability.*
+
+## Corporate SSL proxy note
+
+If you're behind a corporate SSL-inspecting proxy, run examples with:
+
+```bash
+AGENTIC_DISABLE_SSL=1 bash run.sh
+```
+

@@ -1582,3 +1582,12 @@ The Graph of Thoughts pattern represents the cutting edge of LLM reasoning, enab
 ---
 
 *Graph of Thoughts transforms LLMs from hierarchical thinkers into networked reasoners capable of synthesizing diverse perspectives, building consensus, and iteratively refining solutions—enabling AI to tackle the most complex, multi-faceted problems that require collaborative intelligence.*
+
+## Corporate SSL proxy note
+
+If you're behind a corporate SSL-inspecting proxy, run examples with:
+
+```bash
+AGENTIC_DISABLE_SSL=1 bash run.sh
+```
+

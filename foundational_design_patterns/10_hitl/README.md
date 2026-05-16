@@ -1434,3 +1434,12 @@ The Human-in-the-Loop pattern is essential for deploying AI agents in high-stake
 ---
 
 *Human-in-the-Loop transforms autonomous agents into collaborative partners—combining AI efficiency with human judgment, accountability, and trust to tackle complex real-world problems safely and responsibly.*
+
+## Corporate SSL proxy note
+
+If you're behind a corporate SSL-inspecting proxy, run examples with:
+
+```bash
+AGENTIC_DISABLE_SSL=1 bash run.sh
+```
+

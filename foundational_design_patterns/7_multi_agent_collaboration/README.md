@@ -283,3 +283,12 @@ Use **Multi-Agent Collaboration** when:
 ---
 
 *Multi-Agent Collaboration turns a single LLM into a coordinated “team” of role-specialized agents—making complex, multi-step work more modular, scalable, and reliable.*
+
+## Corporate SSL proxy note
+
+If you're behind a corporate SSL-inspecting proxy, run examples with:
+
+```bash
+AGENTIC_DISABLE_SSL=1 bash run.sh
+```
+

@@ -1025,3 +1025,12 @@ Memory Management is essential for creating AI agents that feel natural, persona
 ---
 
 *Memory Management transforms stateless AI interactions into continuous, personalized relationships—enabling agents that truly remember, learn, and grow with their users over time.*
+
+## Corporate SSL proxy note
+
+If you're behind a corporate SSL-inspecting proxy, run examples with:
+
+```bash
+AGENTIC_DISABLE_SSL=1 bash run.sh
+```
+

@@ -950,3 +950,12 @@ The Guardrails pattern is essential for production AI systems, providing safety,
 ---
 
 *Guardrails transform AI systems from unpredictable black boxes into trustworthy, compliant, and safe applications that protect all stakeholders while maintaining functionality and user satisfaction.*
+
+## Corporate SSL proxy note
+
+If you're behind a corporate SSL-inspecting proxy, run examples with:
+
+```bash
+AGENTIC_DISABLE_SSL=1 bash run.sh
+```
+

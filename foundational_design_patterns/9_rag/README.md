@@ -1044,3 +1044,12 @@ Retrieval-Augmented Generation represents a fundamental shift in how we build LL
 ---
 
 *RAG transforms LLMs from knowledge repositories into knowledge navigators—dynamically accessing the right information at the right time to provide accurate, grounded, and trustworthy responses.*
+
+## Corporate SSL proxy note
+
+If you're behind a corporate SSL-inspecting proxy, run examples with:
+
+```bash
+AGENTIC_DISABLE_SSL=1 bash run.sh
+```
+

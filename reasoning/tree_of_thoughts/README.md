@@ -995,3 +995,12 @@ The Tree of Thoughts pattern represents a significant advancement in LLM reasoni
 ---
 
 *Tree of Thoughts transforms LLMs from linear reasoners into strategic problem-solvers that can explore, evaluate, and optimize—unlocking solutions to problems that require deliberation, backtracking, and systematic exploration of alternatives.*
+
+## Corporate SSL proxy note
+
+If you're behind a corporate SSL-inspecting proxy, run examples with:
+
+```bash
+AGENTIC_DISABLE_SSL=1 bash run.sh
+```
+

@@ -254,3 +254,12 @@ However, it introduces complexity in development, debugging, and monitoring. Car
 ---
 
 *Parallelization transforms sequential bottlenecks into concurrent, efficient workflows—but use it judiciously where it truly adds value.*
+
+## Corporate SSL proxy note
+
+If you're behind a corporate SSL-inspecting proxy, run examples with:
+
+```bash
+AGENTIC_DISABLE_SSL=1 bash run.sh
+```
+

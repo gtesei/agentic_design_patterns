@@ -511,3 +511,12 @@ The Tool Use pattern is fundamental to building capable agentic systems that can
 ---
 
 *Tool Use transforms static LLMs into dynamic agents capable of real-world interaction—making them invaluable for production applications.*
+
+## Corporate SSL proxy note
+
+If you're behind a corporate SSL-inspecting proxy, run examples with:
+
+```bash
+AGENTIC_DISABLE_SSL=1 bash run.sh
+```
+

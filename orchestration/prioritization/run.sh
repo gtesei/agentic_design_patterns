@@ -10,6 +10,12 @@ echo "  Prioritization Pattern Examples"
 echo "========================================="
 echo ""
 
+if [ -n "${AGENT_DISABLE_SSL:-}" ] && [ -z "${AGENTIC_DISABLE_SSL:-}" ]; then
+    echo "Warning: AGENT_DISABLE_SSL is set, but the supported variable is AGENTIC_DISABLE_SSL."
+    echo "         Use: AGENTIC_DISABLE_SSL=1 bash run.sh"
+    echo ""
+fi
+
 if [ -z "${AGENTIC_DISABLE_SSL:-}" ]; then
     echo "Note: if you are on a corporate SSL-inspecting network and see"
     echo "certificate verification failures, rerun with:"
@@ -24,9 +30,16 @@ if [ ! -f "../../.env" ]; then
     exit 1
 fi
 
+is_ssl_error() {
+    local log_file="$1"
+    grep -Eqi "CERTIFICATE_VERIFY_FAILED|SSL: CERTIFICATE_VERIFY_FAILED|httpx\.ConnectError|openai\.APIConnectionError" "$log_file"
+}
+
 run_example() {
     local script_path="$1"
     local tmp_log
+    local retry_log
+
     tmp_log="$(mktemp)"
 
     set +e
@@ -34,22 +47,43 @@ run_example() {
     REQUESTS_CA_BUNDLE="${REQUESTS_CA_BUNDLE:-}" \
     CURL_CA_BUNDLE="${CURL_CA_BUNDLE:-}" \
     AGENTIC_DISABLE_SSL="${AGENTIC_DISABLE_SSL:-}" \
-    uv run python "$script_path" 2>&1 | tee "$tmp_log"
+    uv run python "$script_path" < <(yes "") 2>&1 | tee "$tmp_log"
     local rc=${PIPESTATUS[0]}
     set -e
 
-    if [ "$rc" -ne 0 ]; then
-        if grep -Eqi "CERTIFICATE_VERIFY_FAILED|SSL: CERTIFICATE_VERIFY_FAILED|httpx\.ConnectError|openai\.APIConnectionError" "$tmp_log" && [ -z "${AGENTIC_DISABLE_SSL:-}" ]; then
-            echo ""
-            echo "Detected SSL certificate verification failure."
-            echo "If you are behind a corporate SSL-inspecting proxy, rerun with:"
-            echo "  AGENTIC_DISABLE_SSL=1 bash run.sh"
-        fi
+    if [ "$rc" -eq 0 ]; then
         rm -f "$tmp_log"
-        exit "$rc"
+        return 0
+    fi
+
+    if is_ssl_error "$tmp_log" && [ -z "${AGENTIC_DISABLE_SSL:-}" ]; then
+        echo ""
+        echo "Detected SSL certificate verification failure."
+        echo "Retrying once with AGENTIC_DISABLE_SSL=1 ..."
+
+        retry_log="$(mktemp)"
+        set +e
+        SSL_CERT_FILE="${SSL_CERT_FILE:-}" \
+        REQUESTS_CA_BUNDLE="${REQUESTS_CA_BUNDLE:-}" \
+        CURL_CA_BUNDLE="${CURL_CA_BUNDLE:-}" \
+        AGENTIC_DISABLE_SSL=1 \
+        uv run python "$script_path" < <(yes "") 2>&1 | tee "$retry_log"
+        local retry_rc=${PIPESTATUS[0]}
+        set -e
+
+        rm -f "$tmp_log" "$retry_log"
+
+        if [ "$retry_rc" -eq 0 ]; then
+            return 0
+        fi
+
+        echo ""
+        echo "Retry with AGENTIC_DISABLE_SSL=1 also failed."
+        exit "$retry_rc"
     fi
 
     rm -f "$tmp_log"
+    exit "$rc"
 }
 
 echo "Select an example to run:"
