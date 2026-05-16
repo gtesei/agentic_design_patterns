@@ -362,6 +362,35 @@ In this approach, human experts define overarching policies, while AI handles im
 
 ---
 
+### 1️⃣1️⃣ [Structured Outputs](./foundational_design_patterns/11_structured_outputs/)
+**Enforce schema-valid LLM outputs for reliable downstream automation**
+```python
+# Naive parsing (brittle)
+text → prompt_json_request → parse_string_json → runtime_fail
+
+# Structured outputs (reliable)
+text → response_schema(Pydantic/JSON Schema) → validated_object → safe_automation
+```
+
+**Key benefits:** Schema guarantees, lower parsing failures, safer agent loops
+
+[**📖 Learn More →**](./foundational_design_patterns/11_structured_outputs/README.md)
+
+---
+
+### 1️⃣2️⃣ [Computer Use](./foundational_design_patterns/12_computer_use/)
+**Automate browser/UI workflows with explicit safety controls**
+```python
+# Observe → Think → Act loop for UI tasks
+screenshot/state → reasoning → ui_action(click/type/navigate) → observation → iterate
+```
+
+**Key benefits:** Legacy-system automation, UI QA workflows, non-API task coverage
+
+[**📖 Learn More →**](./foundational_design_patterns/12_computer_use/README.md)
+
+---
+
 ## 🧠 Advanced Reasoning Patterns
 
 ### [Tree of Thoughts](./reasoning/tree_of_thoughts/) (Yao et al., 2023)
@@ -413,6 +442,19 @@ query → [explore_new | exploit_best] → evaluate → update_strategy → iter
 
 ---
 
+### [Deep Research](./reasoning/deep_research/)
+**Run iterative research loops with gap-driven follow-up queries**
+```python
+# Plan → Search → Read → Reflect → Follow-up → Synthesize
+question → sub_queries → retrieve_sources → identify_gaps → refine_queries → cited_output
+```
+
+**Key benefits:** Better coverage, fewer blind spots, stronger citation quality
+
+[**📖 Learn More →**](./reasoning/deep_research/README.md)
+
+---
+
 ## 🛡️ Reliability Patterns
 
 ### [Error Recovery](./reliability/error_recovery/)
@@ -454,6 +496,30 @@ complex_goal → decompose → [subgoal1, subgoal2, subgoal3] →
 **Key benefits:** Structured execution, progress visibility, adaptive planning, resource optimization
 
 [**📖 Learn More →**](./orchestration/goal_management/README.md)
+
+---
+
+### [Subagents (Orchestrator-Worker)](./orchestration/subagents/)
+**Spawn focused subagents with isolated context and structured summaries**
+```python
+lead_agent → decompose_task → spawn_workers_parallel → structured_summaries → synthesize
+```
+
+**Key benefits:** Context isolation, parallel throughput, cleaner synthesis
+
+[**📖 Learn More →**](./orchestration/subagents/README.md)
+
+---
+
+### [Skills](./orchestration/skills/)
+**Load capability packages on demand via metadata-first discovery**
+```python
+skill_catalog(metadata) → select_relevant_skill → load_SKILL_body → execute
+```
+
+**Key benefits:** Tool-scaling beyond flat lists, lower prompt load, modular capabilities
+
+[**📖 Learn More →**](./orchestration/skills/README.md)
 
 ---
 
@@ -634,6 +700,31 @@ uv run python src/reflection_stateful_loop.py
 cd ../8_react
 uv sync
 uv run python src/react_agent.py
+
+# Try Structured Outputs (schema reliability)
+cd ../11_structured_outputs
+uv sync
+uv run python src/structured_outputs_basic.py
+
+# Try Computer Use (UI/browser automation framing)
+cd ../12_computer_use
+uv sync
+uv run python src/computer_use_basic.py
+
+# Try Subagents (orchestrator-worker)
+cd ../../orchestration/subagents
+uv sync
+uv run python src/subagents_basic.py
+
+# Try Skills (agent-loadable capability packages)
+cd ../skills
+uv sync
+uv run python src/skills_basic.py
+
+# Try Deep Research (iterative research loop)
+cd ../../reasoning/deep_research
+uv sync
+uv run python src/deep_research_basic.py
 ```
 
 ### Run The Reliability Gate
@@ -686,6 +777,14 @@ GitHub Actions runs the same smoke gate on pushes and pull requests:
 
 **Need transparent decision-making?** → **ReAct** (explicit reasoning) + **Evaluation & Monitoring**
 
+**Need strict machine-readable outputs?** → **Structured Outputs** + **Guardrails**
+
+**Need UI/browser automation?** → **Computer Use** + **HITL**
+
+**Need iterative cited synthesis?** → **Deep Research** + **RAG**
+
+**Need scalable multi-capability agents?** → **Subagents** + **Skills**
+
 **Knowledge-grounded responses?** → **RAG** retrieves relevant documents before generation
 
 **Complex reasoning tasks?** → **Tree of Thoughts** (systematic) or **Graph of Thoughts** (multi-perspective)
@@ -714,12 +813,15 @@ agentic_design_patterns/
 │   ├── 7_multi_agent_collaboration/  # Coordinated agents
 │   ├── 8_react/                # Reasoning and acting
 │   ├── 9_rag/                  # Retrieval-augmented generation
-│   └── 10_hitl/                # Human-in-the-loop
+│   ├── 10_hitl/                # Human-in-the-loop
+│   ├── 11_structured_outputs/  # Schema-constrained outputs
+│   └── 12_computer_use/        # Browser/UI automation
 │
 ├── reasoning/                  # Advanced reasoning patterns
 │   ├── tree_of_thoughts/       # Systematic exploration
 │   ├── graph_of_thoughts/      # Non-hierarchical reasoning
-│   └── exploration_discovery/  # Novel solution discovery
+│   ├── exploration_discovery/  # Novel solution discovery
+│   └── deep_research/          # Iterative research loops
 │
 ├── reliability/                # Safety and resilience
 │   ├── error_recovery/         # Failure handling
@@ -727,6 +829,8 @@ agentic_design_patterns/
 │
 ├── orchestration/              # Multi-agent coordination
 │   ├── goal_management/        # Objective decomposition
+│   ├── subagents/              # Orchestrator-worker topology
+│   ├── skills/                 # Agent-loadable capability packages
 │   ├── agent_communication/    # Inter-agent messaging
 │   ├── mcp/                    # Model Context Protocol
 │   └── prioritization/         # Task ranking
@@ -791,6 +895,11 @@ agentic_design_patterns/
 
 **Phase 6: Continuous Improvement**
 24. [Adaptive Learning](./learning/adaptive_learning/) - Learning from feedback
+25. [Structured Outputs](./foundational_design_patterns/11_structured_outputs/) - Schema reliability
+26. [Computer Use](./foundational_design_patterns/12_computer_use/) - Browser/UI automation
+27. [Subagents](./orchestration/subagents/) - Orchestrator-worker topology
+28. [Skills](./orchestration/skills/) - Capability packages
+29. [Deep Research](./reasoning/deep_research/) - Iterative research loops
 
 Each pattern builds on concepts from previous ones. Start with Phase 1, then explore other phases based on your needs.
 

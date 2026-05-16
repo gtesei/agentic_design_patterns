@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentic_design_patterns"
+version = "0.1.0"
+description = "Deep Research Pattern Implementation"
+requires-python = ">=3.11"
+authors = [
+    { name = "Gino Tesei", email = "gteseil@yahoo.com" }
+]
+dependencies = [
+    "langchain>=1.2.3",
+    "langchain-openai>=1.1.7",
+    "langgraph>=1.0.5",
+    "python-dotenv>=1.0.0",
+    "wikipedia>=1.4.0",
+    "requests>=2.31.0",
+]
+
+[tool.ruff]
+src = ["src"]
+target-version = "py311"
+line-length = 120
+fix = true
