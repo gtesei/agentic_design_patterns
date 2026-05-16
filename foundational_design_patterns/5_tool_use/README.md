@@ -520,3 +520,18 @@ If you're behind a corporate SSL-inspecting proxy, run examples with:
 AGENTIC_DISABLE_SSL=1 bash run.sh
 ```
 
+## What good looks like
+
+### Expected output
+- Pattern banner appears and phases are clearly logged.
+- The main pipeline completes with a final synthesized result.
+- No uncaught exceptions in the happy path.
+
+### Common failure cases
+- `OPENAI_API_KEY` missing.
+- Corporate SSL interception errors (use `AGENTIC_DISABLE_SSL=1 bash run.sh`).
+- Optional dependency/setup mismatch for advanced variants.
+
+### Sample trace excerpt
+See `tests/sample_trace.md` for a normalized happy-path trace.
+

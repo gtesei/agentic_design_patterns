@@ -1,0 +1,19 @@
+import importlib.util
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+SRC = ROOT / "src"
+
+
+def load_module(filename: str):
+    path = SRC / filename
+    spec = importlib.util.spec_from_file_location(path.stem, path)
+    module = importlib.util.module_from_spec(spec)
+    assert spec and spec.loader
+    spec.loader.exec_module(module)
+    return module
+
+
+def test_smoke_imports() -> None:
+    module = load_module("example.py")
+    assert hasattr(module, "main")

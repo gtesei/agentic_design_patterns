@@ -39,7 +39,7 @@ class AgenticRAGState:
 
 
 llm = ChatOpenAI(model=get_default_model(), temperature=0)
-retriever = HybridRetriever(build_support_chunks())
+retriever: HybridRetriever | None = None
 
 
 def rewrite_query(state: AgenticRAGState) -> AgenticRAGState:
@@ -52,6 +52,10 @@ def rewrite_query(state: AgenticRAGState) -> AgenticRAGState:
 
 
 def retrieve(state: AgenticRAGState) -> AgenticRAGState:
+    global retriever
+    if retriever is None:
+        retriever = HybridRetriever(build_support_chunks())
+
     retrieved = retriever.retrieve(state.rewritten_query or state.question, top_k=5)
     state.retrieved_context = [f"[{c.source}] {c.text}" for c, _ in retrieved]
     return state

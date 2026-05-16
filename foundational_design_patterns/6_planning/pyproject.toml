@@ -16,7 +16,8 @@ dependencies = [
     "langchain-openai>=1.1.7",
     "langgraph>=1.0.5",
     "tinydb",
-    "pandas"
+    "pandas",
+    "pytest>=8.0.0",
 ]
 
 [project.optional-dependencies]

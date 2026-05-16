@@ -1,0 +1,7 @@
+# Sample Trace (happy path)
+
+- phase=startup
+- phase=planning
+- phase=execution
+- phase=validation
+- phase=final_output

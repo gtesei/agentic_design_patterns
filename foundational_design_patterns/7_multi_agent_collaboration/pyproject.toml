@@ -18,7 +18,8 @@ dependencies = [
     "tinydb",
     "tavily-python",
     "wikipedia",
-    "dlai-grader"
+    "dlai-grader",
+    "pytest>=8.0.0",
 ]
 
 [project.optional-dependencies]

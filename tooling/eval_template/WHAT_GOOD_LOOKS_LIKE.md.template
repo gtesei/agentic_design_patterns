@@ -1,0 +1,14 @@
+## What good looks like
+
+### Expected output
+- Script starts and prints the chapter banner.
+- Core pipeline phases are visible in logs.
+- Final section prints a concise result object/text.
+
+### Common failure cases
+- Missing `OPENAI_API_KEY`
+- Corporate SSL interception (`AGENTIC_DISABLE_SSL=1`)
+- Optional dependency not installed
+
+### Sample trace
+See `tests/sample_trace.md`.
