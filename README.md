@@ -47,6 +47,62 @@ These patterns represent the evolution from:
 
 ---
 
+## 🏗️ Repository Structure
+```
+agentic_design_patterns/
+├── foundational_design_patterns/
+│   ├── 1_prompt_chain/         # Sequential task decomposition
+│   ├── 2_routing/              # Intelligent query routing
+│   ├── 3_parallelization/      # Concurrent execution
+│   ├── 4_reflection/           # Iterative refinement
+│   ├── 5_tool_use/             # External system integration
+│   ├── 6_planning/             # Strategic task planning
+│   ├── 7_multi_agent_collaboration/  # Coordinated agents
+│   ├── 8_react/                # Reasoning and acting
+│   ├── 9_rag/                  # Retrieval-augmented generation
+│   ├── 10_hitl/                # Human-in-the-loop
+│   ├── 11_structured_outputs/  # Schema-constrained outputs
+│   └── 12_computer_use/        # Browser/UI automation
+│
+├── reasoning/                  # Advanced reasoning patterns
+│   ├── tree_of_thoughts/       # Systematic exploration
+│   ├── graph_of_thoughts/      # Non-hierarchical reasoning
+│   ├── exploration_discovery/  # Novel solution discovery
+│   └── deep_research/          # Iterative research loops
+│
+├── reliability/                # Safety and resilience
+│   ├── error_recovery/         # Failure handling
+│   └── guardrails/             # Safety constraints
+│
+├── orchestration/              # Multi-agent coordination
+│   ├── goal_management/        # Objective decomposition
+│   ├── subagents/              # Orchestrator-worker topology
+│   ├── skills/                 # Agent-loadable capability packages
+│   ├── agent_communication/    # Inter-agent messaging
+│   ├── mcp/                    # Model Context Protocol
+│   └── prioritization/         # Task ranking
+│
+├── observability/              # Monitoring and optimization
+│   ├── evaluation_monitoring/  # Metrics and quality
+│   └── resource_optimization/  # Cost and performance
+│
+├── memory/                     # Context and history
+│   ├── memory_management/      # Long-term memory
+│   └── context_management/     # Context optimization
+│
+├── learning/                   # Continuous improvement
+│   └── adaptive_learning/      # Learning from feedback
+│
+├── tests/                      # Repo-level reliability smoke tests
+├── .github/workflows/          # CI workflows
+├── repo_support.py             # Shared runtime/bootstrap helper
+├── .env                        # Environment variables
+├── LICENSE                     # MIT License
+└── README.md                   # This file
+```
+
+---
+
 ## 📚 Foundational Patterns
 
 ### 1️⃣ [Prompt Chaining](./foundational_design_patterns/1_prompt_chain/)
@@ -797,62 +853,6 @@ GitHub Actions runs the same smoke gate on pushes and pull requests:
 
 **Resource constraints?** → **Prioritization** + **Resource Optimization** + **Context Management**
 
-
----
-
-## 🏗️ Repository Structure
-```
-agentic_design_patterns/
-├── foundational_design_patterns/
-│   ├── 1_prompt_chain/         # Sequential task decomposition
-│   ├── 2_routing/              # Intelligent query routing
-│   ├── 3_parallelization/      # Concurrent execution
-│   ├── 4_reflection/           # Iterative refinement
-│   ├── 5_tool_use/             # External system integration
-│   ├── 6_planning/             # Strategic task planning
-│   ├── 7_multi_agent_collaboration/  # Coordinated agents
-│   ├── 8_react/                # Reasoning and acting
-│   ├── 9_rag/                  # Retrieval-augmented generation
-│   ├── 10_hitl/                # Human-in-the-loop
-│   ├── 11_structured_outputs/  # Schema-constrained outputs
-│   └── 12_computer_use/        # Browser/UI automation
-│
-├── reasoning/                  # Advanced reasoning patterns
-│   ├── tree_of_thoughts/       # Systematic exploration
-│   ├── graph_of_thoughts/      # Non-hierarchical reasoning
-│   ├── exploration_discovery/  # Novel solution discovery
-│   └── deep_research/          # Iterative research loops
-│
-├── reliability/                # Safety and resilience
-│   ├── error_recovery/         # Failure handling
-│   └── guardrails/             # Safety constraints
-│
-├── orchestration/              # Multi-agent coordination
-│   ├── goal_management/        # Objective decomposition
-│   ├── subagents/              # Orchestrator-worker topology
-│   ├── skills/                 # Agent-loadable capability packages
-│   ├── agent_communication/    # Inter-agent messaging
-│   ├── mcp/                    # Model Context Protocol
-│   └── prioritization/         # Task ranking
-│
-├── observability/              # Monitoring and optimization
-│   ├── evaluation_monitoring/  # Metrics and quality
-│   └── resource_optimization/  # Cost and performance
-│
-├── memory/                     # Context and history
-│   ├── memory_management/      # Long-term memory
-│   └── context_management/     # Context optimization
-│
-├── learning/                   # Continuous improvement
-│   └── adaptive_learning/      # Learning from feedback
-│
-├── tests/                      # Repo-level reliability smoke tests
-├── .github/workflows/          # CI workflows
-├── repo_support.py             # Shared runtime/bootstrap helper
-├── .env                        # Environment variables
-├── LICENSE                     # MIT License
-└── README.md                   # This file
-```
 
 ---
 
