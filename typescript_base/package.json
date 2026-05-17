@@ -1,0 +1,17 @@
+{
+  "name": "agentic-design-patterns-ts",
+  "private": true,
+  "version": "0.1.0",
+  "description": "TypeScript track for agentic-design-patterns. Workspace root + shared config. Each pattern under ../foundational_design_patterns/*/typescript/ is a workspace member.",
+  "type": "module",
+  "workspaces": [
+    "../foundational_design_patterns/*/typescript"
+  ],
+  "scripts": {
+    "smoke": "bash ../scripts/run_demos_smoke_typescript.sh --mode basic",
+    "demos": "bash ../scripts/run_demos_smoke_typescript.sh --mode full"
+  },
+  "engines": {
+    "bun": ">=1.3.0"
+  }
+}
