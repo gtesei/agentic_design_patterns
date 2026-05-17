@@ -1,0 +1,21 @@
+{
+  "name": "@adp/react",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "ReAct — TypeScript ports of src/react_agent.py and src/react_agent_advanced.py.",
+  "scripts": {
+    "demo": "bun run src/react_agent.ts",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@langchain/core": "^1.0.0",
+    "@langchain/langgraph": "^1.0.0",
+    "@langchain/openai": "^1.0.0",
+    "langchain": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/bun": "^1.3.0",
+    "typescript": "^5.6.0"
+  }
+}
