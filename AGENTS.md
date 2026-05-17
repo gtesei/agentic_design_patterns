@@ -8,7 +8,7 @@ This file follows the [AGENTS.md convention](https://agents.md) so any compliant
 
 ## 1. Repository purpose & layout
 
-Educational, hands-on catalog of agentic-AI design patterns. Originally Python (LangChain / LangGraph); a curated **TypeScript track** mirrors a subset of patterns 1:1. Each pattern is self-contained, runnable, and accompanied by a long-form `README.md`. Reference material, not a deployable app.
+Educational, hands-on catalog of agentic-AI design patterns. Originally Python (LangChain / LangGraph); a curated **TypeScript track** now mirrors the entire foundational pattern set 1:1. Each pattern is self-contained, runnable, and accompanied by a long-form `README.md`. Reference material, not a deployable app.
 
 Patterns live in 7 top-level category directories:
 
@@ -22,7 +22,7 @@ Patterns live in 7 top-level category directories:
 
 Each pattern dir has its own `pyproject.toml`, `uv.lock`, `run.sh`, `README.md`, `QUICK_START.md`, and `src/` with example scripts (`*_basic.py`, `*_advanced.py`, or variants like `_plan_and_act.py` / `_hiplan.py`). Pattern packages all declare `name = "agentic_design_patterns"` but they are **independent uv environments**, not a single workspace — `cd` into the specific dir to install/run/lint.
 
-TypeScript ports live under `<pattern>/typescript/` (currently for `1_prompt_chain`, `5_tool_use`, `6_planning` only). A single **bun workspace** with shared config lives in `typescript_base/` (contains `package.json`, `tsconfig.base.json`, `TYPESCRIPT.md`) and covers all pattern packages via the `../foundational_design_patterns/*/typescript` glob.
+TypeScript ports live under `<pattern>/typescript/` for every pattern in `foundational_design_patterns/`. A single **bun workspace** with shared config lives in `typescript_base/` (contains `package.json`, `tsconfig.base.json`, `TYPESCRIPT.md`) and covers all foundational TypeScript packages via the `../foundational_design_patterns/*/typescript` glob.
 
 ---
 
@@ -36,7 +36,7 @@ bash run.sh                        # runs every script the pattern ships
 uv run python src/<script>.py      # run one script directly
 ```
 
-Some `run.sh` scripts are interactive menus (`9_rag`, `10_hitl`). For non-interactive use, prefer `uv run python` directly. `7_multi_agent_collaboration` needs a local `.env` with `TAVILY_API_KEY` in the pattern dir.
+Some `run.sh` scripts are interactive menus (`9_rag`, `10_hitl`). For non-interactive use, prefer `uv run python` directly. `7_multi_agent_collaboration` needs `TAVILY_API_KEY` in the repo-root `.env`.
 
 ### TypeScript
 ```bash
@@ -53,7 +53,7 @@ Or skip the manual install — each `run.sh` auto-bootstraps `typescript_base/no
 - `scripts/run_demos_smoke.sh --mode basic|full` — Python
 - `scripts/run_demos_smoke_typescript.sh --mode basic|full` — TS
 
-Same flag shape, same PASS/FAIL/SKIP_INFRA classification, separate log dirs (`.demo-smoke-logs/`, `.demo-smoke-logs-ts/`).
+Same flag shape, same PASS/FAIL/SKIP_INFRA classification, separate log dirs (`.demo-smoke-logs/`, `.demo-smoke-logs-ts/`). The TypeScript smoke runner is used both locally and in CI; `basic` is the default PR-safe mode and `full` is for manual or scheduled live-demo validation.
 
 ---
 
@@ -101,6 +101,7 @@ Both `uv.lock` (Python) and `bun.lock` (TS) are gitignored. This is a deliberate
 
 - **Ruff** per pattern (`pyproject.toml`): `line-length = 120`, `target-version = "py39"`. Run from inside the pattern dir.
 - **TypeScript**: `bun --bun tsc --noEmit` per package, `bun test` for smoke.
+- **CI reliability gate**: Python `unittest` for repo bootstrap/runtime checks, plus foundational TypeScript type-checks and offline smoke.
 - No repo-wide lint command exists.
 
 ---
@@ -109,6 +110,8 @@ Both `uv.lock` (Python) and `bun.lock` (TS) are gitignored. This is a deliberate
 
 ### Python ↔ TypeScript parity is strict
 When a pattern exists in both languages, the TS port must **mirror the Python verbatim**: same scenario, same example data, same identifiers, same structural primitives (LCEL `\|` ↔ `RunnableSequence.pipe()`, `ThreadPoolExecutor` ↔ `Promise.all`, `StateGraph` ↔ `StateGraph`). No deviations.
+
+All patterns in `foundational_design_patterns/` now have TypeScript ports. When changing Python under that category, assume the matching `typescript/` package must be checked and often updated in the same PR.
 
 When refactoring scenarios or restructuring, hit **both languages in the same PR**. Cross-language drift defeats the purpose of dual-language coverage and was the source of every parity bug in this repo's history.
 
@@ -227,8 +230,8 @@ Multi-week "2026 Edition" refresh. Canonical roadmap: `IMPROVEMENT_v2.md`.
 | **P2** stack modernization sweep | partial — some Python files refreshed |
 | **P3** refresh top-5 stale patterns | in-flight — `5_tool_use` and `6_planning` on anchor scenarios; `9_rag`, `1_prompt_chain` still on legacy toys |
 | **P4** new HIGH chapters (Structured Outputs, Subagents, Skills, Deep Research, Computer Use) | not started |
-| **P5** cross-cutting evals/traces/tests | partial — smoke runners exist |
-| **P6** TypeScript track | initial subset done (`1_prompt_chain`, `5_tool_use`, `6_planning`) — direct Python ports |
+| **P5** cross-cutting evals/traces/tests | partial — Python + foundational TypeScript smoke gates exist |
+| **P6** TypeScript track | foundational set done (`1_prompt_chain` through `12_computer_use`, including `9_rag`) — direct Python ports |
 | **P7** restructure (merges/splits/renames) | not started |
 | **P8** Voice, Managed-vs-Custom, etc. | deferred |
 
@@ -246,8 +249,9 @@ When the user asks "what's next?" or "plan and execute P<N>", `IMPROVEMENT_v2.md
 | `CONTRIBUTING.md` | Pattern template, code style, Ruff config |
 | `repo_support.py` | Shared Python helper: `find_dotenv`, `get_default_model`, `get_advanced_model`, `configure_example` |
 | `scripts/run_demos_smoke.sh` | Python smoke runner |
-| `scripts/run_demos_smoke_typescript.sh` | TS smoke runner |
+| `scripts/run_demos_smoke_typescript.sh` | TS smoke runner (`basic` for offline/CI, `full` for live demos) |
 | `typescript_base/` | Bun workspace root: `package.json`, `tsconfig.base.json`, `TYPESCRIPT.md` |
+| `.github/workflows/reliability-gate.yml` | CI gate for Python runtime smoke + foundational TypeScript type/smoke checks |
 
 ---
 

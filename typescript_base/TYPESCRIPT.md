@@ -1,16 +1,25 @@
 # TypeScript Track
 
-The TypeScript track is a curated subset of the catalog. **Python remains canonical**; TS exists where it adds pedagogical value (type-safe tool schemas, AI SDK idioms, edge-deploy readiness) or where the reader plausibly works in Node/Bun day-to-day.
+The TypeScript track currently mirrors the **foundational patterns** in this catalog. **Python remains canonical**; TypeScript ports exist to preserve scenario-level parity while making the same design patterns accessible in the Bun/Node ecosystem.
 
 ## Current coverage
 
 | Pattern | Anchor scenario | Framework | Path |
 |---|---|---|---|
 | `1_prompt_chain` | Support Ops | Vercel AI SDK (`generateObject`) | `foundational_design_patterns/1_prompt_chain/typescript/` |
+| `2_routing` | Support Ops routing | LangChain.js LCEL (`RunnableBranch`) | `foundational_design_patterns/2_routing/typescript/` |
+| `3_parallelization` | Parallel research synthesis | LangChain.js LCEL (`RunnableMap`) | `foundational_design_patterns/3_parallelization/typescript/` |
+| `4_reflection` | Reflection loops | LangChain.js + LangGraph.js | `foundational_design_patterns/4_reflection/typescript/` |
 | `5_tool_use` | Coding Agent | Vercel AI SDK (`tools`, `stepCountIs`) | `foundational_design_patterns/5_tool_use/typescript/` |
 | `6_planning` | Incident Response | LangGraph.js (`StateGraph`) | `foundational_design_patterns/6_planning/typescript/` |
+| `7_multi_agent_collaboration` | Research coordination | LangGraph.js + explicit orchestration | `foundational_design_patterns/7_multi_agent_collaboration/typescript/` |
+| `8_react` | Research assistant | LangChain v1 agent + LangGraph.js | `foundational_design_patterns/8_react/typescript/` |
+| `9_rag` | Retrieval-augmented generation | LangChain.js + local retrieval logic | `foundational_design_patterns/9_rag/typescript/` |
+| `10_hitl` | Human review checkpoints | OpenAI SDK + LangGraph.js | `foundational_design_patterns/10_hitl/typescript/` |
+| `11_structured_outputs` | Schema-constrained extraction | LangChain.js + AI SDK | `foundational_design_patterns/11_structured_outputs/typescript/` |
+| `12_computer_use` | UI/browser automation framing | LangChain.js + optional Playwright | `foundational_design_patterns/12_computer_use/typescript/` |
 
-More patterns will land in subsequent passes (target subset: routing, parallelization, reflection, ReAct, RAG, HITL, simple multi-agent, observability, plus new HIGH-priority chapters Structured Outputs, Subagents, Skills).
+Patterns outside the foundational track remain Python-first for now.
 
 ## Conventions
 
@@ -19,7 +28,7 @@ More patterns will land in subsequent passes (target subset: routing, paralleliz
 - **Test runner**: `bun test` (built-in, Jest-like API — no vitest dep).
 - **Schemas**: Zod, end-to-end. Tool inputs, structured outputs, graph state all share Zod schemas.
 - **Module system**: ESM (`"type": "module"`), strict TS via `tsconfig.base.json`.
-- **Provider abstraction**: `@ai-sdk/openai` for AI-SDK examples; `@langchain/openai` for LangGraph examples. Default model `gpt-4o-mini`, overridable via `MODEL` env var.
+- **Provider abstraction**: `@ai-sdk/openai` for AI-SDK examples; `@langchain/openai` for LangGraph examples. Default model `gpt-4o-mini`, overridable via `OPENAI_MODEL` (and `OPENAI_ADVANCED_MODEL` where the Python demo uses a higher-capability variant).
 
 ## Framework picks
 
@@ -34,8 +43,8 @@ More patterns will land in subsequent passes (target subset: routing, paralleliz
 ```bash
 cd typescript_base
 bun install                              # install all workspace members
-bun run smoke                            # equivalent to: bash ../scripts/run_demos_smoke_typescript.sh --mode basic
-bun run demos                            # equivalent to: ... --mode full (requires OPENAI_API_KEY)
+bash ../scripts/run_demos_smoke_typescript.sh --mode basic
+bash ../scripts/run_demos_smoke_typescript.sh --mode full     # requires OPENAI_API_KEY
 ```
 
 ### From a single pattern dir
@@ -58,7 +67,7 @@ bun run demo                             # full LLM demo (needs OPENAI_API_KEY i
 3. Extend `typescript_base/tsconfig.base.json` from each pattern `tsconfig.json` with `"extends": "../../../typescript_base/tsconfig.base.json"`. Don't repeat the strict-mode flags.
 4. Write the demo as a **direct port** of the matching Python file: same scenario, same example data, same identifiers, same structural primitives. See AGENTS.md §7 for the parity rule.
 5. Add a `tests/<name>.test.ts` smoke file that imports the module and asserts shape. No LLM calls in smoke tests.
-6. Run `bun test` locally; then `bash scripts/run_demos_smoke_typescript.sh --mode basic --pattern <substring>`.
+6. Run `bun --bun tsc --noEmit` locally; then `bun test`; then `bash scripts/run_demos_smoke_typescript.sh --mode basic --pattern <substring>`.
 
 ## Why Bun (not Node + tsx + pnpm)
 
