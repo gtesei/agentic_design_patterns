@@ -1,113 +1,56 @@
-# Pi — Subagents (Orchestrator-Worker)
+# Pi — Subagents (Orchestrator-Worker) (revised)
 
-**Repository:** https://github.com/earendil-works/repo/pi
+**Repository:** https://github.com/earendil-works/pi
 **Accessed on:** 2026-05-17
+**Source merge:** consolidates findings from `pi.md` (Claude direct read), `pi_pi.md` (Pi maintainer notes, accessed 2026-05-15), and `pi_codex.md` (Codex agent read, accessed 2026-05-17). Every excerpt below was re-verified against a fresh `git clone` of the repo on 2026-05-17.
 
 ## Summary
 
-**Yes, fully — but as an *opt-in extension*, not core.** Pi implements the orchestrator-worker subagent pattern with **process-level context isolation**: each subagent runs in a separate `pi` subprocess, with its own conversation history, its own model selection, and its own tool allowlist. The orchestrator receives the subagent's structured output over stdout (JSON event stream) and feeds the final result back to the lead agent as a tool result. This is closer to Anthropic's "fresh-context subagent" pattern than to in-process "agent-as-tool" wrappers that share message history.
+**Yes, fully — but Pi's maintainers explicitly chose to keep it out of core.** The orchestrator-worker pattern is implemented as an **opt-in extension example** at `packages/coding-agent/examples/extensions/subagent/`. The decision is documented verbatim in both the README and `docs/usage.md`:
 
-The implementation ships as `examples/extensions/subagent/` — not in the core `tools/` directory. The core coding-agent tools are `bash`, `edit`, `find`, `grep`, `ls`, `read`, `write` only. Users must symlink the extension into `~/.pi/agent/extensions/subagent/` to activate it.
+> **No sub-agents.** There's many ways to do this. Spawn pi instances via tmux, or build your own with extensions, or install a package that does it your way.
+> *(packages/coding-agent/README.md:474)*
 
-The extension supports three orchestration modes — single, parallel (up to 4 concurrent), and chain (sequential with `{previous}` placeholder for inter-step context passing). Subagents are discovered from on-disk `.md` files with YAML frontmatter, mirroring the Claude Code subagent convention.
+> It intentionally does not include built-in MCP, sub-agents, permission popups, plan mode, to-dos, or background bash. You can build or install those workflows as extensions or packages.
+> *(packages/coding-agent/docs/usage.md:275)*
+
+The extension delivers true **process-level context isolation**: each subagent runs in a separate `pi` subprocess (`spawn`), with its own model, tool allowlist, system prompt loaded from a `.md` agent definition file, and — critically — `--no-session` so the subagent transcript is ephemeral and never pollutes the orchestrator's session log. The orchestrator parses the subagent's JSON event stream from stdout and feeds the final assistant message back as the tool result. Three orchestration modes: single, parallel (concurrency-limited), and chain (sequential with `{previous}` placeholder).
+
+This pattern is closer to Anthropic's "fresh-context subagent" architecture than to in-process agent-as-tool wrappers that share message arrays — process boundaries provide OS-level isolation, not just message-array isolation.
 
 ## Where it lives
 
 | Concern | File |
 |---|---|
-| Tool registration, mode dispatch, subprocess spawn | `packages/coding-agent/examples/extensions/subagent/index.ts` (987 lines) |
-| Agent discovery from `~/.pi/agent/agents/*.md` and `.pi/agents/*.md` | `packages/coding-agent/examples/extensions/subagent/agents.ts` |
+| Extension entry point: tool registration, mode dispatch, subprocess spawn | `packages/coding-agent/examples/extensions/subagent/index.ts` (987 lines) |
+| Agent discovery from `~/.pi/agent/agents/*.md` and `<repo>/.pi/agents/*.md` | `packages/coding-agent/examples/extensions/subagent/agents.ts` |
 | Sample subagent definitions (frontmatter + body) | `packages/coding-agent/examples/extensions/subagent/agents/{scout,planner,reviewer,worker}.md` |
 | Sample workflow prompts (multi-step chains) | `packages/coding-agent/examples/extensions/subagent/prompts/{implement,scout-and-plan,implement-and-review}.md` |
-| Extension README documenting security model, modes, usage | `packages/coding-agent/examples/extensions/subagent/README.md` |
+| Extension README — security model, modes, install instructions | `packages/coding-agent/examples/extensions/subagent/README.md` |
+| Maintainer's "no sub-agents in core" statement | `packages/coding-agent/README.md:474`, `packages/coding-agent/docs/usage.md:275` |
 
-Pi's **core** subagent surface is empty. Verified by listing `packages/coding-agent/src/core/tools/`: only filesystem and shell tools are present. There is no `task`, `delegate`, `subagent`, `spawn`, or `worker` tool in core.
+Pi's **core** subagent surface is empty by design: `packages/coding-agent/src/core/tools/` contains only `bash`, `edit`, `find`, `grep`, `ls`, `read`, `write` (verified). No `task`, `delegate`, `subagent`, `spawn`, or `worker` tool. No equivalent in `packages/agent/`.
 
 ## Key code excerpts
 
-### Subprocess spawn — true context isolation
+### Explicit non-core stance — from the docs themselves
 
-```ts
-// packages/coding-agent/examples/extensions/subagent/index.ts
-import { spawn } from "node:child_process";
-
-// ... inside runSingleAgent():
-const exitCode = await new Promise<number>((resolve) => {
-  const invocation = getPiInvocation(args);
-  const proc = spawn(invocation.command, invocation.args, {
-    cwd: cwd ?? defaultCwd,
-    shell: false,
-    stdio: ["ignore", "pipe", "pipe"],
-  });
-  // ... read JSON events from proc.stdout line by line:
-  const processLine = (line: string) => {
-    let event: any;
-    try { event = JSON.parse(line); } catch { return; }
-    if (event.type === "message_end" && event.message) {
-      currentResult.messages.push(event.message as Message);
-      // ... track usage, model, stopReason
-    }
-  };
-});
+```md
+<!-- packages/coding-agent/README.md (excerpt) -->
+**No sub-agents.** There's many ways to do this. Spawn pi instances via tmux,
+or build your own with extensions, or install a package that does it your way.
 ```
 
-**Why relevant:** Each subagent invocation is a *separate OS process* running the `pi` binary. The orchestrator does not pass any of its own context to the child; the child boots fresh with only the system prompt (loaded from the agent's `.md` file) and the user-provided task string. This is the strongest form of context isolation — stronger than in-process "agent-as-tool" patterns that share Python objects or share a message array.
-
-The price: subprocess spawn overhead per subagent (~100ms+ cold start in addition to LLM latency), and the orchestrator only sees what the child writes to stdout as JSON events.
-
-### Subagent definition — markdown file with frontmatter
-
-```markdown
-<!-- packages/coding-agent/examples/extensions/subagent/agents/worker.md -->
----
-name: worker
-description: General-purpose subagent with full capabilities, isolated context
-model: claude-sonnet-4-5
----
-
-You are a worker agent with full capabilities. You operate in an isolated context window to handle delegated tasks without polluting the main conversation.
-
-Work autonomously to complete the assigned task. Use all available tools as needed.
-
-Output format when finished:
-
-## Completed
-What was done.
-
-## Files Changed
-- `path/to/file.ts` - what changed
-
-## Notes (if any)
-Anything the main agent should know.
+```md
+<!-- packages/coding-agent/docs/usage.md (excerpt) -->
+It intentionally does not include built-in MCP, sub-agents, permission popups,
+plan mode, to-dos, or background bash. You can build or install those workflows
+as extensions or packages, or use external tools such as containers and tmux.
 ```
 
-**Why relevant:** A subagent definition is just a markdown file. Frontmatter declares `name`, `description`, optional `tools` allowlist, optional `model`. The body becomes the subagent's system prompt. This mirrors the Claude Code subagent convention closely. The "Output format when finished" instruction is the *contract* — it tells the subagent to produce a structured summary that the orchestrator can paste back as the tool result.
+**Why relevant:** This is a deliberate architectural stance, not a missing feature. Pi's core stays small and the multi-agent topology is a composition concern. The strongest claim a reader should make: *"Pi supports subagents as an extension pattern and provides a complete reference implementation, but subagents are not a built-in core abstraction on the same level as sessions, skills, or compaction."*
 
-### Agent discovery — disk-scoped, user vs project
-
-```ts
-// packages/coding-agent/examples/extensions/subagent/agents.ts
-export type AgentScope = "user" | "project" | "both";
-
-export interface AgentConfig {
-  name: string;
-  description: string;
-  tools?: string[];
-  model?: string;
-  systemPrompt: string;
-  source: "user" | "project";
-  filePath: string;
-}
-
-function loadAgentsFromDir(dir: string, source: "user" | "project"): AgentConfig[] {
-  // reads *.md files, parses frontmatter, builds AgentConfig
-  // ignores files without name + description in frontmatter
-}
-```
-
-**Why relevant:** Agents are discovered from `~/.pi/agent/agents/` (user scope) or `<repo>/.pi/agents/` (project scope). Default is `user` only. Loading `project` agents requires explicit opt-in via the `agentScope` parameter, with an interactive confirmation prompt for repo-controlled agents — a security boundary preventing untrusted repos from injecting arbitrary system prompts.
-
-### Tool registration — three modes (single / parallel / chain)
+### Tool registration — one tool, three modes
 
 ```ts
 // packages/coding-agent/examples/extensions/subagent/index.ts (excerpted)
@@ -137,11 +80,144 @@ export default function (pi: ExtensionAPI) {
 }
 ```
 
-**Why relevant:** A single tool exposed to the LLM handles all three orchestration shapes via parameter union. The three modes correspond directly to the canonical orchestrator-worker variants:
+**Why relevant:** A single LLM-facing tool handles all three orchestration shapes via parameter union. The validation `modeCount === 1` enforces exactly one mode per invocation. The three modes correspond directly to canonical orchestrator-worker variants:
 
-- **single**: orchestrator delegates one task to one subagent → receives one summary back.
-- **parallel**: orchestrator delegates N independent tasks → N subagents run concurrently (capped at `MAX_CONCURRENCY = 4`) → orchestrator gets N summaries.
-- **chain**: orchestrator sequences subagents, with `{previous}` substituted into the next task's prompt. Equivalent to LangGraph supervisor-style sequential handoff but with isolated contexts at each hop.
+- **single**: one task → one subagent → one summary back.
+- **parallel**: N independent tasks → up to `MAX_CONCURRENCY = 4` subagents concurrent (with `MAX_PARALLEL_TASKS = 8` queue cap).
+- **chain**: orchestrator sequences subagents, with `{previous}` substituted into the next task's prompt. Equivalent to sequential handoff with isolated contexts at each hop.
+
+### Subprocess spawn — true context isolation via separate `pi` process
+
+```ts
+// packages/coding-agent/examples/extensions/subagent/index.ts
+import { spawn } from "node:child_process";
+
+// ... inside runSingleAgent():
+const args: string[] = ["--mode", "json", "-p", "--no-session"];
+if (agent.model) args.push("--model", agent.model);
+if (agent.tools && agent.tools.length > 0) args.push("--tools", agent.tools.join(","));
+// ...
+if (agent.systemPrompt.trim()) {
+  const tmp = await writePromptToTempFile(agent.name, agent.systemPrompt);
+  // ...
+  args.push("--append-system-prompt", tmpPromptPath);
+}
+
+args.push(`Task: ${task}`);
+
+const exitCode = await new Promise<number>((resolve) => {
+  const invocation = getPiInvocation(args);
+  const proc = spawn(invocation.command, invocation.args, {
+    cwd: cwd ?? defaultCwd,
+    shell: false,
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+  // ... read JSON events line-by-line from proc.stdout
+  const processLine = (line: string) => {
+    let event: any;
+    try { event = JSON.parse(line); } catch { return; }
+    if (event.type === "message_end" && event.message) {
+      currentResult.messages.push(event.message as Message);
+      // ... track usage, model, stopReason
+    }
+  };
+});
+```
+
+**Why relevant:** Each subagent invocation is a separate OS process running the `pi` binary in **JSON mode** (`--mode json`), **non-interactive** (`-p`), and crucially **`--no-session`** — the subagent's run is not persisted to disk as a session file. The orchestrator passes none of its own context to the child; the child boots fresh with only the system prompt (loaded from the agent's `.md` file via `--append-system-prompt`) and the user-provided task string as the prompt.
+
+This is the strongest form of context isolation available without containerization. Stronger than in-process "agent-as-tool" patterns that share Python objects or message arrays. The price: subprocess spawn overhead (~100ms+ cold start) and a one-shot result interface — the orchestrator only sees what the child writes to stdout as JSON events.
+
+### Subagent definition — markdown file with frontmatter (Claude-Code-like)
+
+```markdown
+<!-- packages/coding-agent/examples/extensions/subagent/agents/worker.md -->
+---
+name: worker
+description: General-purpose subagent with full capabilities, isolated context
+model: claude-sonnet-4-5
+---
+
+You are a worker agent with full capabilities. You operate in an isolated context window to handle delegated tasks without polluting the main conversation.
+
+Work autonomously to complete the assigned task. Use all available tools as needed.
+
+Output format when finished:
+
+## Completed
+What was done.
+
+## Files Changed
+- `path/to/file.ts` - what changed
+
+## Notes (if any)
+Anything the main agent should know.
+```
+
+**Why relevant:** A subagent definition is just a markdown file. Frontmatter declares `name`, `description`, optional `tools` allowlist, optional `model`. The body becomes the subagent's system prompt. This mirrors the Claude Code subagent convention closely. The "Output format when finished" instruction is the *contract* — it tells the subagent to produce a structured summary the orchestrator can paste back as a tool result.
+
+### Agent discovery — disk-scoped, user vs project trust boundary
+
+```ts
+// packages/coding-agent/examples/extensions/subagent/agents.ts
+export type AgentScope = "user" | "project" | "both";
+
+export interface AgentConfig {
+  name: string;
+  description: string;
+  tools?: string[];
+  model?: string;
+  systemPrompt: string;
+  source: "user" | "project";
+  filePath: string;
+}
+
+function loadAgentsFromDir(dir: string, source: "user" | "project"): AgentConfig[] {
+  // reads *.md files, parses YAML frontmatter, builds AgentConfig
+  // ignores files without name + description in frontmatter
+}
+```
+
+**Why relevant:** Agents are discovered from `~/.pi/agent/agents/` (user scope) or `<repo>/.pi/agents/` (project scope). Default is `user` only. Loading `project` agents requires explicit opt-in via the `agentScope` parameter, with an interactive confirmation prompt for repo-controlled agents:
+
+```ts
+// packages/coding-agent/examples/extensions/subagent/index.ts (excerpted)
+if ((agentScope === "project" || agentScope === "both") && confirmProjectAgents && ctx.hasUI) {
+  // ...
+  const ok = await ctx.ui.confirm(
+    "Run project-local agents?",
+    `Agents: ${names}\nSource: ${dir}\n\nProject agents are repo-controlled. Only continue for trusted repositories.`,
+  );
+  if (!ok) return { content: [{ type: "text", text: "Canceled: project-local agents not approved." }], /* ... */ };
+}
+```
+
+**Why relevant:** A security boundary. Cloning an untrusted repo with a `.pi/agents/malicious.md` does not give that repo the ability to silently spawn a subagent with arbitrary system prompt and tool access — the user is prompted. `confirmProjectAgents: true` is the default; turning it off is an explicit choice.
+
+### Parallel mode — concurrency cap via helper
+
+```ts
+// packages/coding-agent/examples/extensions/subagent/index.ts (excerpted)
+const MAX_PARALLEL_TASKS = 8;
+const MAX_CONCURRENCY = 4;
+
+if (params.tasks.length > MAX_PARALLEL_TASKS) {
+  return {
+    content: [{ type: "text", text: `Too many parallel tasks (${params.tasks.length}). Max is ${MAX_PARALLEL_TASKS}.` }],
+    // ...
+  };
+}
+
+const results = await mapWithConcurrencyLimit(params.tasks, MAX_CONCURRENCY, async (t, index) => {
+  const result = await runSingleAgent(
+    ctx.cwd, agents, t.agent, t.task, t.cwd,
+    undefined, signal, /* ... */,
+  );
+  return result;
+});
+```
+
+**Why relevant:** Two limits in play: `MAX_PARALLEL_TASKS = 8` is the maximum queue size accepted by the tool; `MAX_CONCURRENCY = 4` is the maximum simultaneously-running subprocesses. The helper `mapWithConcurrencyLimit` queues tasks beyond the concurrency limit and starts new ones as others finish. Both are hardcoded constants — not configurable per invocation. (Correction to my earlier `pi.md`: I conflated these two numbers.)
 
 ### Chain mode — sequential handoff with explicit output passing
 
@@ -166,27 +242,29 @@ if (params.chain && params.chain.length > 0) {
 }
 ```
 
-**Why relevant:** This is the orchestrator's view of inter-subagent communication. There is **no shared message history** — only the previous subagent's final text is substituted into the next subagent's task. Each step boots a fresh `pi` process with no memory of the prior step except the explicit `{previous}` slot. This is the "structured summary as the interface" pattern that Anthropic's multi-agent research system advocates.
+**Why relevant:** Chain mode is the orchestrator's view of inter-subagent communication. There is **no shared message history** — only the previous subagent's final text is substituted into the next subagent's task. Each step boots a fresh `pi` process with no memory of the prior step except the explicit `{previous}` slot. This is the "structured summary as the interface" pattern that Anthropic's multi-agent research system advocates.
 
-### Sample workflow — chained agents
+### Sample workflow templates
 
-```markdown
-<!-- packages/coding-agent/examples/extensions/subagent/prompts/implement-and-review.md -->
-[implementation reads as worker -> reviewer -> worker chain;
- the prompt template tells the orchestrator how to invoke the subagent tool with chain mode]
-```
+The repo ships three workflow prompts:
 
-The repo ships three workflow templates: `implement.md` (scout → planner → worker), `scout-and-plan.md` (scout → planner), `implement-and-review.md` (worker → reviewer → worker).
+- `prompts/implement.md` — scout → planner → worker (recon, then plan, then execute)
+- `prompts/scout-and-plan.md` — scout → planner (no implementation)
+- `prompts/implement-and-review.md` — worker → reviewer → worker (implement, review, fix)
+
+These are not code — they are human-readable prompt templates that walk the orchestrator LLM through invoking the `subagent` tool in chain mode with the right `agent` + `task` per step. They are loaded into the orchestrator's prompt via the standard Pi `prompts/` discovery (separate from `agents/`).
 
 ## Tradeoffs and limitations
 
 - **Extension, not core.** Users must opt in by symlinking the extension into `~/.pi/agent/extensions/`. The core distribution of `pi` does not include subagent capability out of the box. Defensible (keeps the binary minimal and the security surface smaller) but means subagent capability is not universally available across Pi installs.
-- **Process isolation costs latency.** Each subagent invocation is a full `pi` subprocess boot. Compared to in-process agent-as-tool patterns, this is heavier (~100ms+ cold start) but gives true OS-level isolation: a misbehaving subagent cannot crash or corrupt the orchestrator process.
-- **Result interface is one-shot.** The orchestrator receives the subagent's final assistant message text as the tool result. There is no streaming of intermediate subagent thoughts back into the orchestrator's prompt (though the subagent's own UI does stream its progress). This is by design — it enforces the "summary, not raw transcript" contract.
-- **Parallel cap of 4.** `MAX_CONCURRENCY = 4` and `MAX_PARALLEL_TASKS = 8` are hardcoded. Fine for typical orchestrator-worker use but not configurable per-invocation.
+- **Subagent runs are ephemeral by default.** `--no-session` means the subagent's full transcript is not persisted as a session file. The orchestrator captures the final result and usage stats; intermediate tool calls are visible in the orchestrator's UI as they stream but are not durable.
+- **Process isolation costs latency.** Each subagent invocation is a full `pi` subprocess boot (~100ms+ cold start, plus model latency). Heavier than in-process agent-as-tool patterns, but gives true OS-level isolation — a misbehaving subagent cannot crash or corrupt the orchestrator process.
+- **Result interface is one-shot.** Orchestrator sees the subagent's final assistant message text as the tool result. No streaming of intermediate subagent thoughts back into the orchestrator's prompt (the subagent's own UI does stream its progress). This is by design — it enforces the "summary, not raw transcript" contract.
+- **Hardcoded concurrency limits.** `MAX_PARALLEL_TASKS = 8`, `MAX_CONCURRENCY = 4`. Not configurable per invocation; would require editing the extension.
 - **No automatic re-planning.** Chain mode is rigid: if step 2 fails, the orchestrator (the LLM driving the `subagent` tool) decides what to do next; there is no built-in retry/replan within the tool itself.
-- **Security model requires care.** Project-local agents (`.pi/agents/*.md`) can inject arbitrary system prompts. Default is `user` scope only; opting into `project` requires `agentScope: "both"` and prompts the user. This is good — but if `confirmProjectAgents` is set to `false` by an extension wrapper, that boundary disappears.
-- **No multi-orchestrator topology.** This is single-orchestrator-N-workers. Pi has no built-in mesh of orchestrators delegating to each other (which would map to A2A territory anyway).
+- **Chain communication is plain text, not structured.** `{previous}` is a string substitution into the next task's prompt. No structured shared workspace, no typed handoff schema. Quality depends on the upstream subagent producing parseable output.
+- **Security model requires care.** Project-local agents (`.pi/agents/*.md`) can inject arbitrary system prompts. Default is `user` scope only; opting into `project` requires `agentScope: "both"` and prompts the user. Good defaults — but if an extension wrapper sets `confirmProjectAgents: false`, that boundary disappears.
+- **No multi-orchestrator topology.** Single-orchestrator-N-workers. No built-in mesh of orchestrators delegating to each other (which would map to A2A territory).
 
 ## "Not implemented" caveats
 
@@ -194,9 +272,10 @@ The repo ships three workflow templates: `implement.md` (scout → planner → w
 - ❌ In-process subagent spawning (process boundary is mandatory)
 - ❌ Configurable parallelism cap
 - ❌ Built-in subagent failure recovery / retry policy
-- ❌ Streaming partial summaries from subagent to orchestrator's context
-- ❌ Hierarchical subagent trees (subagent spawning sub-subagents) — would work in principle (each is just a `pi` process) but no first-class support
-- ❌ Cross-process A2A protocol (this is local subprocess subagents, not remote agent-to-agent)
+- ❌ Streaming partial summaries from subagent into orchestrator's prompt
+- ❌ Structured workspace memory shared across chain steps
+- ❌ Hierarchical subagent trees (subagent spawning sub-subagents) as a first-class feature — would work in principle (each is just a `pi` process) but no scaffolding
+- ❌ Cross-process A2A protocol — this is local subprocess subagents, not remote agent-to-agent
 
 What Pi does ship that the orchestrator-worker pattern asks for:
 
@@ -204,6 +283,8 @@ What Pi does ship that the orchestrator-worker pattern asks for:
 - ✅ Three orchestration shapes (single / parallel / chain) in one tool
 - ✅ Per-subagent system prompt + model + tool allowlist via on-disk `.md` files
 - ✅ Discovery convention (user-scope vs project-scope)
-- ✅ Structured-summary contract (the agent definition documents the expected output format)
-- ✅ Security boundary against repo-controlled agents (interactive confirmation)
+- ✅ Structured-summary contract (agent definition documents the expected output format)
+- ✅ Security boundary against repo-controlled agents (interactive confirmation, opt-in default)
 - ✅ Usage tracking (tokens, cost, turns) per subagent surfaced to the orchestrator
+- ✅ Ephemeral subagent runs by default (`--no-session`)
+- ✅ Complete reference implementation with sample agents (scout/planner/reviewer/worker) and workflow templates (implement / scout-and-plan / implement-and-review)
