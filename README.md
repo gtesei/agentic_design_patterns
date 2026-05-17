@@ -15,6 +15,12 @@
 
 AI evolves too quickly for traditional books to stay current, especially in fast-moving areas like agentic systems. That’s why this is one of the best “living books” on agentic AI: a comprehensive, hands-on collection of design patterns for building robust AI agents, continuously updated with real-world implementations, practical examples, and detailed architectural guidance for scalable, maintainable AI applications.
 
+> **New: Pi implementation analyses**
+>
+> For selected patterns, this repository now includes implementation-focused analyses of how they map to [Pi](https://github.com/earendil-works/pi), grounded in the actual Pi codebase with package/module references, line-numbered excerpts, and notes on architectural tradeoffs or limitations.
+>
+> Look for `pi.md` inside pattern folders. These writeups stay conservative: if Pi does not meaningfully implement a pattern, the analysis says so explicitly rather than forcing a match.
+
 ---
 
 ## 📚 Academic Foundations
@@ -122,7 +128,7 @@ input → extract_data → transform → validate → final_output
 - 🔍 Easier debugging with visible intermediate steps
 - 🔄 Reusable components across workflows
 
-[**📖 Learn More →**](./foundational_design_patterns/1_prompt_chain/README.md)
+[**📖 Learn More →**](./foundational_design_patterns/1_prompt_chain/README.md) · [**🔎 Pi Analysis →**](./foundational_design_patterns/1_prompt_chain/pi.md)
 
 ---
 
@@ -143,7 +149,7 @@ user_query → classifier → [technical_expert | sales_agent | support_bot]
 - ⚡ Performance gains (route simple queries to fast handlers)
 - 🎨 Specialized handling (domain experts for domain queries)
 
-[**📖 Learn More →**](./foundational_design_patterns/2_routing/README.md)
+[**📖 Learn More →**](./foundational_design_patterns/2_routing/README.md) · [**🔎 Pi Analysis →**](./foundational_design_patterns/2_routing/pi.md)
 
 ---
 
@@ -166,7 +172,7 @@ task_c(5s) → output               task_c(5s) ↗
 - 📈 Better resource utilization
 - 🚀 Improved user experience through reduced latency
 
-[**📖 Learn More →**](./foundational_design_patterns/3_parallelization/README.md)
+[**📖 Learn More →**](./foundational_design_patterns/3_parallelization/README.md) · [**🔎 Pi Analysis →**](./foundational_design_patterns/3_parallelization/pi.md)
 
 ---
 
@@ -194,7 +200,7 @@ input → generate → done            input → generate → critique →
 - ⚠️ 3-5x higher token costs
 - ⏱️ 4-8x longer execution time
 
-[**📖 Learn More →**](./foundational_design_patterns/4_reflection/README.md)
+[**📖 Learn More →**](./foundational_design_patterns/4_reflection/README.md) · [**🔎 Pi Analysis →**](./foundational_design_patterns/4_reflection/pi.md)
 
 ---
 
@@ -224,7 +230,7 @@ user_query → LLM decides → call_weather_api(location) → integrate_result �
 - ⚠️ Added latency per tool call
 - 🔒 Security considerations (authentication, validation)
 
-[**📖 Learn More →**](./foundational_design_patterns/5_tool_use/README.md)
+[**📖 Learn More →**](./foundational_design_patterns/5_tool_use/README.md) · [**🔎 Pi Analysis →**](./foundational_design_patterns/5_tool_use/pi.md)
 
 ---
 
@@ -254,7 +260,7 @@ complex_goal → analyze → decompose → plan_steps → execute_sequentially �
 - ⚠️ Planning overhead (+20-40% tokens, 5-15s latency)
 - 🛠️ Requires sophisticated state management
 
-[**📖 Learn More →**](./foundational_design_patterns/6_planning/README.md)
+[**📖 Learn More →**](./foundational_design_patterns/6_planning/README.md) · [**🔎 Pi Analysis →**](./foundational_design_patterns/6_planning/pi.md)
 
 ---
 
@@ -288,7 +294,7 @@ user_goal → manager/planner → [researcher | coder | designer | writer | revi
 - Network/all-to-all (exploratory, less predictable)
 - Custom hybrids (fit domain constraints)
 
-[**📖 Learn More →**](./foundational_design_patterns/7_multi_agent_collaboration/README.md)
+[**📖 Learn More →**](./foundational_design_patterns/7_multi_agent_collaboration/README.md) · [**🔎 Pi Analysis →**](./foundational_design_patterns/7_multi_agent_collaboration/pi.md)
 
 ---
 
@@ -325,7 +331,7 @@ user_query → Thought (reason) → Action (tool) → Observation (result) →
 - 💰 Increased token costs (reasoning traces + tool calls)
 - 🔁 Risk of unproductive loops without iteration limits
 
-[**📖 Learn More →**](./foundational_design_patterns/8_react/README.md)
+[**📖 Learn More →**](./foundational_design_patterns/8_react/README.md) · [**🔎 Pi Analysis →**](./foundational_design_patterns/8_react/pi.md)
 
 ---
 
@@ -414,7 +420,7 @@ agent_proposal → human_review → [approve|reject|modify] → execute → resu
 **"Human-on-the-loop" variation:**
 In this approach, human experts define overarching policies, while AI handles immediate actions to ensure compliance (e.g., automated trading within human-defined rules, call center routing based on manager-set policies).
 
-[**📖 Learn More →**](./foundational_design_patterns/10_hitl/README.md)
+[**📖 Learn More →**](./foundational_design_patterns/10_hitl/README.md) · [**🔎 Pi Analysis →**](./foundational_design_patterns/10_hitl/pi.md)
 
 ---
 
@@ -430,7 +436,7 @@ text → response_schema(Pydantic/JSON Schema) → validated_object → safe_aut
 
 **Key benefits:** Schema guarantees, lower parsing failures, safer agent loops
 
-[**📖 Learn More →**](./foundational_design_patterns/11_structured_outputs/README.md)
+[**📖 Learn More →**](./foundational_design_patterns/11_structured_outputs/README.md) · [**🔎 Pi Analysis →**](./foundational_design_patterns/11_structured_outputs/pi.md)
 
 ---
 
@@ -443,7 +449,7 @@ screenshot/state → reasoning → ui_action(click/type/navigate) → observatio
 
 **Key benefits:** Legacy-system automation, UI QA workflows, non-API task coverage
 
-[**📖 Learn More →**](./foundational_design_patterns/12_computer_use/README.md)
+[**📖 Learn More →**](./foundational_design_patterns/12_computer_use/README.md) · [**🔎 Pi Analysis →**](./foundational_design_patterns/12_computer_use/pi.md)
 
 ---
 
