@@ -752,13 +752,12 @@ Python remains the canonical track. All current foundational patterns also inclu
 ```bash
 # Python
 cd foundational_design_patterns/3_parallelization
-uv sync
+[uv sync]
 uv run python src/parallelization.py
 
 # TypeScript
-cd ../../typescript_base
-bun install
-cd ../foundational_design_patterns/3_parallelization/typescript
+cd foundational_design_patterns/3_parallelization/typescript
+[bun install]
 bash run.sh
 ```
 
@@ -776,25 +775,6 @@ Foundational patterns with both Python and TypeScript implementations currently 
 - `foundational_design_patterns/10_hitl`
 - `foundational_design_patterns/11_structured_outputs`
 - `foundational_design_patterns/12_computer_use`
-
-Patterns outside the foundational track remain Python-first for now. Good next steps:
-
-```bash
-# Try Subagents (orchestrator-worker)
-cd orchestration/subagents
-uv sync
-uv run python src/subagents_basic.py
-
-# Try Skills (agent-loadable capability packages)
-cd ../skills
-uv sync
-uv run python src/skills_basic.py
-
-# Try Deep Research (iterative research loop)
-cd ../../reasoning/deep_research
-uv sync
-uv run python src/deep_research_basic.py
-```
 
 For TypeScript workspace conventions, coverage, and runtime details, see [typescript_base/TYPESCRIPT.md](./typescript_base/TYPESCRIPT.md).
 
@@ -818,12 +798,7 @@ What they check:
 - TypeScript: `bun test` passes in each foundational `*/typescript` package
 - CI additionally runs `bun --bun tsc --noEmit` in each foundational `*/typescript` package
 
-What is intentionally not part of the default PR gate:
-
-- live LLM-backed TypeScript demo execution
-- Python ↔ TypeScript output-parity checks
-
-Those are intentionally excluded because they require API keys/network access and the demos are often non-deterministic by design. For manual or scheduled end-to-end verification, run:
+For manual or scheduled end-to-end verification, run:
 
 ```bash
 bash scripts/run_demos_smoke_typescript.sh --mode full
