@@ -569,7 +569,7 @@ lead_agent → decompose_task → spawn_workers_parallel → structured_summarie
 
 **Key benefits:** Context isolation, parallel throughput, cleaner synthesis
 
-[**📖 Learn More →**](./orchestration/subagents/README.md)
+[**📖 Learn More →**](./orchestration/subagents/README.md) · [**🔎 Pi Analysis →**](./orchestration/subagents/pi.md)
 
 ---
 
@@ -581,7 +581,7 @@ skill_catalog(metadata) → select_relevant_skill → load_SKILL_body → execut
 
 **Key benefits:** Tool-scaling beyond flat lists, lower prompt load, modular capabilities
 
-[**📖 Learn More →**](./orchestration/skills/README.md)
+[**📖 Learn More →**](./orchestration/skills/README.md) · [**🔎 Pi Analysis →**](./orchestration/skills/pi.md)
 
 ---
 
@@ -663,7 +663,7 @@ interaction → store → [buffer_memory | vector_memory] → retrieve_relevant 
 
 **Key benefits:** Context retention, personalization, learning from history
 
-[**📖 Learn More →**](./memory/memory_management/README.md)
+[**📖 Learn More →**](./memory/memory_management/README.md) · [**🔎 Pi Analysis →**](./memory/memory_management/pi.md)
 
 ---
 
@@ -676,7 +676,7 @@ content → score_relevance → compress → fit_window → optimize
 
 **Key benefits:** 70-90% cost reduction, focused responses, better performance
 
-[**📖 Learn More →**](./memory/context_management/README.md)
+[**📖 Learn More →**](./memory/context_management/README.md) · [**🔎 Pi Analysis →**](./memory/context_management/pi.md)
 
 ---
 

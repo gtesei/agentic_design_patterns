@@ -135,6 +135,32 @@ Colors classes, env loading, etc. — do NOT refactor toward a shared utility pa
 ### Examples are intentionally verbose
 Docstrings on functions, ANSI-colored terminal output, `print`/`console.log` showing intermediate steps. Clarity > cleverness. This is teaching code.
 
+### Pi analysis docs use a canonical filename
+Implementation-focused Pi cross-reference docs live in `pi.md` inside the relevant pattern directory. Do **not** create or reintroduce alternate filenames like `pi_codex.md`, `pi_codexi.md`, or other vendor-specific variants.
+
+These docs must stay evidence-based:
+- Ground claims in the actual Pi codebase.
+- Prefer inline code excerpts with line numbers over fragile GitHub links.
+- Call out architectural tradeoffs or limitations.
+- If Pi does **not** meaningfully implement a pattern, say so explicitly instead of forcing a match.
+
+Current pattern directories that support Pi analysis:
+- `foundational_design_patterns/1_prompt_chain`
+- `foundational_design_patterns/2_routing`
+- `foundational_design_patterns/3_parallelization`
+- `foundational_design_patterns/4_reflection`
+- `foundational_design_patterns/5_tool_use`
+- `foundational_design_patterns/6_planning`
+- `foundational_design_patterns/7_multi_agent_collaboration`
+- `foundational_design_patterns/8_react`
+- `foundational_design_patterns/10_hitl`
+- `foundational_design_patterns/11_structured_outputs`
+- `foundational_design_patterns/12_computer_use`
+- `memory/memory_management`
+- `memory/context_management`
+- `orchestration/subagents`
+- `orchestration/skills`
+
 ### Pattern skeleton (for new patterns)
 ```
 <pattern>/
