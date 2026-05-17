@@ -12,10 +12,10 @@ Educational, hands-on catalog of agentic-AI design patterns. Originally Python (
 
 Patterns live in 7 top-level category directories:
 
-- `foundational_design_patterns/{1_prompt_chain, 2_routing, 3_parallelization, 4_reflection, 5_tool_use, 6_planning, 7_multi_agent_collaboration, 8_react, 9_rag, 10_hitl}`
-- `reasoning/{tree_of_thoughts, graph_of_thoughts, exploration_discovery}`
+- `foundational_design_patterns/{1_prompt_chain, 2_routing, 3_parallelization, 4_reflection, 5_tool_use, 6_planning, 7_multi_agent_collaboration, 8_react, 9_rag, 10_hitl, 11_structured_outputs, 12_computer_use}`
+- `reasoning/{tree_of_thoughts, graph_of_thoughts, exploration_discovery, deep_research}`
 - `reliability/{error_recovery, guardrails}`
-- `orchestration/{goal_management, agent_communication, mcp, prioritization}`
+- `orchestration/{goal_management, subagents, skills, agent_communication, mcp, prioritization}`
 - `observability/{evaluation_monitoring, resource_optimization}`
 - `memory/{memory_management, context_management}`
 - `learning/adaptive_learning`
@@ -135,14 +135,18 @@ Colors classes, env loading, etc. — do NOT refactor toward a shared utility pa
 ### Examples are intentionally verbose
 Docstrings on functions, ANSI-colored terminal output, `print`/`console.log` showing intermediate steps. Clarity > cleverness. This is teaching code.
 
-### Pi analysis docs use a canonical filename
-Implementation-focused Pi cross-reference docs live in `pi.md` inside the relevant pattern directory. Do **not** create or reintroduce alternate filenames like `pi_codex.md`, `pi_codexi.md`, or other vendor-specific variants.
+### Pi analysis docs
+`pi.md` is the canonical final filename for Pi implementation analyses. Do not introduce or reintroduce alternate final filenames such as `pi_codex.md` or `pi_codexi.md` unless the user explicitly asks for them.
 
 These docs must stay evidence-based:
 - Ground claims in the actual Pi codebase.
 - Prefer inline code excerpts with line numbers over fragile GitHub links.
 - Call out architectural tradeoffs or limitations.
 - If Pi does **not** meaningfully implement a pattern, say so explicitly instead of forcing a match.
+
+When working on Pi analysis docs:
+- If `pi_pi.md`, `pi_codex.md`, or `pi_claude.md` exist, treat them as source material that can be selectively reused, but produce/maintain `pi.md` as the final doc.
+- Keep `README.md` in sync: the top "Currently available Pi analyses" index and the per-pattern `Pi Analysis` links should match the directories that actually contain `pi.md`.
 
 Current pattern directories that support Pi analysis:
 - `foundational_design_patterns/1_prompt_chain`
@@ -156,10 +160,23 @@ Current pattern directories that support Pi analysis:
 - `foundational_design_patterns/10_hitl`
 - `foundational_design_patterns/11_structured_outputs`
 - `foundational_design_patterns/12_computer_use`
+- `reasoning/tree_of_thoughts`
+- `reasoning/graph_of_thoughts`
+- `reasoning/exploration_discovery`
+- `reasoning/deep_research`
+- `reliability/error_recovery`
+- `reliability/guardrails`
+- `orchestration/goal_management`
 - `memory/memory_management`
 - `memory/context_management`
 - `orchestration/subagents`
 - `orchestration/skills`
+- `orchestration/agent_communication`
+- `orchestration/mcp`
+- `orchestration/prioritization`
+- `observability/evaluation_monitoring`
+- `observability/resource_optimization`
+- `learning/adaptive_learning`
 
 ### Pattern skeleton (for new patterns)
 ```

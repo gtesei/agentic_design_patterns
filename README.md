@@ -17,9 +17,18 @@ AI evolves too quickly for traditional books to stay current, especially in fast
 
 > **New: Pi implementation analyses**
 >
-> For selected patterns, this repository now includes implementation-focused analyses of how they map to [Pi](https://github.com/earendil-works/pi), grounded in the actual Pi codebase with package/module references, line-numbered excerpts, and notes on architectural tradeoffs or limitations.
+> This repository now includes implementation-focused analyses of how they map to [Pi](https://github.com/earendil-works/pi), grounded in the actual Pi codebase with package/module references, line-numbered excerpts, and notes on architectural tradeoffs or limitations.
 >
 > Look for `pi.md` inside pattern folders. These writeups stay conservative: if Pi does not meaningfully implement a pattern, the analysis says so explicitly rather than forcing a match.
+
+**Currently available Pi analyses:**
+- Foundational: [Prompt Chaining](./foundational_design_patterns/1_prompt_chain/pi.md), [Routing](./foundational_design_patterns/2_routing/pi.md), [Parallelization](./foundational_design_patterns/3_parallelization/pi.md), [Reflection](./foundational_design_patterns/4_reflection/pi.md), [Tool Use](./foundational_design_patterns/5_tool_use/pi.md), [Planning](./foundational_design_patterns/6_planning/pi.md), [Multi-Agent Collaboration](./foundational_design_patterns/7_multi_agent_collaboration/pi.md), [ReAct](./foundational_design_patterns/8_react/pi.md), [HITL](./foundational_design_patterns/10_hitl/pi.md), [Structured Outputs](./foundational_design_patterns/11_structured_outputs/pi.md), [Computer Use](./foundational_design_patterns/12_computer_use/pi.md)
+- Reasoning: [Tree of Thoughts](./reasoning/tree_of_thoughts/pi.md), [Graph of Thoughts](./reasoning/graph_of_thoughts/pi.md), [Exploration & Discovery](./reasoning/exploration_discovery/pi.md), [Deep Research](./reasoning/deep_research/pi.md)
+- Reliability: [Error Recovery](./reliability/error_recovery/pi.md), [Guardrails](./reliability/guardrails/pi.md)
+- Orchestration: [Goal Management](./orchestration/goal_management/pi.md), [Subagents](./orchestration/subagents/pi.md), [Skills](./orchestration/skills/pi.md), [Agent Communication](./orchestration/agent_communication/pi.md), [MCP](./orchestration/mcp/pi.md), [Prioritization](./orchestration/prioritization/pi.md)
+- Observability: [Evaluation & Monitoring](./observability/evaluation_monitoring/pi.md), [Resource Optimization](./observability/resource_optimization/pi.md)
+- Memory: [Memory Management](./memory/memory_management/pi.md), [Context Management](./memory/context_management/pi.md)
+- Learning: [Adaptive Learning](./learning/adaptive_learning/pi.md)
 
 ---
 
@@ -471,7 +480,7 @@ input → [thought1, thought2, thought3] → evaluate → expand_best →
 
 **Key benefits:** Better solutions through systematic exploration, backtracking capability, transparent decision trees
 
-[**📖 Learn More →**](./reasoning/tree_of_thoughts/README.md)
+[**📖 Learn More →**](./reasoning/tree_of_thoughts/README.md) · [**🔎 Pi Analysis →**](./reasoning/tree_of_thoughts/pi.md)
 
 ---
 
@@ -487,7 +496,7 @@ input → generate_perspectives → connect_thoughts → aggregate → synthesis
 
 **Key benefits:** Multi-perspective analysis, thought merging, flexible reasoning paths
 
-[**📖 Learn More →**](./reasoning/graph_of_thoughts/README.md)
+[**📖 Learn More →**](./reasoning/graph_of_thoughts/README.md) · [**🔎 Pi Analysis →**](./reasoning/graph_of_thoughts/pi.md)
 
 ---
 
@@ -500,7 +509,7 @@ query → [explore_new | exploit_best] → evaluate → update_strategy → iter
 
 **Key benefits:** Novel solution discovery, avoiding premature convergence, adaptive exploration
 
-[**📖 Learn More →**](./reasoning/exploration_discovery/README.md)
+[**📖 Learn More →**](./reasoning/exploration_discovery/README.md) · [**🔎 Pi Analysis →**](./reasoning/exploration_discovery/pi.md)
 
 ---
 
@@ -513,7 +522,7 @@ question → sub_queries → retrieve_sources → identify_gaps → refine_queri
 
 **Key benefits:** Better coverage, fewer blind spots, stronger citation quality
 
-[**📖 Learn More →**](./reasoning/deep_research/README.md)
+[**📖 Learn More →**](./reasoning/deep_research/README.md) · [**🔎 Pi Analysis →**](./reasoning/deep_research/pi.md)
 
 ---
 
@@ -528,7 +537,7 @@ operation → [success | failure] → classify_error → [retry | fallback | sel
 
 **Key benefits:** Resilience, graceful degradation, automatic self-healing, reduced downtime
 
-[**📖 Learn More →**](./reliability/error_recovery/README.md)
+[**📖 Learn More →**](./reliability/error_recovery/README.md) · [**🔎 Pi Analysis →**](./reliability/error_recovery/pi.md)
 
 ---
 
@@ -541,7 +550,7 @@ input → validate → process → validate_output → [pass | block] → log
 
 **Key benefits:** Safety assurance, compliance, brand protection, risk reduction
 
-[**📖 Learn More →**](./reliability/guardrails/README.md)
+[**📖 Learn More →**](./reliability/guardrails/README.md) · [**🔎 Pi Analysis →**](./reliability/guardrails/pi.md)
 
 ---
 
@@ -557,7 +566,7 @@ complex_goal → decompose → [subgoal1, subgoal2, subgoal3] →
 
 **Key benefits:** Structured execution, progress visibility, adaptive planning, resource optimization
 
-[**📖 Learn More →**](./orchestration/goal_management/README.md)
+[**📖 Learn More →**](./orchestration/goal_management/README.md) · [**🔎 Pi Analysis →**](./orchestration/goal_management/pi.md)
 
 ---
 
@@ -594,7 +603,7 @@ agent1 → message → agent2 → response → agent1
 
 **Key benefits:** Loose coupling, dynamic discovery, scalability, fault tolerance
 
-[**📖 Learn More →**](./orchestration/agent_communication/README.md)
+[**📖 Learn More →**](./orchestration/agent_communication/README.md) · [**🔎 Pi Analysis →**](./orchestration/agent_communication/pi.md)
 
 ---
 
@@ -607,7 +616,7 @@ LLM → discover_tools → invoke_tool(params) → receive_result → integrate
 
 **Key benefits:** Standardization, reusability, interoperability, composability
 
-[**📖 Learn More →**](./orchestration/mcp/README.md)
+[**📖 Learn More →**](./orchestration/mcp/README.md) · [**🔎 Pi Analysis →**](./orchestration/mcp/pi.md)
 
 ---
 
@@ -620,7 +629,7 @@ tasks → score(urgency, impact, effort) → rank → schedule → execute
 
 **Key benefits:** Resource optimization, deadline adherence, fairness, efficiency
 
-[**📖 Learn More →**](./orchestration/prioritization/README.md)
+[**📖 Learn More →**](./orchestration/prioritization/README.md) · [**🔎 Pi Analysis →**](./orchestration/prioritization/pi.md)
 
 ---
 
@@ -635,7 +644,7 @@ operation → collect_metrics → evaluate_quality → aggregate → alert → v
 
 **Key benefits:** Visibility, early detection, data-driven decisions, continuous improvement
 
-[**📖 Learn More →**](./observability/evaluation_monitoring/README.md)
+[**📖 Learn More →**](./observability/evaluation_monitoring/README.md) · [**🔎 Pi Analysis →**](./observability/evaluation_monitoring/pi.md)
 
 ---
 
@@ -648,7 +657,7 @@ request → [cache_hit | cache_miss] → [cheap_model | expensive_model] → opt
 
 **Key benefits:** 65-80% cost reduction, faster responses, better UX
 
-[**📖 Learn More →**](./observability/resource_optimization/README.md)
+[**📖 Learn More →**](./observability/resource_optimization/README.md) · [**🔎 Pi Analysis →**](./observability/resource_optimization/pi.md)
 
 ---
 
@@ -691,7 +700,7 @@ action → feedback → analyze_patterns → adapt_strategy → improve
 
 **Key benefits:** Continuous improvement, personalization, domain adaptation
 
-[**📖 Learn More →**](./learning/adaptive_learning/README.md)
+[**📖 Learn More →**](./learning/adaptive_learning/README.md) · [**🔎 Pi Analysis →**](./learning/adaptive_learning/pi.md)
 
 ---
 
