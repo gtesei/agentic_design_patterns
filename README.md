@@ -746,44 +746,42 @@ export AGENTIC_DISABLE_SSL=1
 ```
 
 ### Run Your First Pattern
+
+Python remains the canonical track. All current foundational patterns also include a Bun/TypeScript port under `<pattern>/typescript/`.
+
 ```bash
-# Try prompt chaining
-cd foundational_design_patterns/1_prompt_chain
-uv sync
-uv run python src/chain_prompt.py
-
-# Try routing
-cd ../2_routing
-uv sync
-uv run python src/routing.py
-
-# Try parallelization
-cd ../3_parallelization
+# Python
+cd foundational_design_patterns/3_parallelization
 uv sync
 uv run python src/parallelization.py
 
-# Try reflection (stateful loops)
-cd ../4_reflection
-uv sync
-uv run python src/reflection_stateful_loop.py
+# TypeScript
+cd ../../typescript_base
+bun install
+cd ../foundational_design_patterns/3_parallelization/typescript
+bash run.sh
+```
 
-# Try ReAct (reasoning and acting)
-cd ../8_react
-uv sync
-uv run python src/react_agent.py
+Foundational patterns with both Python and TypeScript implementations currently live under:
 
-# Try Structured Outputs (schema reliability)
-cd ../11_structured_outputs
-uv sync
-uv run python src/structured_outputs_basic.py
+- `foundational_design_patterns/1_prompt_chain`
+- `foundational_design_patterns/2_routing`
+- `foundational_design_patterns/3_parallelization`
+- `foundational_design_patterns/4_reflection`
+- `foundational_design_patterns/5_tool_use`
+- `foundational_design_patterns/6_planning`
+- `foundational_design_patterns/7_multi_agent_collaboration`
+- `foundational_design_patterns/8_react`
+- `foundational_design_patterns/9_rag`
+- `foundational_design_patterns/10_hitl`
+- `foundational_design_patterns/11_structured_outputs`
+- `foundational_design_patterns/12_computer_use`
 
-# Try Computer Use (UI/browser automation framing)
-cd ../12_computer_use
-uv sync
-uv run python src/computer_use_basic.py
+Patterns outside the foundational track remain Python-first for now. Good next steps:
 
+```bash
 # Try Subagents (orchestrator-worker)
-cd ../../orchestration/subagents
+cd orchestration/subagents
 uv sync
 uv run python src/subagents_basic.py
 
@@ -798,25 +796,47 @@ uv sync
 uv run python src/deep_research_basic.py
 ```
 
-### Run The Reliability Gate
+For TypeScript workspace conventions, coverage, and runtime details, see [typescript_base/TYPESCRIPT.md](./typescript_base/TYPESCRIPT.md).
 
-Use this from the repo root to verify the shared runtime/bootstrap layer:
+### Reliability And Smoke Tests
+
+Use these from the repo root:
 
 ```bash
+# Python shared-runtime reliability gate
 python -m unittest discover -s tests -p "test_*.py" -v
+
+# TypeScript foundational offline smoke
+bash scripts/run_demos_smoke_typescript.sh --mode basic
 ```
 
-What it checks:
+What they check:
 
-- repo bootstrap and root discovery
-- SSL bypass stays off unless explicitly enabled
-- repo-authored Python files compile cleanly
+- Python: repo bootstrap and root discovery
+- Python: SSL bypass stays off unless explicitly enabled
+- Python: repo-authored Python files compile cleanly
+- TypeScript: `bun test` passes in each foundational `*/typescript` package
+- CI additionally runs `bun --bun tsc --noEmit` in each foundational `*/typescript` package
+
+What is intentionally not part of the default PR gate:
+
+- live LLM-backed TypeScript demo execution
+- Python ↔ TypeScript output-parity checks
+
+Those are intentionally excluded because they require API keys/network access and the demos are often non-deterministic by design. For manual or scheduled end-to-end verification, run:
+
+```bash
+bash scripts/run_demos_smoke_typescript.sh --mode full
+```
 
 ### CI
 
-GitHub Actions runs the same smoke gate on pushes and pull requests:
+GitHub Actions runs the reliability gate on pushes and pull requests:
 
 - `.github/workflows/reliability-gate.yml`
+- Python shared-runtime smoke via `unittest`
+- foundational TypeScript type-checks via `bun --bun tsc --noEmit`
+- foundational TypeScript offline smoke via `scripts/run_demos_smoke_typescript.sh --mode basic`
 
 ---
 

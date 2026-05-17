@@ -22,7 +22,7 @@ usage() {
 Usage: scripts/run_demos_smoke_typescript.sh --mode <basic|full> [options]
 
 Run TypeScript pattern demos non-interactively across the bun workspace.
-Intended for manual/on-demand validation (not every push).
+Used for local validation and CI smoke checks.
 
 Options:
   --mode <basic|full>     REQUIRED.

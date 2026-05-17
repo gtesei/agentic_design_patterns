@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  smoke:
+  python-smoke:
     runs-on: ubuntu-latest
 
     steps:
@@ -21,3 +21,35 @@ jobs:
 
       - name: Run reliability smoke tests
         run: python -m unittest discover -s tests -p "test_*.py" -v
+
+  typescript-foundational:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install TypeScript workspace dependencies
+        working-directory: typescript_base
+        run: bun install
+
+      - name: Type-check foundational TypeScript packages
+        shell: bash
+        run: |
+          set -euo pipefail
+          while IFS= read -r pkg; do
+            dir="$(dirname "$pkg")"
+            echo "==> bun --bun tsc --noEmit in $dir"
+            (
+              cd "$dir"
+              bun --bun tsc --noEmit
+            )
+          done < <(find foundational_design_patterns -maxdepth 3 -path '*/typescript/package.json' | sort)
+
+      - name: Run foundational TypeScript smoke tests
+        run: bash scripts/run_demos_smoke_typescript.sh --mode basic
