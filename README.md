@@ -13,7 +13,7 @@
 
 > **Transform your AI applications from simple prompts to sophisticated intelligent systems.**
 
-A comprehensive, hands-on collection of design patterns for building robust agentic AI systems. Each pattern is implemented with real-world examples and detailed documentation to help you architect scalable, maintainable AI applications.
+AI evolves too quickly for traditional books to stay current, especially in fast-moving areas like agentic systems. That’s why this is one of the best “living books” on agentic AI: a comprehensive, hands-on collection of design patterns for building robust AI agents, continuously updated with real-world implementations, practical examples, and detailed architectural guidance for scalable, maintainable AI applications.
 
 ---
 
