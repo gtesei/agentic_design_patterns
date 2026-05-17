@@ -783,25 +783,11 @@ For TypeScript workspace conventions, coverage, and runtime details, see [typesc
 Use these from the repo root:
 
 ```bash
-# Python shared-runtime reliability gate
-python -m unittest discover -s tests -p "test_*.py" -v
+# Python foundational offline smoke
+bash scripts/run_demos_smoke.sh --mode basic
 
 # TypeScript foundational offline smoke
 bash scripts/run_demos_smoke_typescript.sh --mode basic
-```
-
-What they check:
-
-- Python: repo bootstrap and root discovery
-- Python: SSL bypass stays off unless explicitly enabled
-- Python: repo-authored Python files compile cleanly
-- TypeScript: `bun test` passes in each foundational `*/typescript` package
-- CI additionally runs `bun --bun tsc --noEmit` in each foundational `*/typescript` package
-
-For manual or scheduled end-to-end verification, run:
-
-```bash
-bash scripts/run_demos_smoke_typescript.sh --mode full
 ```
 
 ### CI
