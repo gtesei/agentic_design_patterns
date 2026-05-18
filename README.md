@@ -1112,8 +1112,6 @@ If you reference this catalog in academic or professional work, please cite:
 }
 ```
 
-For the canonical book that inspired this repository, see Gullí (2024) under [Acknowledgments](#-acknowledgments).
-
 ---
 
 ## 🙏 Acknowledgments
