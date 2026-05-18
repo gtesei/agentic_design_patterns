@@ -9,6 +9,7 @@
 [![GitHub forks](https://img.shields.io/github/forks/gtesei/agentic_design_patterns?style=social)](https://github.com/gtesei/agentic_design_patterns/network)
 [![GitHub issues](https://img.shields.io/github/issues/gtesei/agentic_design_patterns)](https://github.com/gtesei/agentic_design_patterns/issues)
 [![GitHub last commit](https://img.shields.io/github/last-commit/gtesei/agentic_design_patterns)](https://github.com/gtesei/agentic_design_patterns/commits)
+[![GitHub release](https://img.shields.io/github/v/release/gtesei/agentic_design_patterns?include_prereleases&sort=semver)](https://github.com/gtesei/agentic_design_patterns/releases)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 
 [English](README.md)
@@ -16,6 +17,27 @@
 > **把你的 AI 应用从简单提示词进化为成熟的智能系统。**
 
 AI 演进的速度太快，传统书籍很难保持时效，尤其是在智能体（agentic）系统这种快速变化的领域。这正是本仓库被定位为关于智能体 AI 最好的“活书（living book）”之一的原因：它是一个全面、动手实践的设计模式合集，用于构建健壮的 AI 智能体，并持续更新真实世界的实现、可运行的示例，以及为可扩展、可维护 AI 应用提供的详细架构指引。
+
+## 目录
+
+- [📚 学术基础](#-学术基础)
+- [🏗️ 仓库结构](#-仓库结构)
+- [🗂️ 模式速览](#-模式速览)
+- [📚 基础模式](#-基础模式foundational-patterns)
+- [🧠 进阶推理模式](#-进阶推理模式)
+- [🛡️ 可靠性模式](#-可靠性模式)
+- [🎯 编排模式](#-编排模式)
+- [📊 可观测性模式](#-可观测性模式)
+- [🧩 记忆模式](#-记忆模式)
+- [🎓 学习模式](#-学习模式)
+- [🚀 快速开始](#-快速开始)
+- [🗺️ 模式选择指南](#-模式选择指南)
+- [🎓 学习路径](#-学习路径)
+- [🛠️ 技术栈](#-技术栈)
+- [📖 资源](#-资源)
+- [🏛️ 标准与合规](#-标准与合规)
+- [📌 如何引用](#-如何引用)
+- [🙏 致谢](#-致谢)
 
 > **新增：Pi 实现分析**
 >
@@ -117,6 +139,44 @@ agentic_design_patterns/
 ├── LICENSE                     # MIT 协议
 └── README.md                   # 本文件
 ```
+
+---
+
+## 🗂️ 模式速览
+
+按行索引、便于快速定位：每一行指向对应模式的目录；Pi 一列指向 `pi.md` 实现分析（如有）；TypeScript 一列标记是否在 `<pattern>/typescript/` 下提供 Bun/TypeScript 移植。
+
+| # | 模式 | 分类 | Pi 分析 | TypeScript |
+|---|---|---|---|---|
+| 1 | [Prompt Chaining](./foundational_design_patterns/1_prompt_chain/) | 基础 | [pi](./foundational_design_patterns/1_prompt_chain/pi.md) | ✓ |
+| 2 | [Routing](./foundational_design_patterns/2_routing/) | 基础 | [pi](./foundational_design_patterns/2_routing/pi.md) | ✓ |
+| 3 | [Parallelization](./foundational_design_patterns/3_parallelization/) | 基础 | [pi](./foundational_design_patterns/3_parallelization/pi.md) | ✓ |
+| 4 | [Reflection](./foundational_design_patterns/4_reflection/) | 基础 | [pi](./foundational_design_patterns/4_reflection/pi.md) | ✓ |
+| 5 | [Tool Use](./foundational_design_patterns/5_tool_use/) | 基础 | [pi](./foundational_design_patterns/5_tool_use/pi.md) | ✓ |
+| 6 | [Planning](./foundational_design_patterns/6_planning/) | 基础 | [pi](./foundational_design_patterns/6_planning/pi.md) | ✓ |
+| 7 | [Multi-Agent Collaboration](./foundational_design_patterns/7_multi_agent_collaboration/) | 基础 | [pi](./foundational_design_patterns/7_multi_agent_collaboration/pi.md) | ✓ |
+| 8 | [ReAct](./foundational_design_patterns/8_react/) | 基础 | [pi](./foundational_design_patterns/8_react/pi.md) | ✓ |
+| 9 | [RAG](./foundational_design_patterns/9_rag/) | 基础 | — | ✓ |
+| 10 | [Human-in-the-Loop (HITL)](./foundational_design_patterns/10_hitl/) | 基础 | [pi](./foundational_design_patterns/10_hitl/pi.md) | ✓ |
+| 11 | [Structured Outputs](./foundational_design_patterns/11_structured_outputs/) | 基础 | [pi](./foundational_design_patterns/11_structured_outputs/pi.md) | ✓ |
+| 12 | [Computer Use](./foundational_design_patterns/12_computer_use/) | 基础 | [pi](./foundational_design_patterns/12_computer_use/pi.md) | ✓ |
+| 13 | [Tree of Thoughts](./reasoning/tree_of_thoughts/) | 推理 | [pi](./reasoning/tree_of_thoughts/pi.md) | — |
+| 14 | [Graph of Thoughts](./reasoning/graph_of_thoughts/) | 推理 | [pi](./reasoning/graph_of_thoughts/pi.md) | — |
+| 15 | [Exploration & Discovery](./reasoning/exploration_discovery/) | 推理 | [pi](./reasoning/exploration_discovery/pi.md) | — |
+| 16 | [Deep Research](./reasoning/deep_research/) | 推理 | [pi](./reasoning/deep_research/pi.md) | — |
+| 17 | [Error Recovery](./reliability/error_recovery/) | 可靠性 | [pi](./reliability/error_recovery/pi.md) | — |
+| 18 | [Guardrails](./reliability/guardrails/) | 可靠性 | [pi](./reliability/guardrails/pi.md) | — |
+| 19 | [Goal Management](./orchestration/goal_management/) | 编排 | [pi](./orchestration/goal_management/pi.md) | — |
+| 20 | [Subagents](./orchestration/subagents/) | 编排 | [pi](./orchestration/subagents/pi.md) | — |
+| 21 | [Skills](./orchestration/skills/) | 编排 | [pi](./orchestration/skills/pi.md) | — |
+| 22 | [Agent Communication](./orchestration/agent_communication/) | 编排 | [pi](./orchestration/agent_communication/pi.md) | — |
+| 23 | [MCP](./orchestration/mcp/) | 编排 | [pi](./orchestration/mcp/pi.md) | — |
+| 24 | [Prioritization](./orchestration/prioritization/) | 编排 | [pi](./orchestration/prioritization/pi.md) | — |
+| 25 | [Evaluation & Monitoring](./observability/evaluation_monitoring/) | 可观测性 | [pi](./observability/evaluation_monitoring/pi.md) | — |
+| 26 | [Resource Optimization](./observability/resource_optimization/) | 可观测性 | [pi](./observability/resource_optimization/pi.md) | — |
+| 27 | [Memory Management](./memory/memory_management/) | 记忆 | [pi](./memory/memory_management/pi.md) | — |
+| 28 | [Context Management](./memory/context_management/) | 记忆 | [pi](./memory/context_management/pi.md) | — |
+| 29 | [Adaptive Learning](./learning/adaptive_learning/) | 学习 | [pi](./learning/adaptive_learning/pi.md) | — |
 
 ---
 
@@ -1034,6 +1094,25 @@ GitHub Actions 会在推送和 PR 上执行可靠性闸门：
 ## 📄 许可证
 
 本项目采用 MIT 许可证 —— 详见 [LICENSE](./LICENSE) 文件。
+
+---
+
+## 📌 如何引用
+
+如需在学术或专业工作中引用本目录，请使用：
+
+```bibtex
+@misc{tesei_agentic_design_patterns,
+  author       = {Tesei, Gino},
+  title        = {Agentic Design Patterns: A Hands-On Catalog for Building Intelligent Systems},
+  year         = {2024},
+  publisher    = {GitHub},
+  howpublished = {\url{https://github.com/gtesei/agentic_design_patterns}},
+  note         = {MIT License}
+}
+```
+
+启发本仓库的奠基性书籍，请参见 [致谢](#-致谢) 中 Gullí（2024）的引用。
 
 ---
 
