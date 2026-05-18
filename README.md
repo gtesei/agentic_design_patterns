@@ -11,6 +11,8 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/gtesei/agentic_design_patterns)](https://github.com/gtesei/agentic_design_patterns/commits)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 
+[中文版](README.zh-CN.md)
+
 > **Transform your AI applications from simple prompts to sophisticated intelligent systems.**
 
 AI evolves too quickly for traditional books to stay current, especially in fast-moving areas like agentic systems. That’s why this is one of the best “living books” on agentic AI: a comprehensive, hands-on collection of design patterns for building robust AI agents, continuously updated with real-world implementations, practical examples, and detailed architectural guidance for scalable, maintainable AI applications.
