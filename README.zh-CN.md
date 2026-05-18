@@ -7,8 +7,6 @@
 
 [![GitHub stars](https://img.shields.io/github/stars/gtesei/agentic_design_patterns?style=social)](https://github.com/gtesei/agentic_design_patterns/stargazers)
 [![GitHub forks](https://img.shields.io/github/forks/gtesei/agentic_design_patterns?style=social)](https://github.com/gtesei/agentic_design_patterns/network)
-[![GitHub issues](https://img.shields.io/github/issues/gtesei/agentic_design_patterns)](https://github.com/gtesei/agentic_design_patterns/issues)
-[![GitHub last commit](https://img.shields.io/github/last-commit/gtesei/agentic_design_patterns)](https://github.com/gtesei/agentic_design_patterns/commits)
 [![GitHub release](https://img.shields.io/github/v/release/gtesei/agentic_design_patterns?include_prereleases&sort=semver)](https://github.com/gtesei/agentic_design_patterns/releases)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 
