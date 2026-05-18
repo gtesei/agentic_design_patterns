@@ -204,6 +204,16 @@ record_result() {
   RESULT_REASON+=("$3")
 }
 
+CREATED_NODE_MODULE_LINKS=()
+cleanup_node_modules_links() {
+  for link_path in "${CREATED_NODE_MODULE_LINKS[@]}"; do
+    if [[ -L "$link_path" ]]; then
+      rm -f "$link_path"
+    fi
+  done
+}
+trap cleanup_node_modules_links EXIT
+
 run_with_timeout() {
   local cwd="$1"
   local log_file="$2"
@@ -243,6 +253,21 @@ INSTALL_LOG="$LOG_DIR/bun_install.log"
 echo "Running 'bun install' at workspace root ($WS_DIR)..."
 run_with_timeout "$WS_DIR" "$INSTALL_LOG" bun install
 install_rc=$?
+
+ensure_package_node_modules() {
+  local pkg_dir="$1"
+  local pkg_node_modules="$pkg_dir/node_modules"
+
+  # Keep package-local installs when present; otherwise create a temporary symlink
+  # to the shared workspace install so `bun test` from the package dir resolves deps.
+  if [[ -e "$pkg_node_modules" ]]; then
+    return 0
+  fi
+
+  ln -s "$WS_DIR/node_modules" "$pkg_node_modules"
+  CREATED_NODE_MODULE_LINKS+=("$pkg_node_modules")
+}
+
 if [[ $install_rc -ne 0 ]]; then
   if is_infra_error "$INSTALL_LOG"; then
     echo "bun install failed with infra error — marking all packages SKIP_INFRA"
@@ -283,6 +308,12 @@ else
     if [[ "$MODE" == "full" && -z "${OPENAI_API_KEY:-}" ]]; then
       record_result "$rel" "SKIP_INFRA" "OPENAI_API_KEY missing"
       printf '[%3d/%3d] %-12s %s (%s)\n' "$((i+1))" "$TOTAL" "SKIP_INFRA" "$rel" "OPENAI_API_KEY missing"
+      continue
+    fi
+
+    if ! ensure_package_node_modules "$pdir"; then
+      record_result "$rel" "FAIL" "node_modules bootstrap error"
+      printf '[%3d/%3d] %-12s %s (%s)\n' "$((i+1))" "$TOTAL" "FAIL" "$rel" "node_modules bootstrap error"
       continue
     fi
 
