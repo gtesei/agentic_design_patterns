@@ -9,6 +9,7 @@
 [![GitHub forks](https://img.shields.io/github/forks/gtesei/agentic_design_patterns?style=social)](https://github.com/gtesei/agentic_design_patterns/network)
 [![GitHub issues](https://img.shields.io/github/issues/gtesei/agentic_design_patterns)](https://github.com/gtesei/agentic_design_patterns/issues)
 [![GitHub last commit](https://img.shields.io/github/last-commit/gtesei/agentic_design_patterns)](https://github.com/gtesei/agentic_design_patterns/commits)
+[![GitHub release](https://img.shields.io/github/v/release/gtesei/agentic_design_patterns?include_prereleases&sort=semver)](https://github.com/gtesei/agentic_design_patterns/releases)
 [![Code style: ruff](https://img.shields.io/badge/code%20style-ruff-000000.svg)](https://github.com/astral-sh/ruff)
 
 [中文版](README.zh-CN.md)
@@ -16,6 +17,27 @@
 > **Transform your AI applications from simple prompts to sophisticated intelligent systems.**
 
 AI evolves too quickly for traditional books to stay current, especially in fast-moving areas like agentic systems. That’s why this is one of the best “living books” on agentic AI: a comprehensive, hands-on collection of design patterns for building robust AI agents, continuously updated with real-world implementations, practical examples, and detailed architectural guidance for scalable, maintainable AI applications.
+
+## Table of Contents
+
+- [📚 Academic Foundations](#-academic-foundations)
+- [🏗️ Repository Structure](#-repository-structure)
+- [🗂️ Patterns at a Glance](#-patterns-at-a-glance)
+- [📚 Foundational Patterns](#-foundational-patterns)
+- [🧠 Advanced Reasoning Patterns](#-advanced-reasoning-patterns)
+- [🛡️ Reliability Patterns](#-reliability-patterns)
+- [🎯 Orchestration Patterns](#-orchestration-patterns)
+- [📊 Observability Patterns](#-observability-patterns)
+- [🧩 Memory Patterns](#-memory-patterns)
+- [🎓 Learning Patterns](#-learning-patterns)
+- [🚀 Quick Start](#-quick-start)
+- [🗺️ Pattern Selection Guide](#-pattern-selection-guide)
+- [🎓 Learning Path](#-learning-path)
+- [🛠️ Tech Stack](#-tech-stack)
+- [📖 Resources](#-resources)
+- [🏛️ Standards & Compliance](#-standards--compliance)
+- [📌 How to Cite](#-how-to-cite)
+- [🙏 Acknowledgments](#-acknowledgments)
 
 > **New: Pi implementation analyses**
 >
@@ -117,6 +139,44 @@ agentic_design_patterns/
 ├── LICENSE                     # MIT License
 └── README.md                   # This file
 ```
+
+---
+
+## 🗂️ Patterns at a Glance
+
+One-row-per-pattern index for fast navigation. Each row links to the pattern's deep-dive directory; the Pi column links to its `pi.md` implementation analysis where available; the TS column marks patterns with a Bun/TypeScript port under `<pattern>/typescript/`.
+
+| # | Pattern | Category | Pi Analysis | TypeScript |
+|---|---|---|---|---|
+| 1 | [Prompt Chaining](./foundational_design_patterns/1_prompt_chain/) | Foundational | [pi](./foundational_design_patterns/1_prompt_chain/pi.md) | ✓ |
+| 2 | [Routing](./foundational_design_patterns/2_routing/) | Foundational | [pi](./foundational_design_patterns/2_routing/pi.md) | ✓ |
+| 3 | [Parallelization](./foundational_design_patterns/3_parallelization/) | Foundational | [pi](./foundational_design_patterns/3_parallelization/pi.md) | ✓ |
+| 4 | [Reflection](./foundational_design_patterns/4_reflection/) | Foundational | [pi](./foundational_design_patterns/4_reflection/pi.md) | ✓ |
+| 5 | [Tool Use](./foundational_design_patterns/5_tool_use/) | Foundational | [pi](./foundational_design_patterns/5_tool_use/pi.md) | ✓ |
+| 6 | [Planning](./foundational_design_patterns/6_planning/) | Foundational | [pi](./foundational_design_patterns/6_planning/pi.md) | ✓ |
+| 7 | [Multi-Agent Collaboration](./foundational_design_patterns/7_multi_agent_collaboration/) | Foundational | [pi](./foundational_design_patterns/7_multi_agent_collaboration/pi.md) | ✓ |
+| 8 | [ReAct](./foundational_design_patterns/8_react/) | Foundational | [pi](./foundational_design_patterns/8_react/pi.md) | ✓ |
+| 9 | [RAG](./foundational_design_patterns/9_rag/) | Foundational | — | ✓ |
+| 10 | [Human-in-the-Loop (HITL)](./foundational_design_patterns/10_hitl/) | Foundational | [pi](./foundational_design_patterns/10_hitl/pi.md) | ✓ |
+| 11 | [Structured Outputs](./foundational_design_patterns/11_structured_outputs/) | Foundational | [pi](./foundational_design_patterns/11_structured_outputs/pi.md) | ✓ |
+| 12 | [Computer Use](./foundational_design_patterns/12_computer_use/) | Foundational | [pi](./foundational_design_patterns/12_computer_use/pi.md) | ✓ |
+| 13 | [Tree of Thoughts](./reasoning/tree_of_thoughts/) | Reasoning | [pi](./reasoning/tree_of_thoughts/pi.md) | — |
+| 14 | [Graph of Thoughts](./reasoning/graph_of_thoughts/) | Reasoning | [pi](./reasoning/graph_of_thoughts/pi.md) | — |
+| 15 | [Exploration & Discovery](./reasoning/exploration_discovery/) | Reasoning | [pi](./reasoning/exploration_discovery/pi.md) | — |
+| 16 | [Deep Research](./reasoning/deep_research/) | Reasoning | [pi](./reasoning/deep_research/pi.md) | — |
+| 17 | [Error Recovery](./reliability/error_recovery/) | Reliability | [pi](./reliability/error_recovery/pi.md) | — |
+| 18 | [Guardrails](./reliability/guardrails/) | Reliability | [pi](./reliability/guardrails/pi.md) | — |
+| 19 | [Goal Management](./orchestration/goal_management/) | Orchestration | [pi](./orchestration/goal_management/pi.md) | — |
+| 20 | [Subagents](./orchestration/subagents/) | Orchestration | [pi](./orchestration/subagents/pi.md) | — |
+| 21 | [Skills](./orchestration/skills/) | Orchestration | [pi](./orchestration/skills/pi.md) | — |
+| 22 | [Agent Communication](./orchestration/agent_communication/) | Orchestration | [pi](./orchestration/agent_communication/pi.md) | — |
+| 23 | [MCP](./orchestration/mcp/) | Orchestration | [pi](./orchestration/mcp/pi.md) | — |
+| 24 | [Prioritization](./orchestration/prioritization/) | Orchestration | [pi](./orchestration/prioritization/pi.md) | — |
+| 25 | [Evaluation & Monitoring](./observability/evaluation_monitoring/) | Observability | [pi](./observability/evaluation_monitoring/pi.md) | — |
+| 26 | [Resource Optimization](./observability/resource_optimization/) | Observability | [pi](./observability/resource_optimization/pi.md) | — |
+| 27 | [Memory Management](./memory/memory_management/) | Memory | [pi](./memory/memory_management/pi.md) | — |
+| 28 | [Context Management](./memory/context_management/) | Memory | [pi](./memory/context_management/pi.md) | — |
+| 29 | [Adaptive Learning](./learning/adaptive_learning/) | Learning | [pi](./learning/adaptive_learning/pi.md) | — |
 
 ---
 
@@ -1034,6 +1094,23 @@ Organizations deploying agentic AI systems should consider the NIST AI Risk Mana
 ## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
+
+---
+
+## 📌 How to Cite
+
+If you reference this catalog in academic or professional work, please cite:
+
+```bibtex
+@misc{tesei_agentic_design_patterns,
+  author       = {Tesei, Gino},
+  title        = {Agentic Design Patterns: A Hands-On Catalog for Building Intelligent Systems},
+  year         = {2024},
+  publisher    = {GitHub},
+  howpublished = {\url{https://github.com/gtesei/agentic_design_patterns}},
+  note         = {MIT License}
+}
+```
 
 ---
 
