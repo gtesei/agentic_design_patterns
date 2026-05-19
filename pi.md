@@ -42,34 +42,34 @@ Source `pi.md` files accessed: **2026-05-17**. Rebuild this summary if any per-p
 
 | # | Pattern | Category | Score | Heat |
 |:---:|---|---|:---:|---|
-| 3  | [Parallelization](./foundational_design_patterns/3_parallelization/pi.md)               | Foundational   | 5 | █████ |
-| 5  | [Tool Use](./foundational_design_patterns/5_tool_use/pi.md)                             | Foundational   | 5 | █████ |
-| 8  | [ReAct](./foundational_design_patterns/8_react/pi.md)                                   | Foundational   | 5 | █████ |
-| 10 | [Human-in-the-Loop](./foundational_design_patterns/10_hitl/pi.md)                       | Foundational   | 5 | █████ |
-| 21 | [Skills](./orchestration/skills/pi.md)                                                  | Orchestration  | 5 | █████ |
-| 28 | [Context Management](./memory/context_management/pi.md)                                 | Memory         | 5 | █████ |
-| 11 | [Structured Outputs](./foundational_design_patterns/11_structured_outputs/pi.md)        | Foundational   | 4 | ████░ |
-| 17 | [Error Recovery](./reliability/error_recovery/pi.md)                                    | Reliability    | 4 | ████░ |
-| 18 | [Guardrails](./reliability/guardrails/pi.md)                                            | Reliability    | 4 | ████░ |
-| 20 | [Subagents](./orchestration/subagents/pi.md)                                            | Orchestration  | 4 | ████░ |
-| 26 | [Resource Optimization](./observability/resource_optimization/pi.md)                    | Observability  | 4 | ████░ |
-| 6  | [Planning](./foundational_design_patterns/6_planning/pi.md)                             | Foundational   | 3 | ███░░ |
-| 7  | [Multi-Agent Collaboration](./foundational_design_patterns/7_multi_agent_collaboration/pi.md) | Foundational   | 3 | ███░░ |
-| 15 | [Exploration & Discovery](./reasoning/exploration_discovery/pi.md)                      | Reasoning      | 3 | ███░░ |
-| 25 | [Evaluation & Monitoring](./observability/evaluation_monitoring/pi.md)                  | Observability  | 3 | ███░░ |
-| 27 | [Memory Management](./memory/memory_management/pi.md)                                   | Memory         | 3 | ███░░ |
-| 2  | [Routing](./foundational_design_patterns/2_routing/pi.md)                               | Foundational   | 2 | ██░░░ |
-| 4  | [Reflection](./foundational_design_patterns/4_reflection/pi.md)                         | Foundational   | 2 | ██░░░ |
-| 19 | [Goal Management](./orchestration/goal_management/pi.md)                                | Orchestration  | 2 | ██░░░ |
-| 22 | [Agent Communication](./orchestration/agent_communication/pi.md)                        | Orchestration  | 2 | ██░░░ |
-| 1  | [Prompt Chaining](./foundational_design_patterns/1_prompt_chain/pi.md)                  | Foundational   | 1 | █░░░░ |
-| 12 | [Computer Use](./foundational_design_patterns/12_computer_use/pi.md)                    | Foundational   | 1 | █░░░░ |
-| 13 | [Tree of Thoughts](./reasoning/tree_of_thoughts/pi.md)                                  | Reasoning      | 1 | █░░░░ |
-| 16 | [Deep Research](./reasoning/deep_research/pi.md)                                        | Reasoning      | 1 | █░░░░ |
-| 24 | [Prioritization](./orchestration/prioritization/pi.md)                                  | Orchestration  | 1 | █░░░░ |
-| 14 | [Graph of Thoughts](./reasoning/graph_of_thoughts/pi.md)                                | Reasoning      | 0 | ░░░░░ |
-| 23 | [MCP](./orchestration/mcp/pi.md)                                                        | Orchestration  | 0 | ░░░░░ |
-| 29 | [Adaptive Learning](./learning/adaptive_learning/pi.md)                                 | Learning       | 0 | ░░░░░ |
+| 3  | [Parallelization](./foundational_design_patterns/3_parallelization/pi.md)               | Foundational   | 5 | 🟩🟩🟩🟩🟩 |
+| 5  | [Tool Use](./foundational_design_patterns/5_tool_use/pi.md)                             | Foundational   | 5 | 🟩🟩🟩🟩🟩 |
+| 8  | [ReAct](./foundational_design_patterns/8_react/pi.md)                                   | Foundational   | 5 | 🟩🟩🟩🟩🟩 |
+| 10 | [Human-in-the-Loop](./foundational_design_patterns/10_hitl/pi.md)                       | Foundational   | 5 | 🟩🟩🟩🟩🟩 |
+| 21 | [Skills](./orchestration/skills/pi.md)                                                  | Orchestration  | 5 | 🟩🟩🟩🟩🟩 |
+| 28 | [Context Management](./memory/context_management/pi.md)                                 | Memory         | 5 | 🟩🟩🟩🟩🟩 |
+| 11 | [Structured Outputs](./foundational_design_patterns/11_structured_outputs/pi.md)        | Foundational   | 4 | 🟩🟩🟩🟩⬜ |
+| 17 | [Error Recovery](./reliability/error_recovery/pi.md)                                    | Reliability    | 4 | 🟩🟩🟩🟩⬜ |
+| 18 | [Guardrails](./reliability/guardrails/pi.md)                                            | Reliability    | 4 | 🟩🟩🟩🟩⬜ |
+| 20 | [Subagents](./orchestration/subagents/pi.md)                                            | Orchestration  | 4 | 🟩🟩🟩🟩⬜ |
+| 26 | [Resource Optimization](./observability/resource_optimization/pi.md)                    | Observability  | 4 | 🟩🟩🟩🟩⬜ |
+| 6  | [Planning](./foundational_design_patterns/6_planning/pi.md)                             | Foundational   | 3 | 🟩🟩🟩⬜⬜ |
+| 7  | [Multi-Agent Collaboration](./foundational_design_patterns/7_multi_agent_collaboration/pi.md) | Foundational   | 3 | 🟩🟩🟩⬜⬜ |
+| 15 | [Exploration & Discovery](./reasoning/exploration_discovery/pi.md)                      | Reasoning      | 3 | 🟩🟩🟩⬜⬜ |
+| 25 | [Evaluation & Monitoring](./observability/evaluation_monitoring/pi.md)                  | Observability  | 3 | 🟩🟩🟩⬜⬜ |
+| 27 | [Memory Management](./memory/memory_management/pi.md)                                   | Memory         | 3 | 🟩🟩🟩⬜⬜ |
+| 2  | [Routing](./foundational_design_patterns/2_routing/pi.md)                               | Foundational   | 2 | 🟩🟩⬜⬜⬜ |
+| 4  | [Reflection](./foundational_design_patterns/4_reflection/pi.md)                         | Foundational   | 2 | 🟩🟩⬜⬜⬜ |
+| 19 | [Goal Management](./orchestration/goal_management/pi.md)                                | Orchestration  | 2 | 🟩🟩⬜⬜⬜ |
+| 22 | [Agent Communication](./orchestration/agent_communication/pi.md)                        | Orchestration  | 2 | 🟩🟩⬜⬜⬜ |
+| 1  | [Prompt Chaining](./foundational_design_patterns/1_prompt_chain/pi.md)                  | Foundational   | 1 | 🟩⬜⬜⬜⬜ |
+| 12 | [Computer Use](./foundational_design_patterns/12_computer_use/pi.md)                    | Foundational   | 1 | 🟩⬜⬜⬜⬜ |
+| 13 | [Tree of Thoughts](./reasoning/tree_of_thoughts/pi.md)                                  | Reasoning      | 1 | 🟩⬜⬜⬜⬜ |
+| 16 | [Deep Research](./reasoning/deep_research/pi.md)                                        | Reasoning      | 1 | 🟩⬜⬜⬜⬜ |
+| 24 | [Prioritization](./orchestration/prioritization/pi.md)                                  | Orchestration  | 1 | 🟩⬜⬜⬜⬜ |
+| 14 | [Graph of Thoughts](./reasoning/graph_of_thoughts/pi.md)                                | Reasoning      | 0 | ⬜⬜⬜⬜⬜ |
+| 23 | [MCP](./orchestration/mcp/pi.md)                                                        | Orchestration  | 0 | ⬜⬜⬜⬜⬜ |
+| 29 | [Adaptive Learning](./learning/adaptive_learning/pi.md)                                 | Learning       | 0 | ⬜⬜⬜⬜⬜ |
 
 ---
 
