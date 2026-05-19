@@ -1,0 +1,65 @@
+name: Weekly Smoke
+
+on:
+  schedule:
+    # Every Monday 06:00 UTC.
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+jobs:
+  python-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v3
+
+      - name: Run Python demo smoke (basic mode)
+        run: bash scripts/run_demos_smoke.sh --mode basic
+
+      - name: Upload smoke logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-smoke-logs
+          path: .demo-smoke-logs/
+          if-no-files-found: ignore
+          retention-days: 14
+
+  typescript-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install TypeScript workspace dependencies
+        working-directory: typescript_base
+        run: bun install
+
+      - name: Run TypeScript demo smoke (basic mode)
+        run: bash scripts/run_demos_smoke_typescript.sh --mode basic
+
+      - name: Upload smoke logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: typescript-smoke-logs
+          path: .demo-smoke-logs-ts/
+          if-no-files-found: ignore
+          retention-days: 14

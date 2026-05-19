@@ -14,6 +14,17 @@
 
 > **把你的 AI 应用从简单提示词进化为成熟的智能系统。**
 
+## 🧭 原则
+
+本仓库围绕四条承诺构建。它们决定了什么留下、什么被删除。
+
+1. **精炼，不求大而全。** 这**不是**一个包含成百上千个、没人会真正读懂或记得住的模式的目录。它是一份**面向人类理解与记忆的精炼目录**。冗长的模式清单不是优点，而是噪音。
+2. **硬上限：最多 24 个模式。** 如果某个模式并非必需，就把它移除。新增一个，就要删掉另一个。这个上限是一种强制约束，而不是远期目标。
+3. **示例必须真的能跑起来。** 每个示例都会在**自动化的每周冒烟测试**中运行，同时覆盖 **Python 与 TypeScript**，并且必须通过。（见 [`.github/workflows/weekly-smoke.yml`](./.github/workflows/weekly-smoke.yml)。）跑不起来的教学代码就是在说谎的教学代码。
+4. **要看具体相关性，而不只是论文。** 对每一个模式，我们都会衡量它在**真实编码 Agent**中的呈现方式 —— 目前对标的是 [Pi](https://github.com/earendil-works/pi) —— 并把分析结果写入每个模式目录下的 `pi.md`，同时提供一份[包含覆盖度热力图的仓库级汇总](./pi.md)。我们还维护一份 [`diff.md`](./diff.md) 来澄清那些常被混淆的模式对：**如果两个模式无法被清晰地区分开来，那么其中一个大概率不该留在这里**。一个只存在于某篇论文里的模式，同样是它可能不属于这里的信号。
+
+---
+
 AI 演进的速度太快，传统书籍很难保持时效，尤其是在智能体（agentic）系统这种快速变化的领域。这正是本仓库被定位为关于智能体 AI 最好的“活书（living book）”之一的原因：它是一个全面、动手实践的设计模式合集，用于构建健壮的 AI 智能体，并持续更新真实世界的实现、可运行的示例，以及为可扩展、可维护 AI 应用提供的详细架构指引。
 
 ## 目录
@@ -42,6 +53,8 @@ AI 演进的速度太快，传统书籍很难保持时效，尤其是在智能�
 > 本仓库现在包含面向实现层面的分析，说明这些模式如何映射到 [Pi](https://github.com/earendil-works/pi)。这些分析基于 Pi 的真实代码库，附带 package/module 引用、带行号的代码片段，以及对架构权衡或局限性的说明。
 >
 > 在各模式目录下查找 `pi.md`。这些文字保持保守的态度：如果 Pi 并没有有意义地实现某个模式，分析会直接说明这一点，而不是强行套用。
+>
+> 想看 28 个模式的整体覆盖情况？参见仓库根目录的 [**Pi 汇总（`pi.md`）**](./pi.md)：覆盖度热力图、按分数排序的总表，以及每个模式的一句话结论与最具代表性的代码引用。
 
 **当前已提供的 Pi 分析：**
 - 基础（Foundational）：[Prompt Chaining](./foundational_design_patterns/1_prompt_chain/pi.md)、[Routing](./foundational_design_patterns/2_routing/pi.md)、[Parallelization](./foundational_design_patterns/3_parallelization/pi.md)、[Reflection](./foundational_design_patterns/4_reflection/pi.md)、[Tool Use](./foundational_design_patterns/5_tool_use/pi.md)、[Planning](./foundational_design_patterns/6_planning/pi.md)、[Multi-Agent Collaboration](./foundational_design_patterns/7_multi_agent_collaboration/pi.md)、[ReAct](./foundational_design_patterns/8_react/pi.md)、[HITL](./foundational_design_patterns/10_hitl/pi.md)、[Structured Outputs](./foundational_design_patterns/11_structured_outputs/pi.md)、[Computer Use](./foundational_design_patterns/12_computer_use/pi.md)
