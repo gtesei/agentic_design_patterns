@@ -6,6 +6,31 @@ The **Memory Management Pattern** enables AI agents to maintain, retrieve, and u
 
 This pattern is essential for building agents that feel natural and human-like, maintaining continuity across sessions, learning user preferences, and building long-term relationships. Memory management bridges the gap between ephemeral interactions and persistent, evolving knowledge.
 
+## Architecture
+
+```mermaid
+---
+title: Memory Management — Buffer + Semantic
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Int([interaction])
+    Use([context-aware response])
+
+    St[store]
+
+    subgraph stores ["memory stores"]
+        Bf[(buffer:<br/>recent turns)]
+        Vm[(vector:<br/>semantic)]
+    end
+
+    Rt[retrieve relevant]
+
+    Int --> St
+    St --> Bf & Vm
+    Bf & Vm --> Rt --> Use
+```
+
 ## Why Use This Pattern?
 
 Traditional stateless LLM interactions have critical limitations:

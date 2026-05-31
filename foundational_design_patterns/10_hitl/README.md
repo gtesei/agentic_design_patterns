@@ -8,6 +8,29 @@ The core principle of HITL is to ensure that AI operates within ethical boundari
 
 HITL bridges the gap between fully autonomous AI systems and purely manual processes, combining the efficiency and scale of automation with the judgment, ethics, and accountability of human decision-making. Rather than viewing AI as a replacement for human workers, HITL positions AI as a tool that augments and enhances human capabilities. This augmentation can take various forms, from automating routine tasks to providing data-driven insights that inform human decisions. The end goal is to create a collaborative ecosystem where both humans and AI agents can leverage their distinct strengths to achieve outcomes that neither could accomplish alone.
 
+## Architecture
+
+```mermaid
+---
+title: Human-in-the-Loop — Content Approval
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Brief([content brief])
+    Pub([published])
+    Audit[(audit_log.json)]
+
+    Gen[LLM draft]
+    Draft[/draft/]
+    H{human review}
+
+    Brief --> Gen --> Draft --> H
+    H -- "approve" --> Pub
+    H -- "edit" --> Pub
+    H -- "reject" --> Gen
+    H -. "log decision" .-> Audit
+```
+
 ## Why Use This Pattern?
 
 Autonomous agents, while powerful, face fundamental limitations:

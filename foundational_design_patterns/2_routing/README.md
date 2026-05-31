@@ -4,6 +4,32 @@
 
 The **Routing Pattern** provides a standardized solution for building intelligent, context-aware agent systems by introducing conditional logic into an agent's operational framework.
 
+## Architecture
+
+```mermaid
+---
+title: Routing — Domain-Specific Handlers
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Q([user request])
+    R([response])
+
+    Cls{classifier<br/>LLM}
+
+    subgraph handlers ["specialist handlers"]
+        B[booking_handler]
+        I[info_handler]
+        U[unclear_handler]
+    end
+
+    Q --> Cls
+    Cls -- "booking" --> B
+    Cls -- "info" --> I
+    Cls -- "unclear" --> U
+    B & I & U --> R
+```
+
 ## How It Works
 
 The pattern operates through three key steps:

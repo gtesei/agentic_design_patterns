@@ -6,6 +6,37 @@ The **Goal Management Pattern** is an orchestration approach that enables AI age
 
 This pattern transforms monolithic tasks into hierarchical goal structures where each goal can be decomposed, prioritized, executed in parallel or sequence, monitored continuously, and replanned when necessary. It's particularly valuable for complex projects, research initiatives, software development, and any scenario where success requires coordinating multiple interdependent activities over time.
 
+## Architecture
+
+```mermaid
+---
+title: Goal Management — Hierarchical Decomposition
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    G([goal])
+    Done([complete])
+
+    De[decompose]
+
+    subgraph subs ["subgoals"]
+        S1[subgoal 1]
+        S2[subgoal 2]
+        S3[subgoal 3]
+    end
+
+    Tr[/dependency graph/]
+    Ex[execute]
+    M{monitor}
+    Rp[replan]
+
+    G --> De
+    De --> S1 & S2 & S3
+    S1 & S2 & S3 --> Tr --> Ex --> M
+    M -- "drift" --> Rp --> De
+    M -- "on track" --> Done
+```
+
 ## Why Use This Pattern?
 
 Traditional approaches have significant limitations:

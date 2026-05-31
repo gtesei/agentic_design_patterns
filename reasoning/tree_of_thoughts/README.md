@@ -6,6 +6,25 @@ The **Tree of Thoughts (ToT) Pattern** is an advanced reasoning framework that e
 
 ToT transforms LLMs from linear reasoners into strategic problem-solvers that can backtrack, compare alternatives, and make informed decisions about which reasoning paths to pursue—much like how humans approach complex problems that require deliberation and exploration.
 
+## Architecture
+
+```mermaid
+---
+title: Tree of Thoughts — Branching Reasoning with Backtrack
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart TB
+    Q([problem])
+    Sol([solution])
+
+    Q --> Ta[thought a] & Tb[thought b] & Tc[thought c]
+    Ta & Tb & Tc --> E1{evaluate}
+    E1 -- "best" --> Ta1[a · 1] & Ta2[a · 2]
+    Ta1 & Ta2 --> E2{evaluate}
+    E2 --> Sol
+    E1 -. "backtrack" .-> Tb
+```
+
 ## Why Use This Pattern?
 
 Traditional reasoning approaches have significant limitations:

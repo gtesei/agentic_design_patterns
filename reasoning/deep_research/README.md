@@ -6,6 +6,30 @@ The **Deep Research Pattern** turns "answer this question" into an **iterative r
 
 It differs from a single RAG retrieval in scope and shape — RAG fetches *once* into one prompt; deep research fetches *many times* with reflection between rounds, and emits a report with traceable citations rather than a chat reply.
 
+## Architecture
+
+```mermaid
+---
+title: Deep Research — Iterative Gap-Driven Loop
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Q([research question])
+    Sy([cited synthesis])
+
+    subgraph loop ["research loop"]
+        Pl[plan sub-queries]
+        Se[(search sources)]
+        Rd[read & extract]
+        Rf{gaps?}
+        Pl --> Se --> Rd --> Rf
+        Rf -- "yes — refine" --> Pl
+    end
+
+    Q --> Pl
+    Rf -- "no" --> Sy
+```
+
 ## How It Works
 
 1. **Plan**: decompose the question into a structured set of sub-questions and identify the evidence each requires.

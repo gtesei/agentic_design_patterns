@@ -6,6 +6,34 @@
 
 RAG combines the power of information retrieval systems with the generation capabilities of LLMs, creating a hybrid approach where the model answers questions based on retrieved context rather than pure memorization. This makes it particularly valuable for domain-specific applications, frequently updated information, and reducing hallucinations.
 
+## Architecture
+
+```mermaid
+---
+title: RAG — Hybrid Retrieval + Grounded Generation
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Q([password reset question])
+    Ans([grounded answer + sources])
+
+    subgraph retrieval ["retrieval"]
+        Idx[(support docs<br/>vector store)]
+        Ret[hybrid retriever<br/>BM25 + dense]
+        Ctx[/top-k chunks + citations/]
+        Idx -.-> Ret --> Ctx
+    end
+
+    subgraph generation ["generation"]
+        LLM{{ChatOpenAI}}
+    end
+
+    Q --> Ret
+    Ctx --> LLM
+    Q -. "+ question" .-> LLM
+    LLM --> Ans
+```
+
 ## Why Use This Pattern?
 
 Traditional LLM approaches have significant limitations:
