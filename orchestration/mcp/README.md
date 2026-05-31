@@ -6,6 +6,27 @@ The **Model Context Protocol (MCP)** is a standardized communication protocol th
 
 Think of MCP as **USB for AI**—just as USB provides a universal standard for connecting peripherals to computers, MCP provides a universal standard for connecting tools and data sources to LLMs. Whether you need file system access, database queries, API integration, or custom business logic, MCP allows you to expose these capabilities through a consistent protocol that any MCP-compatible client can understand and use.
 
+## Architecture
+
+```mermaid
+---
+title: MCP — Model Context Protocol
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    LLM{{LLM client}}
+
+    subgraph servers ["MCP servers"]
+        Fs[(filesystem)]
+        Db[(database)]
+        Ws[(web search)]
+    end
+
+    LLM -- "discover" --> Fs & Db & Ws
+    LLM -- "invoke(tool, args)" --> Fs
+    Fs -- "result" --> LLM
+```
+
 ## Why Use This Pattern?
 
 Traditional approaches to LLM tool integration face significant challenges:

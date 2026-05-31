@@ -6,6 +6,26 @@ The **Agent-to-Agent Communication Pattern** (A2A) enables multiple autonomous a
 
 Think of it as building a **communication network** for AI agents—similar to how microservices communicate via APIs, or how humans collaborate through email, chat, and meetings. Each agent maintains its own autonomy while participating in a larger collaborative ecosystem.
 
+## Architecture
+
+```mermaid
+---
+title: Agent Communication — Message Bus
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    A1[agent A]
+    A2[agent B]
+    A3[agent C]
+    Bus(((message bus<br/>direct · pub-sub)))
+
+    A1 -- "request" --> Bus
+    Bus -- "deliver" --> A2
+    Bus -- "broadcast" --> A3
+    A2 & A3 -- "response" --> Bus
+    Bus -- "deliver" --> A1
+```
+
 ## Why Use This Pattern?
 
 Traditional approaches to multi-agent systems often face challenges:

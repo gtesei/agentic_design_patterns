@@ -14,6 +14,38 @@ Input → Step 1 (LLM/Logic) → Step 2 (LLM/Logic) → Step 3 (LLM/Logic) → F
         Output              Output               Output
 ```
 
+### Architecture
+
+```mermaid
+---
+title: Prompt Chain — Laptop Spec to JSON
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    In([raw text:<br/>'3.5 GHz octa-core,<br/>16GB RAM, 1TB NVMe'])
+    Out([JSON:<br/>cpu · memory · storage])
+
+    subgraph extract ["step 1 — extraction"]
+        P1[[prompt: spec extractor]]
+        L1{{ChatOpenAI}}
+        P1 --> L1
+    end
+
+    Mid[/plain-text specs/]
+
+    subgraph transform ["step 2 — transformation"]
+        P2[[prompt: JSON formatter]]
+        L2{{ChatOpenAI}}
+        P2 --> L2
+    end
+
+    In --> P1
+    L1 --> Mid --> P2
+    L2 --> Out
+```
+
+LCEL composition mirrors the diagram: `prompt | llm | parser` for each step, with the first step's output piped in as `{"specifications": extraction_chain}` to the second step's prompt ([`src/chain_prompt.py:107-130`](src/chain_prompt.py)). The intermediate plain-text extraction is **inspectable** — when the final JSON is wrong, you can tell whether extraction or formatting broke.
+
 Each step in the chain:
 1. **Receives input** from the previous step (or user)
 2. **Processes** the input through an LLM call or logic function

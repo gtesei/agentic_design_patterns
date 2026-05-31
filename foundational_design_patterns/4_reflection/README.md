@@ -4,6 +4,31 @@
 
 The **Reflection Pattern** enables agentic systems to iteratively self-correct and refine their outputs through a structured feedback loop of generation, evaluation, and improvement, leading to significantly higher quality results.
 
+## Architecture
+
+```mermaid
+---
+title: Reflection — Producer · Critic · Reviser Loop
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Task([write factorial n])
+    Final([final code])
+
+    subgraph loop ["reflection loop"]
+        P[producer LLM]
+        Draft[/draft code/]
+        Cr[critic LLM]
+        Fb[/feedback/]
+        Rv[reviser LLM]
+        P --> Draft --> Cr --> Fb --> Rv
+        Rv -. "iterate" .-> Cr
+    end
+
+    Task --> P
+    Rv --> Final
+```
+
 ## Why Use This Pattern?
 
 LLMs can produce outputs that lack accuracy, miss nuances, or fail to fully satisfy complex requirements on the first attempt. While a single generation might be "good enough" for simple tasks, critical applications require outputs that are polished, accurate, and thoroughly vetted.

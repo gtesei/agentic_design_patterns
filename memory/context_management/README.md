@@ -6,6 +6,25 @@ The **Context Management Pattern** addresses one of the most critical challenges
 
 Context management goes beyond simple truncation. It involves intelligent selection, compression, prioritization, and dynamic allocation of limited context space to maximize the value of every token sent to the model. This pattern is the difference between an agent that struggles with long conversations and one that gracefully handles extensive context while remaining cost-effective and performant.
 
+## Architecture
+
+```mermaid
+---
+title: Context Management — Score · Compress · Fit
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    C([many docs])
+    LLM{{LLM}}
+
+    Sc[score relevance]
+    Top[/top-k/]
+    Cp[compress / summarize]
+    Fit[/fit window/]
+
+    C --> Sc --> Top --> Cp --> Fit --> LLM
+```
+
 ## Why Use This Pattern?
 
 Modern LLM applications face significant context-related challenges:

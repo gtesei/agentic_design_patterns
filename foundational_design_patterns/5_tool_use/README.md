@@ -4,6 +4,30 @@
 
 The **Tool Use Pattern** (also known as Function Calling) enables agentic systems to break out of the LLM's internal knowledge and interact with the external world through structured API calls, database queries, code execution, and real-world actions.
 
+## Architecture
+
+```mermaid
+---
+title: Tool Use — Support Triage with CRM and Weather
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Case([support case:<br/>CUST-1001 · Miami])
+    Resp([triage decision])
+
+    Agent{{create_agent}}
+
+    subgraph tools ["parallel tool calls"]
+        CRM[(CRM:<br/>tier · SLA)]
+        Wx[(Open-Meteo:<br/>weather)]
+    end
+
+    Case --> Agent
+    Agent --> CRM & Wx
+    CRM & Wx --> Agent
+    Agent --> Resp
+```
+
 ## Why Use This Pattern?
 
 LLMs are trained on static datasets with knowledge cutoffs, making them unable to:

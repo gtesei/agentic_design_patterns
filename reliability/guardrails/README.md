@@ -6,6 +6,32 @@ The **Guardrails Pattern** provides safety constraints, content filtering, and c
 
 Unlike traditional error handling that deals with technical failures, guardrails focus on content safety, policy compliance, and quality assurance. They can reject, modify, or flag content that violates rules, ethical guidelines, or regulatory requirements.
 
+## Architecture
+
+```mermaid
+---
+title: Guardrails — Multi-Layer Validation
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    In([user input])
+    Ok([response])
+    Log[(audit log)]
+
+    Vi{input validate}
+    Pr[process LLM]
+    Vo{output validate}
+    Bi([blocked: input])
+    Bo([blocked: output])
+
+    In --> Vi
+    Vi -- "fail" --> Bi
+    Vi -- "pass" --> Pr --> Vo
+    Vo -- "fail" --> Bo
+    Vo -- "pass" --> Ok
+    Bi & Bo & Ok -.-> Log
+```
+
 ## Why Use This Pattern?
 
 Modern AI systems face several critical challenges:

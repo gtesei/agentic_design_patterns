@@ -6,6 +6,26 @@ The **Prioritization Pattern** is an orchestration approach that enables AI agen
 
 This pattern transforms chaotic task management into structured, goal-aligned execution by continuously assessing priority based on changing conditions, preventing resource starvation, ensuring deadline adherence, and optimizing for business value. It's particularly valuable for support systems, project management, incident response, resource allocation, and any scenario where multiple tasks compete for limited capacity.
 
+## Architecture
+
+```mermaid
+---
+title: Prioritization — Multi-Criteria Scoring
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    T([tasks])
+    Sc[score:<br/>urgency · impact · effort]
+    Rk[rank]
+    Sch[schedule]
+    Ex[execute]
+    Rb{rebalance?}
+
+    T --> Sc --> Rk --> Sch --> Ex --> Rb
+    Rb -- "drift" --> Sc
+    Rb -- "ok" --> Ex
+```
+
 ## Why Use This Pattern?
 
 Traditional approaches have significant limitations:

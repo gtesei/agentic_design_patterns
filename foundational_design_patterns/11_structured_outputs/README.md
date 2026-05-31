@@ -6,6 +6,33 @@ The **Structured Outputs Pattern** treats schema-constrained output as a **core 
 
 The pattern shifts validation from a brittle post-hoc step to a contract the model has to satisfy, surfacing malformed output as a typed validation error rather than a silent corruption downstream.
 
+## Architecture
+
+```mermaid
+---
+title: Structured Outputs — Schema-Enforced Extraction
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Inv([raw invoice text:<br/>'Vendor: Northwind…'])
+
+    subgraph naive ["naive path (anti-pattern)"]
+        N[prompt + regex parse]
+        Fail([runtime error:<br/>missing / wrong fields])
+        N --> Fail
+    end
+
+    subgraph typed ["schema-enforced path"]
+        S[[ExtractedInvoice<br/>Pydantic schema]]
+        LLM{{ChatOpenAI<br/>.with_structured_output}}
+        Valid([typed object:<br/>vendor · total · due_date])
+        S --> LLM --> Valid
+    end
+
+    Inv --> N
+    Inv --> S
+```
+
 ## How It Works
 
 1. **Declare the schema**: define the desired output as a Pydantic / TypeBox / Zod model. This is the single source of truth.

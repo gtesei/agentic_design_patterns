@@ -6,6 +6,34 @@ The **Resource Optimization Pattern** focuses on systematically reducing costs, 
 
 Unlike traditional performance optimization that focuses on code-level improvements, AI resource optimization must balance multiple dimensions: API costs (tokens, requests), latency (response time, throughput), compute efficiency (batching, parallelization), and quality (accuracy, relevance, user satisfaction). The key challenge is optimizing these trade-offs dynamically based on workload characteristics and business constraints.
 
+## Architecture
+
+```mermaid
+---
+title: Resource Optimization — Cache + Model Routing
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Req([request])
+    Out([response])
+
+    Ca{cache?}
+    Hit([cached])
+    Cls{classify<br/>complexity}
+
+    subgraph models ["model tier"]
+        Ch[cheap: haiku]
+        Ex[expensive: opus]
+    end
+
+    Req --> Ca
+    Ca -- "hit" --> Hit --> Out
+    Ca -- "miss" --> Cls
+    Cls -- "simple" --> Ch
+    Cls -- "hard" --> Ex
+    Ch & Ex --> Out
+```
+
 ## Why Use This Pattern?
 
 AI systems face unique resource challenges:

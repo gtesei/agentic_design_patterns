@@ -6,6 +6,34 @@ The **Subagents Pattern** lets a primary agent delegate work to **specialized wo
 
 The contract is "summary, not raw transcript": the worker's intermediate reasoning, tool calls, and partial outputs stay in its own context window, and only a structured result crosses back to the orchestrator. That isolation is what makes this pattern scale to long-horizon tasks without overflowing the orchestrator's context.
 
+## Architecture
+
+```mermaid
+---
+title: Subagents — Orchestrator · Worker
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    T([task])
+    Syn([synthesis])
+
+    Ld[lead agent]
+    D[decompose]
+
+    subgraph workers ["isolated workers"]
+        W1["worker 1<br/>own context"]
+        W2["worker 2<br/>own context"]
+        W3["worker 3<br/>own context"]
+    end
+
+    Sum[/structured summaries/]
+
+    T --> Ld --> D
+    D --> W1 & W2 & W3
+    W1 & W2 & W3 --> Sum --> Ld
+    Ld --> Syn
+```
+
 ## How It Works
 
 1. **Define worker roles**: each role is a system prompt + optional model + optional tool allowlist (a "scout", a "reviewer", etc.). Roles are usually markdown files with frontmatter.

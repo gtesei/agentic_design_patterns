@@ -6,6 +6,25 @@ The **Adaptive Learning Pattern** enables AI agents to continuously improve thei
 
 This pattern implements a feedback loop where agents collect data about their actions, analyze patterns of success and failure, adapt their strategies, validate improvements, and iterate continuously. The result is an agent that becomes progressively better at its tasks through experience.
 
+## Architecture
+
+```mermaid
+---
+title: Adaptive Learning — Feedback Loop
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Ac([action])
+    Im([improved policy])
+
+    Fb[/feedback:<br/>reward · critique/]
+    An[analyze patterns]
+    St[update strategy]
+
+    Ac --> Fb --> An --> St --> Im
+    Im -. "next action" .-> Ac
+```
+
 ## Why Use This Pattern?
 
 Traditional AI agents operate with fixed prompts, parameters, and strategies. While they may work well initially, they cannot improve without manual intervention. This creates several challenges:

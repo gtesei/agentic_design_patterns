@@ -6,6 +6,33 @@ The **Evaluation and Monitoring Pattern** provides systematic instrumentation, m
 
 Unlike traditional software monitoring that focuses primarily on system metrics (CPU, memory, uptime), AI agent monitoring must also track quality metrics (accuracy, relevance, coherence), behavioral patterns (tool usage, reasoning effectiveness), and business outcomes (user satisfaction, task completion rates, cost efficiency).
 
+## Architecture
+
+```mermaid
+---
+title: Evaluation & Monitoring — Metrics + Quality
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Op[operation]
+
+    subgraph collect ["data collection"]
+        Met[(metrics)]
+        Q[LLM-as-judge]
+    end
+
+    Agg[aggregate]
+    Al{alert?}
+    Dash([dashboard])
+    Pg([page oncall])
+
+    Op --> Met
+    Op --> Q
+    Met & Q --> Agg --> Al
+    Al -- "ok" --> Dash
+    Al -- "regression" --> Pg
+```
+
 ## Why Use This Pattern?
 
 AI systems present unique monitoring challenges:

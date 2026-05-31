@@ -6,6 +6,39 @@ The **Error Recovery Pattern** enables agentic systems to gracefully handle fail
 
 Unlike traditional error handling that simply catches and logs exceptions, the Error Recovery pattern actively attempts to diagnose root causes, apply appropriate recovery strategies, verify successful recovery, and maintain historical context for continuous improvement.
 
+## Architecture
+
+```mermaid
+---
+title: Error Recovery — Classify · Recover · Verify
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Op[operation]
+    OK([success])
+
+    R{result}
+    Cls[classify error]
+
+    subgraph recover ["recovery strategies"]
+        Rt[retry]
+        Fb[fallback]
+        Sc[self-correct LLM]
+    end
+
+    V{verify}
+
+    Op --> R
+    R -- "ok" --> OK
+    R -- "fail" --> Cls
+    Cls -- "transient" --> Rt
+    Cls -- "known" --> Fb
+    Cls -- "llm" --> Sc
+    Rt & Fb & Sc --> V
+    V -- "still bad" --> Cls
+    V -- "good" --> OK
+```
+
 ## Why Use This Pattern?
 
 Real-world agentic systems face numerous sources of failure:

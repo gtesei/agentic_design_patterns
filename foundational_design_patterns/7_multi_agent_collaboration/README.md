@@ -8,6 +8,36 @@ A useful analogy: even on a single computer, we break work into **multiple proce
 
 ---
 
+## Architecture
+
+```mermaid
+---
+title: Multi-Agent Collaboration — Research Report Pipeline
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Goal([research goal])
+    Out([final report])
+
+    subgraph orchestration ["orchestration"]
+        Pl[planner_agent]
+        Plan[/plan steps/]
+        Ex{executor_agent}
+        Pl --> Plan --> Ex
+    end
+
+    subgraph specialists ["specialist agents"]
+        R["research_agent<br/>arXiv · Tavily · Wiki"]
+        W[writer_agent]
+        Ed[editor_agent]
+    end
+
+    Goal --> Pl
+    Ex --> R & W & Ed
+    R & W & Ed -- "result" --> Ex
+    Ex --> Out
+```
+
 ## Why Use This Pattern?
 
 Single-agent systems often hit limits when tasks require:

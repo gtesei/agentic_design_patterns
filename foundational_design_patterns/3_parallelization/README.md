@@ -4,6 +4,29 @@
 
 The **Parallelization Pattern** enables simultaneous execution of independent tasks within an agentic workflow, dramatically reducing total execution time by running operations concurrently rather than sequentially.
 
+## Architecture
+
+```mermaid
+---
+title: Parallelization — Concurrent LLM Chains
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Doc([document])
+    Out([unified output])
+
+    subgraph parallel ["RunnableParallel"]
+        S[summarize chain]
+        Q[question-gen chain]
+        K[key-terms chain]
+    end
+
+    Syn[[synthesize]]
+
+    Doc --> S & Q & K
+    S & Q & K --> Syn --> Out
+```
+
 ## Why Use This Pattern?
 
 Traditional sequential processing executes tasks one after another, even when those tasks don't depend on each other's outputs. This creates unnecessary bottlenecks, especially when waiting for external resources like API calls or database queries.

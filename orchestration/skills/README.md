@@ -6,6 +6,28 @@ The **Skills Pattern** packages agent capabilities as **on-disk, model-loadable 
 
 The pattern is grounded in the open [Agent Skills](https://agentskills.io) spec: a `SKILL.md` file with YAML frontmatter (`name`, `description`, optional `disable-model-invocation`) and a markdown body that prescribes a playbook the agent should follow when the description matches the task.
 
+## Architecture
+
+```mermaid
+---
+title: Skills — Metadata-First Discovery
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Q([task])
+    Out([result])
+
+    Cat[(skill catalog<br/>metadata only)]
+    Sel{select skill?}
+    Load[/load SKILL body/]
+    Ex[execute]
+
+    Q --> Sel
+    Cat -.-> Sel
+    Sel -- "match" --> Load --> Ex --> Out
+    Sel -- "no match" --> Out
+```
+
 ## How It Works
 
 1. **Discovery**: At startup the agent scans skill directories (user-scope, project-scope, extension-provided) and parses each `SKILL.md` frontmatter.

@@ -200,6 +200,34 @@ One-row-per-pattern index for fast navigation. Each row links to the pattern's d
 input → extract_data → transform → validate → final_output
 ```
 
+```mermaid
+---
+title: Prompt Chain — Laptop Spec to JSON
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    In([raw text:<br/>'3.5 GHz octa-core,<br/>16GB RAM, 1TB NVMe'])
+    Out([JSON:<br/>cpu · memory · storage])
+
+    subgraph extract ["step 1 — extraction"]
+        P1[[prompt: spec extractor]]
+        L1{{ChatOpenAI}}
+        P1 --> L1
+    end
+
+    Mid[/plain-text specs/]
+
+    subgraph transform ["step 2 — transformation"]
+        P2[[prompt: JSON formatter]]
+        L2{{ChatOpenAI}}
+        P2 --> L2
+    end
+
+    In --> P1
+    L1 --> Mid --> P2
+    L2 --> Out
+```
+
 **When to use:**
 - Multi-step transformations (data extraction → analysis → formatting)
 - Tasks requiring intermediate validation
@@ -219,6 +247,30 @@ input → extract_data → transform → validate → final_output
 ```python
 # Dynamic routing based on query classification
 user_query → classifier → [technical_expert | sales_agent | support_bot]
+```
+
+```mermaid
+---
+title: Routing — Domain-Specific Handlers
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Q([user request])
+    R([response])
+
+    Cls{classifier<br/>LLM}
+
+    subgraph handlers ["specialist handlers"]
+        B[booking_handler]
+        I[info_handler]
+        U[unclear_handler]
+    end
+
+    Q --> Cls
+    Cls -- "booking" --> B
+    Cls -- "info" --> I
+    Cls -- "unclear" --> U
+    B & I & U --> R
 ```
 
 **When to use:**
@@ -244,6 +296,27 @@ task_b(5s) →          vs.         task_b(5s) → combine → output
 task_c(5s) → output               task_c(5s) ↗
 ```
 
+```mermaid
+---
+title: Parallelization — Concurrent LLM Chains
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Doc([document])
+    Out([unified output])
+
+    subgraph parallel ["RunnableParallel"]
+        S[summarize chain]
+        Q[question-gen chain]
+        K[key-terms chain]
+    end
+
+    Syn[[synthesize]]
+
+    Doc --> S & Q & K
+    S & Q & K --> Syn --> Out
+```
+
 **When to use:**
 - Multiple API calls (search engines, databases, external services)
 - Parallel data processing (analyze multiple documents)
@@ -266,6 +339,29 @@ One of the four core agentic design patterns (Ng, 2024), reflection enables AI t
 # Single-shot: 5/10 quality        # With reflection: 8.5/10 quality
 input → generate → done            input → generate → critique → 
                                           refine → critique → final
+```
+
+```mermaid
+---
+title: Reflection — Producer · Critic · Reviser Loop
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Task([write factorial n])
+    Final([final code])
+
+    subgraph loop ["reflection loop"]
+        P[producer LLM]
+        Draft[/draft code/]
+        Cr[critic LLM]
+        Fb[/feedback/]
+        Rv[reviser LLM]
+        P --> Draft --> Cr --> Fb --> Rv
+        Rv -. "iterate" .-> Cr
+    end
+
+    Task --> P
+    Rv --> Final
 ```
 
 **When to use:**
@@ -294,6 +390,28 @@ Essential for grounding LLM outputs in real-world data and actions, tool use is 
 # Without tools: Limited to training data
 # With tools: Access real-time data and take actions
 user_query → LLM decides → call_weather_api(location) → integrate_result → response
+```
+
+```mermaid
+---
+title: Tool Use — Support Triage with CRM and Weather
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Case([support case:<br/>CUST-1001 · Miami])
+    Resp([triage decision])
+
+    Agent{{create_agent}}
+
+    subgraph tools ["parallel tool calls"]
+        CRM[(CRM:<br/>tier · SLA)]
+        Wx[(Open-Meteo:<br/>weather)]
+    end
+
+    Case --> Agent
+    Agent --> CRM & Wx
+    CRM & Wx --> Agent
+    Agent --> Resp
 ```
 
 **When to use:**
@@ -326,6 +444,29 @@ A fundamental capability for agentic systems (Ng, 2024), enabling AI to decompos
 complex_goal → analyze → decompose → plan_steps → execute_sequentially → final_result
 ```
 
+```mermaid
+---
+title: Planning — Incident Response (Plan-and-Act)
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Inc([incident + context])
+    Done([resolved])
+
+    subgraph graph ["LangGraph StateGraph"]
+        Pl[planner_node]
+        Plan[/ordered actions/]
+        Ex[executor_node]
+        Rv{reviewer_node}
+        Pl --> Plan --> Ex --> Rv
+        Rv -- "next action" --> Ex
+        Rv -- "replan" --> Pl
+    end
+
+    Inc --> Pl
+    Rv -- "complete" --> Done
+```
+
 **When to use:**
 - Multi-step workflows requiring orchestration (research reports, data pipelines)
 - Tasks with interdependent operations
@@ -353,6 +494,34 @@ Multi-agent systems, highlighted in both the Agentic RAG survey (Singh et al., 2
 ```python
 # Agents as a team: specialize roles + coordinate communication
 user_goal → manager/planner → [researcher | coder | designer | writer | reviewer] → synthesize → final_output
+```
+
+```mermaid
+---
+title: Multi-Agent Collaboration — Research Report Pipeline
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Goal([research goal])
+    Out([final report])
+
+    subgraph orchestration ["orchestration"]
+        Pl[planner_agent]
+        Plan[/plan steps/]
+        Ex{executor_agent}
+        Pl --> Plan --> Ex
+    end
+
+    subgraph specialists ["specialist agents"]
+        R["research_agent<br/>arXiv · Tavily · Wiki"]
+        W[writer_agent]
+        Ed[editor_agent]
+    end
+
+    Goal --> Pl
+    Ex --> R & W & Ed
+    R & W & Ed -- "result" --> Ex
+    Ex --> Out
 ```
 
 **When to use:**
@@ -394,6 +563,26 @@ user_query → Thought (reason) → Action (tool) → Observation (result) →
              Thought (adapt) → Action → Observation → Final Answer
 ```
 
+```mermaid
+---
+title: ReAct — Reason · Act · Observe Loop
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Q([query])
+    F([final answer])
+
+    subgraph loop ["ReAct cycle"]
+        T[Thought<br/>reasoning trace]
+        A[Action<br/>tool call]
+        O[/Observation/]
+        T --> A --> O --> T
+    end
+
+    Q --> T
+    T -. "enough info" .-> F
+```
+
 **When to use:**
 - Multi-step research requiring information lookup and verification
 - Complex problem-solving where the solution path isn't predetermined
@@ -430,6 +619,32 @@ user_query → LLM → response (may hallucinate)
 user_query → retrieve_relevant_docs → augment_context → LLM → grounded_response
 ```
 
+```mermaid
+---
+title: RAG — Hybrid Retrieval + Grounded Generation
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Q([password reset question])
+    Ans([grounded answer + sources])
+
+    subgraph retrieval ["retrieval"]
+        Idx[(support docs<br/>vector store)]
+        Ret[hybrid retriever<br/>BM25 + dense]
+        Ctx[/top-k chunks + citations/]
+        Idx -.-> Ret --> Ctx
+    end
+
+    subgraph generation ["generation"]
+        LLM{{ChatOpenAI}}
+    end
+
+    Q --> Ret
+    Ctx --> LLM
+    Q -. "+ question" .-> LLM
+    LLM --> Ans
+```
+
 **When to use:**
 - Dynamic or frequently updated information (documentation, product catalogs)
 - Private/proprietary knowledge bases
@@ -457,6 +672,27 @@ agent_action → execute → result
 
 # With HITL: Human checkpoint
 agent_proposal → human_review → [approve|reject|modify] → execute → result
+```
+
+```mermaid
+---
+title: Human-in-the-Loop — Content Approval
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Brief([content brief])
+    Pub([published])
+    Audit[(audit_log.json)]
+
+    Gen[LLM draft]
+    Draft[/draft/]
+    H{human review}
+
+    Brief --> Gen --> Draft --> H
+    H -- "approve" --> Pub
+    H -- "edit" --> Pub
+    H -- "reject" --> Gen
+    H -. "log decision" .-> Audit
 ```
 
 **When to use:**
@@ -516,6 +752,31 @@ text → prompt_json_request → parse_string_json → runtime_fail
 text → response_schema(Pydantic/JSON Schema) → validated_object → safe_automation
 ```
 
+```mermaid
+---
+title: Structured Outputs — Schema-Enforced Extraction
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Inv([raw invoice text:<br/>'Vendor: Northwind…'])
+
+    subgraph naive ["naive path (anti-pattern)"]
+        N[prompt + regex parse]
+        Fail([runtime error:<br/>missing / wrong fields])
+        N --> Fail
+    end
+
+    subgraph typed ["schema-enforced path"]
+        S[[ExtractedInvoice<br/>Pydantic schema]]
+        LLM{{ChatOpenAI<br/>.with_structured_output}}
+        Valid([typed object:<br/>vendor · total · due_date])
+        S --> LLM --> Valid
+    end
+
+    Inv --> N
+    Inv --> S
+```
+
 **Key benefits:** Schema guarantees, lower parsing failures, safer agent loops
 
 [**📖 Learn More →**](./foundational_design_patterns/11_structured_outputs/README.md) · [**🔎 Pi Analysis →**](./foundational_design_patterns/11_structured_outputs/pi.md)
@@ -527,6 +788,27 @@ text → response_schema(Pydantic/JSON Schema) → validated_object → safe_aut
 ```python
 # Observe → Think → Act loop for UI tasks
 screenshot/state → reasoning → ui_action(click/type/navigate) → observation → iterate
+```
+
+```mermaid
+---
+title: Computer Use — Screenshot · Think · Act · Observe
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Goal([find LLM info<br/>on Wikipedia])
+    Done([result])
+
+    subgraph loop ["control loop"]
+        Snap[/screenshot/]
+        Think[LLM reasoning]
+        Act[click · type · fetch]
+        Obs[/new page state/]
+        Snap --> Think --> Act --> Obs --> Snap
+    end
+
+    Goal --> Snap
+    Think -. "task complete" .-> Done
 ```
 
 **Key benefits:** Legacy-system automation, UI QA workflows, non-API task coverage
@@ -551,6 +833,23 @@ input → [thought1, thought2, thought3] → evaluate → expand_best →
         [refined_thoughts] → evaluate → solution
 ```
 
+```mermaid
+---
+title: Tree of Thoughts — Branching Reasoning with Backtrack
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart TB
+    Q([problem])
+    Sol([solution])
+
+    Q --> Ta[thought a] & Tb[thought b] & Tc[thought c]
+    Ta & Tb & Tc --> E1{evaluate}
+    E1 -- "best" --> Ta1[a · 1] & Ta2[a · 2]
+    Ta1 & Ta2 --> E2{evaluate}
+    E2 --> Sol
+    E1 -. "backtrack" .-> Tb
+```
+
 **Key benefits:** Better solutions through systematic exploration, backtracking capability, transparent decision trees
 
 [**📖 Learn More →**](./reasoning/tree_of_thoughts/README.md) · [**🔎 Pi Analysis →**](./reasoning/tree_of_thoughts/pi.md)
@@ -567,6 +866,21 @@ Building on ToT, Graph of Thoughts extends the reasoning paradigm from hierarchi
 input → generate_perspectives → connect_thoughts → aggregate → synthesis
 ```
 
+```mermaid
+---
+title: Graph of Thoughts — Non-Hierarchical Aggregation
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Q([input])
+    S([synthesis])
+
+    Q --> Pa[perspective a] & Pb[perspective b] & Pc[perspective c]
+    Pa & Pb --> R[refine: a × b]
+    Pa & Pb & Pc & R --> Agg((aggregate))
+    Agg --> S
+```
+
 **Key benefits:** Multi-perspective analysis, thought merging, flexible reasoning paths
 
 [**📖 Learn More →**](./reasoning/graph_of_thoughts/README.md) · [**🔎 Pi Analysis →**](./reasoning/graph_of_thoughts/pi.md)
@@ -580,6 +894,27 @@ input → generate_perspectives → connect_thoughts → aggregate → synthesis
 query → [explore_new | exploit_best] → evaluate → update_strategy → iterate
 ```
 
+```mermaid
+---
+title: Exploration & Discovery — ε-greedy Strategy
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Q([query])
+
+    D{ε-greedy}
+    Ex[explore<br/>new path]
+    Ep[exploit<br/>best known]
+    Ev[evaluate]
+    U[update strategy]
+
+    Q --> D
+    D -- "ε" --> Ex
+    D -- "1 - ε" --> Ep
+    Ex & Ep --> Ev --> U
+    U -. "iterate" .-> Q
+```
+
 **Key benefits:** Novel solution discovery, avoiding premature convergence, adaptive exploration
 
 [**📖 Learn More →**](./reasoning/exploration_discovery/README.md) · [**🔎 Pi Analysis →**](./reasoning/exploration_discovery/pi.md)
@@ -591,6 +926,28 @@ query → [explore_new | exploit_best] → evaluate → update_strategy → iter
 ```python
 # Plan → Search → Read → Reflect → Follow-up → Synthesize
 question → sub_queries → retrieve_sources → identify_gaps → refine_queries → cited_output
+```
+
+```mermaid
+---
+title: Deep Research — Iterative Gap-Driven Loop
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Q([research question])
+    Sy([cited synthesis])
+
+    subgraph loop ["research loop"]
+        Pl[plan sub-queries]
+        Se[(search sources)]
+        Rd[read & extract]
+        Rf{gaps?}
+        Pl --> Se --> Rd --> Rf
+        Rf -- "yes — refine" --> Pl
+    end
+
+    Q --> Pl
+    Rf -- "no" --> Sy
 ```
 
 **Key benefits:** Better coverage, fewer blind spots, stronger citation quality
@@ -608,6 +965,37 @@ question → sub_queries → retrieve_sources → identify_gaps → refine_queri
 operation → [success | failure] → classify_error → [retry | fallback | self_correct] → verify
 ```
 
+```mermaid
+---
+title: Error Recovery — Classify · Recover · Verify
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Op[operation]
+    OK([success])
+
+    R{result}
+    Cls[classify error]
+
+    subgraph recover ["recovery strategies"]
+        Rt[retry]
+        Fb[fallback]
+        Sc[self-correct LLM]
+    end
+
+    V{verify}
+
+    Op --> R
+    R -- "ok" --> OK
+    R -- "fail" --> Cls
+    Cls -- "transient" --> Rt
+    Cls -- "known" --> Fb
+    Cls -- "llm" --> Sc
+    Rt & Fb & Sc --> V
+    V -- "still bad" --> Cls
+    V -- "good" --> OK
+```
+
 **Key benefits:** Resilience, graceful degradation, automatic self-healing, reduced downtime
 
 [**📖 Learn More →**](./reliability/error_recovery/README.md) · [**🔎 Pi Analysis →**](./reliability/error_recovery/pi.md)
@@ -619,6 +1007,30 @@ operation → [success | failure] → classify_error → [retry | fallback | sel
 ```python
 # Multi-layer validation
 input → validate → process → validate_output → [pass | block] → log
+```
+
+```mermaid
+---
+title: Guardrails — Multi-Layer Validation
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    In([user input])
+    Ok([response])
+    Log[(audit log)]
+
+    Vi{input validate}
+    Pr[process LLM]
+    Vo{output validate}
+    Bi([blocked: input])
+    Bo([blocked: output])
+
+    In --> Vi
+    Vi -- "fail" --> Bi
+    Vi -- "pass" --> Pr --> Vo
+    Vo -- "fail" --> Bo
+    Vo -- "pass" --> Ok
+    Bi & Bo & Ok -.-> Log
 ```
 
 **Key benefits:** Safety assurance, compliance, brand protection, risk reduction
@@ -637,6 +1049,35 @@ complex_goal → decompose → [subgoal1, subgoal2, subgoal3] →
               track_dependencies → execute → monitor → replan
 ```
 
+```mermaid
+---
+title: Goal Management — Hierarchical Decomposition
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    G([goal])
+    Done([complete])
+
+    De[decompose]
+
+    subgraph subs ["subgoals"]
+        S1[subgoal 1]
+        S2[subgoal 2]
+        S3[subgoal 3]
+    end
+
+    Tr[/dependency graph/]
+    Ex[execute]
+    M{monitor}
+    Rp[replan]
+
+    G --> De
+    De --> S1 & S2 & S3
+    S1 & S2 & S3 --> Tr --> Ex --> M
+    M -- "drift" --> Rp --> De
+    M -- "on track" --> Done
+```
+
 **Key benefits:** Structured execution, progress visibility, adaptive planning, resource optimization
 
 [**📖 Learn More →**](./orchestration/goal_management/README.md) · [**🔎 Pi Analysis →**](./orchestration/goal_management/pi.md)
@@ -649,6 +1090,32 @@ complex_goal → decompose → [subgoal1, subgoal2, subgoal3] →
 lead_agent → decompose_task → spawn_workers_parallel → structured_summaries → synthesize
 ```
 
+```mermaid
+---
+title: Subagents — Orchestrator · Worker
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    T([task])
+    Syn([synthesis])
+
+    Ld[lead agent]
+    D[decompose]
+
+    subgraph workers ["isolated workers"]
+        W1["worker 1<br/>own context"]
+        W2["worker 2<br/>own context"]
+        W3["worker 3<br/>own context"]
+    end
+
+    Sum[/structured summaries/]
+
+    T --> Ld --> D
+    D --> W1 & W2 & W3
+    W1 & W2 & W3 --> Sum --> Ld
+    Ld --> Syn
+```
+
 **Key benefits:** Context isolation, parallel throughput, cleaner synthesis
 
 [**📖 Learn More →**](./orchestration/subagents/README.md) · [**🔎 Pi Analysis →**](./orchestration/subagents/pi.md)
@@ -659,6 +1126,26 @@ lead_agent → decompose_task → spawn_workers_parallel → structured_summarie
 **Load capability packages on demand via metadata-first discovery**
 ```python
 skill_catalog(metadata) → select_relevant_skill → load_SKILL_body → execute
+```
+
+```mermaid
+---
+title: Skills — Metadata-First Discovery
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Q([task])
+    Out([result])
+
+    Cat[(skill catalog<br/>metadata only)]
+    Sel{select skill?}
+    Load[/load SKILL body/]
+    Ex[execute]
+
+    Q --> Sel
+    Cat -.-> Sel
+    Sel -- "match" --> Load --> Ex --> Out
+    Sel -- "no match" --> Out
 ```
 
 **Key benefits:** Tool-scaling beyond flat lists, lower prompt load, modular capabilities
@@ -674,6 +1161,24 @@ skill_catalog(metadata) → select_relevant_skill → load_SKILL_body → execut
 agent1 → message → agent2 → response → agent1
 ```
 
+```mermaid
+---
+title: Agent Communication — Message Bus
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    A1[agent A]
+    A2[agent B]
+    A3[agent C]
+    Bus(((message bus<br/>direct · pub-sub)))
+
+    A1 -- "request" --> Bus
+    Bus -- "deliver" --> A2
+    Bus -- "broadcast" --> A3
+    A2 & A3 -- "response" --> Bus
+    Bus -- "deliver" --> A1
+```
+
 **Key benefits:** Loose coupling, dynamic discovery, scalability, fault tolerance
 
 [**📖 Learn More →**](./orchestration/agent_communication/README.md) · [**🔎 Pi Analysis →**](./orchestration/agent_communication/pi.md)
@@ -687,6 +1192,25 @@ agent1 → message → agent2 → response → agent1
 LLM → discover_tools → invoke_tool(params) → receive_result → integrate
 ```
 
+```mermaid
+---
+title: MCP — Model Context Protocol
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    LLM{{LLM client}}
+
+    subgraph servers ["MCP servers"]
+        Fs[(filesystem)]
+        Db[(database)]
+        Ws[(web search)]
+    end
+
+    LLM -- "discover" --> Fs & Db & Ws
+    LLM -- "invoke(tool, args)" --> Fs
+    Fs -- "result" --> LLM
+```
+
 **Key benefits:** Standardization, reusability, interoperability, composability
 
 [**📖 Learn More →**](./orchestration/mcp/README.md) · [**🔎 Pi Analysis →**](./orchestration/mcp/pi.md)
@@ -698,6 +1222,24 @@ LLM → discover_tools → invoke_tool(params) → receive_result → integrate
 ```python
 # Multi-criteria scoring with dynamic rebalancing
 tasks → score(urgency, impact, effort) → rank → schedule → execute
+```
+
+```mermaid
+---
+title: Prioritization — Multi-Criteria Scoring
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    T([tasks])
+    Sc[score:<br/>urgency · impact · effort]
+    Rk[rank]
+    Sch[schedule]
+    Ex[execute]
+    Rb{rebalance?}
+
+    T --> Sc --> Rk --> Sch --> Ex --> Rb
+    Rb -- "drift" --> Sc
+    Rb -- "ok" --> Ex
 ```
 
 **Key benefits:** Resource optimization, deadline adherence, fairness, efficiency
@@ -715,6 +1257,31 @@ tasks → score(urgency, impact, effort) → rank → schedule → execute
 operation → collect_metrics → evaluate_quality → aggregate → alert → visualize
 ```
 
+```mermaid
+---
+title: Evaluation & Monitoring — Metrics + Quality
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Op[operation]
+
+    subgraph collect ["data collection"]
+        Met[(metrics)]
+        Q[LLM-as-judge]
+    end
+
+    Agg[aggregate]
+    Al{alert?}
+    Dash([dashboard])
+    Pg([page oncall])
+
+    Op --> Met
+    Op --> Q
+    Met & Q --> Agg --> Al
+    Al -- "ok" --> Dash
+    Al -- "regression" --> Pg
+```
+
 **Key benefits:** Visibility, early detection, data-driven decisions, continuous improvement
 
 [**📖 Learn More →**](./observability/evaluation_monitoring/README.md) · [**🔎 Pi Analysis →**](./observability/evaluation_monitoring/pi.md)
@@ -726,6 +1293,32 @@ operation → collect_metrics → evaluate_quality → aggregate → alert → v
 ```python
 # Caching, batching, model routing
 request → [cache_hit | cache_miss] → [cheap_model | expensive_model] → optimize
+```
+
+```mermaid
+---
+title: Resource Optimization — Cache + Model Routing
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Req([request])
+    Out([response])
+
+    Ca{cache?}
+    Hit([cached])
+    Cls{classify<br/>complexity}
+
+    subgraph models ["model tier"]
+        Ch[cheap: haiku]
+        Ex[expensive: opus]
+    end
+
+    Req --> Ca
+    Ca -- "hit" --> Hit --> Out
+    Ca -- "miss" --> Cls
+    Cls -- "simple" --> Ch
+    Cls -- "hard" --> Ex
+    Ch & Ex --> Out
 ```
 
 **Key benefits:** 65-80% cost reduction, faster responses, better UX
@@ -743,6 +1336,29 @@ request → [cache_hit | cache_miss] → [cheap_model | expensive_model] → opt
 interaction → store → [buffer_memory | vector_memory] → retrieve_relevant → use
 ```
 
+```mermaid
+---
+title: Memory Management — Buffer + Semantic
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Int([interaction])
+    Use([context-aware response])
+
+    St[store]
+
+    subgraph stores ["memory stores"]
+        Bf[(buffer:<br/>recent turns)]
+        Vm[(vector:<br/>semantic)]
+    end
+
+    Rt[retrieve relevant]
+
+    Int --> St
+    St --> Bf & Vm
+    Bf & Vm --> Rt --> Use
+```
+
 **Key benefits:** Context retention, personalization, learning from history
 
 [**📖 Learn More →**](./memory/memory_management/README.md) · [**🔎 Pi Analysis →**](./memory/memory_management/pi.md)
@@ -754,6 +1370,23 @@ interaction → store → [buffer_memory | vector_memory] → retrieve_relevant 
 ```python
 # Dynamic selection and compression
 content → score_relevance → compress → fit_window → optimize
+```
+
+```mermaid
+---
+title: Context Management — Score · Compress · Fit
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    C([many docs])
+    LLM{{LLM}}
+
+    Sc[score relevance]
+    Top[/top-k/]
+    Cp[compress / summarize]
+    Fit[/fit window/]
+
+    C --> Sc --> Top --> Cp --> Fit --> LLM
 ```
 
 **Key benefits:** 70-90% cost reduction, focused responses, better performance
@@ -769,6 +1402,23 @@ content → score_relevance → compress → fit_window → optimize
 ```python
 # Learn from outcomes
 action → feedback → analyze_patterns → adapt_strategy → improve
+```
+
+```mermaid
+---
+title: Adaptive Learning — Feedback Loop
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Ac([action])
+    Im([improved policy])
+
+    Fb[/feedback:<br/>reward · critique/]
+    An[analyze patterns]
+    St[update strategy]
+
+    Ac --> Fb --> An --> St --> Im
+    Im -. "next action" .-> Ac
 ```
 
 **Key benefits:** Continuous improvement, personalization, domain adaptation

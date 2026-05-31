@@ -9,6 +9,31 @@ It’s useful when a user request requires coordination across tools, conditiona
 
 ---
 
+## Architecture
+
+```mermaid
+---
+title: Planning — Incident Response (Plan-and-Act)
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Inc([incident + context])
+    Done([resolved])
+
+    subgraph graph ["LangGraph StateGraph"]
+        Pl[planner_node]
+        Plan[/ordered actions/]
+        Ex[executor_node]
+        Rv{reviewer_node}
+        Pl --> Plan --> Ex --> Rv
+        Rv -- "next action" --> Ex
+        Rv -- "replan" --> Pl
+    end
+
+    Inc --> Pl
+    Rv -- "complete" --> Done
+```
+
 ## When to Use
 
 ### Use Planning when

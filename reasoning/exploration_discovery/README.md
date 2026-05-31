@@ -6,6 +6,29 @@ The **Exploration and Discovery Pattern** is a reasoning approach that enables A
 
 At its core, exploration and discovery involves navigating the fundamental trade-off between **exploitation** (using what's known to work) and **exploration** (investigating new possibilities), enabling agents to avoid premature convergence while efficiently discovering high-value solutions.
 
+## Architecture
+
+```mermaid
+---
+title: Exploration & Discovery — ε-greedy Strategy
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Q([query])
+
+    D{ε-greedy}
+    Ex[explore<br/>new path]
+    Ep[exploit<br/>best known]
+    Ev[evaluate]
+    U[update strategy]
+
+    Q --> D
+    D -- "ε" --> Ex
+    D -- "1 - ε" --> Ep
+    Ex & Ep --> Ev --> U
+    U -. "iterate" .-> Q
+```
+
 ## Why Use This Pattern?
 
 Traditional problem-solving approaches have limitations when dealing with open-ended or uncertain domains:

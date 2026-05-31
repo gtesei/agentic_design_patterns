@@ -6,6 +6,28 @@ The **ReAct Pattern** (Reasoning and Acting) is a synergistic approach that inte
 
 Unlike pure action-based agents that jump straight to tool use, or pure reasoning agents that only think without external interaction, ReAct combines both: the agent explicitly reasons about what to do, takes actions using tools, observes the results, and continues reasoning based on those observations.
 
+## Architecture
+
+```mermaid
+---
+title: ReAct — Reason · Act · Observe Loop
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Q([query])
+    F([final answer])
+
+    subgraph loop ["ReAct cycle"]
+        T[Thought<br/>reasoning trace]
+        A[Action<br/>tool call]
+        O[/Observation/]
+        T --> A --> O --> T
+    end
+
+    Q --> T
+    T -. "enough info" .-> F
+```
+
 ## Why Use This Pattern?
 
 Traditional approaches have limitations:

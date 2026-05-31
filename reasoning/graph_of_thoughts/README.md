@@ -6,6 +6,23 @@ The **Graph of Thoughts (GoT) Pattern** is an advanced reasoning framework that 
 
 GoT transforms LLMs from hierarchical reasoners into networked thinkers that can form complex relationships between ideas, synthesize multiple perspectives, and iteratively refine solutions through consensus and critique—much like how human teams collaborate on complex problems.
 
+## Architecture
+
+```mermaid
+---
+title: Graph of Thoughts — Non-Hierarchical Aggregation
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart LR
+    Q([input])
+    S([synthesis])
+
+    Q --> Pa[perspective a] & Pb[perspective b] & Pc[perspective c]
+    Pa & Pb --> R[refine: a × b]
+    Pa & Pb & Pc & R --> Agg((aggregate))
+    Agg --> S
+```
+
 ## Why Use This Pattern?
 
 Traditional reasoning approaches have significant limitations:
