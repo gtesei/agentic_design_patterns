@@ -12,6 +12,8 @@
 
 [中文版](README.zh-CN.md)
 
+![Agentic Design Patterns — 29 patterns, sketched](assets/hero.png)
+
 > **Transform your AI applications from simple prompts to sophisticated intelligent systems.**
 
 ## 🧭 Principles
