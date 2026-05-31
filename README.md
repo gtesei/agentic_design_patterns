@@ -204,7 +204,7 @@ input → extract_data → transform → validate → final_output
 ---
 title: Prompt Chain — Laptop Spec to JSON
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     In([raw text:<br/>'3.5 GHz octa-core,<br/>16GB RAM, 1TB NVMe'])
     Out([JSON:<br/>cpu · memory · storage])
@@ -253,7 +253,7 @@ user_query → classifier → [technical_expert | sales_agent | support_bot]
 ---
 title: Routing — Domain-Specific Handlers
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Q([user request])
     R([response])
@@ -300,7 +300,7 @@ task_c(5s) → output               task_c(5s) ↗
 ---
 title: Parallelization — Concurrent LLM Chains
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Doc([document])
     Out([unified output])
@@ -345,7 +345,7 @@ input → generate → done            input → generate → critique →
 ---
 title: Reflection — Producer · Critic · Reviser Loop
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Task([write factorial n])
     Final([final code])
@@ -396,7 +396,7 @@ user_query → LLM decides → call_weather_api(location) → integrate_result �
 ---
 title: Tool Use — Support Triage with CRM and Weather
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Case([support case:<br/>CUST-1001 · Miami])
     Resp([triage decision])
@@ -448,7 +448,7 @@ complex_goal → analyze → decompose → plan_steps → execute_sequentially �
 ---
 title: Planning — Incident Response (Plan-and-Act)
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Inc([incident + context])
     Done([resolved])
@@ -500,7 +500,7 @@ user_goal → manager/planner → [researcher | coder | designer | writer | revi
 ---
 title: Multi-Agent Collaboration — Research Report Pipeline
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Goal([research goal])
     Out([final report])
@@ -567,7 +567,7 @@ user_query → Thought (reason) → Action (tool) → Observation (result) →
 ---
 title: ReAct — Reason · Act · Observe Loop
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Q([query])
     F([final answer])
@@ -623,7 +623,7 @@ user_query → retrieve_relevant_docs → augment_context → LLM → grounded_r
 ---
 title: RAG — Hybrid Retrieval + Grounded Generation
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Q([password reset question])
     Ans([grounded answer + sources])
@@ -678,7 +678,7 @@ agent_proposal → human_review → [approve|reject|modify] → execute → resu
 ---
 title: Human-in-the-Loop — Content Approval
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Brief([content brief])
     Pub([published])
@@ -756,7 +756,7 @@ text → response_schema(Pydantic/JSON Schema) → validated_object → safe_aut
 ---
 title: Structured Outputs — Schema-Enforced Extraction
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Inv([raw invoice text:<br/>'Vendor: Northwind…'])
 
@@ -794,7 +794,7 @@ screenshot/state → reasoning → ui_action(click/type/navigate) → observatio
 ---
 title: Computer Use — Screenshot · Think · Act · Observe
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Goal([find LLM info<br/>on Wikipedia])
     Done([result])
@@ -837,7 +837,7 @@ input → [thought1, thought2, thought3] → evaluate → expand_best →
 ---
 title: Tree of Thoughts — Branching Reasoning with Backtrack
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart TB
     Q([problem])
     Sol([solution])
@@ -870,7 +870,7 @@ input → generate_perspectives → connect_thoughts → aggregate → synthesis
 ---
 title: Graph of Thoughts — Non-Hierarchical Aggregation
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Q([input])
     S([synthesis])
@@ -898,7 +898,7 @@ query → [explore_new | exploit_best] → evaluate → update_strategy → iter
 ---
 title: Exploration & Discovery — ε-greedy Strategy
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Q([query])
 
@@ -932,7 +932,7 @@ question → sub_queries → retrieve_sources → identify_gaps → refine_queri
 ---
 title: Deep Research — Iterative Gap-Driven Loop
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Q([research question])
     Sy([cited synthesis])
@@ -969,7 +969,7 @@ operation → [success | failure] → classify_error → [retry | fallback | sel
 ---
 title: Error Recovery — Classify · Recover · Verify
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Op[operation]
     OK([success])
@@ -1013,7 +1013,7 @@ input → validate → process → validate_output → [pass | block] → log
 ---
 title: Guardrails — Multi-Layer Validation
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     In([user input])
     Ok([response])
@@ -1053,7 +1053,7 @@ complex_goal → decompose → [subgoal1, subgoal2, subgoal3] →
 ---
 title: Goal Management — Hierarchical Decomposition
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     G([goal])
     Done([complete])
@@ -1094,7 +1094,7 @@ lead_agent → decompose_task → spawn_workers_parallel → structured_summarie
 ---
 title: Subagents — Orchestrator · Worker
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     T([task])
     Syn([synthesis])
@@ -1132,7 +1132,7 @@ skill_catalog(metadata) → select_relevant_skill → load_SKILL_body → execut
 ---
 title: Skills — Metadata-First Discovery
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Q([task])
     Out([result])
@@ -1165,7 +1165,7 @@ agent1 → message → agent2 → response → agent1
 ---
 title: Agent Communication — Message Bus
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     A1[agent A]
     A2[agent B]
@@ -1196,7 +1196,7 @@ LLM → discover_tools → invoke_tool(params) → receive_result → integrate
 ---
 title: MCP — Model Context Protocol
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     LLM{{LLM client}}
 
@@ -1228,7 +1228,7 @@ tasks → score(urgency, impact, effort) → rank → schedule → execute
 ---
 title: Prioritization — Multi-Criteria Scoring
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     T([tasks])
     Sc[score:<br/>urgency · impact · effort]
@@ -1261,7 +1261,7 @@ operation → collect_metrics → evaluate_quality → aggregate → alert → v
 ---
 title: Evaluation & Monitoring — Metrics + Quality
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Op[operation]
 
@@ -1299,7 +1299,7 @@ request → [cache_hit | cache_miss] → [cheap_model | expensive_model] → opt
 ---
 title: Resource Optimization — Cache + Model Routing
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Req([request])
     Out([response])
@@ -1340,7 +1340,7 @@ interaction → store → [buffer_memory | vector_memory] → retrieve_relevant 
 ---
 title: Memory Management — Buffer + Semantic
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Int([interaction])
     Use([context-aware response])
@@ -1376,7 +1376,7 @@ content → score_relevance → compress → fit_window → optimize
 ---
 title: Context Management — Score · Compress · Fit
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     C([many docs])
     LLM{{LLM}}
@@ -1408,7 +1408,7 @@ action → feedback → analyze_patterns → adapt_strategy → improve
 ---
 title: Adaptive Learning — Feedback Loop
 ---
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Ac([action])
     Im([improved policy])
