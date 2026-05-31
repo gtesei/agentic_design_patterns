@@ -201,7 +201,7 @@ input → extract_data → transform → validate → final_output
 ```
 
 ```mermaid
-%%{init: {'look':'handDrawn','theme':'neutral'}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     In["📝 'laptop: 3.5 GHz octa-core,<br/>16GB RAM, 1TB NVMe SSD'"]
     P1[["prompt₁<br/>spec extractor"]]
@@ -235,7 +235,7 @@ user_query → classifier → [technical_expert | sales_agent | support_bot]
 ```
 
 ```mermaid
-%%{init: {'look':'handDrawn','theme':'neutral'}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Q["💬 user request"]
     C{{"classifier<br/>(LLM)"}}
@@ -273,7 +273,7 @@ task_c(5s) → output               task_c(5s) ↗
 ```
 
 ```mermaid
-%%{init: {'look':'handDrawn','theme':'neutral'}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Doc["📄 document"]
     S[summarize chain]
@@ -315,7 +315,7 @@ input → generate → done            input → generate → critique →
 ```
 
 ```mermaid
-%%{init: {'look':'handDrawn','theme':'neutral'}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Task["✏️ 'write factorial(n)'"]
     P["Producer<br/>(LLM)"]
@@ -357,7 +357,7 @@ user_query → LLM decides → call_weather_api(location) → integrate_result �
 ```
 
 ```mermaid
-%%{init: {'look':'handDrawn','theme':'neutral'}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Case["🎫 support case<br/>CUST-1001 · Miami"]
     Agent{{"create_agent<br/>(LangChain)"}}
@@ -403,7 +403,7 @@ complex_goal → analyze → decompose → plan_steps → execute_sequentially �
 ```
 
 ```mermaid
-%%{init: {'look':'handDrawn','theme':'neutral'}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Inc["🚨 incident + context"]
     Pl["planner_node"]
@@ -447,7 +447,7 @@ user_goal → manager/planner → [researcher | coder | designer | writer | revi
 ```
 
 ```mermaid
-%%{init: {'look':'handDrawn','theme':'neutral'}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Goal["🎯 research goal"]
     Pl[planner_agent]
@@ -507,7 +507,7 @@ user_query → Thought (reason) → Action (tool) → Observation (result) →
 ```
 
 ```mermaid
-%%{init: {'look':'handDrawn','theme':'neutral'}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Q["❓ query"]
     T["💭 Thought<br/>(reasoning trace)"]
@@ -555,7 +555,7 @@ user_query → retrieve_relevant_docs → augment_context → LLM → grounded_r
 ```
 
 ```mermaid
-%%{init: {'look':'handDrawn','theme':'neutral'}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Q["❓ 'how do I reset<br/>my password?'"]
     Idx[("📚 support docs<br/>vector store")]
@@ -599,7 +599,7 @@ agent_proposal → human_review → [approve|reject|modify] → execute → resu
 ```
 
 ```mermaid
-%%{init: {'look':'handDrawn','theme':'neutral'}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Brief["📝 content brief"]
     Gen["LLM draft"]
@@ -672,7 +672,7 @@ text → response_schema(Pydantic/JSON Schema) → validated_object → safe_aut
 ```
 
 ```mermaid
-%%{init: {'look':'handDrawn','theme':'neutral'}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Inv["🧾 raw invoice text<br/>'Vendor: Northwind…'"]
     Naive["naive prompt<br/>+ regex parse"]
@@ -698,7 +698,7 @@ screenshot/state → reasoning → ui_action(click/type/navigate) → observatio
 ```
 
 ```mermaid
-%%{init: {'look':'handDrawn','theme':'neutral'}}%%
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','secondaryColor':'#d4b483','tertiaryColor':'#c9a872','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
 flowchart LR
     Goal["🎯 'find LLM info<br/>on Wikipedia'"]
     Snap["📸 screenshot /<br/>page state"]
