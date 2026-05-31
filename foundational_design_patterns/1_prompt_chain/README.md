@@ -14,6 +14,38 @@ Input → Step 1 (LLM/Logic) → Step 2 (LLM/Logic) → Step 3 (LLM/Logic) → F
         Output              Output               Output
 ```
 
+### This demo's chain (laptop spec → JSON)
+
+```mermaid
+flowchart LR
+    In["📝 Input text<br/><i>'The new laptop features a 3.5 GHz<br/>octa-core processor, 16GB RAM, 1TB NVMe SSD'</i>"]
+
+    subgraph S1["Step 1 — Extraction"]
+        P1["ChatPromptTemplate<br/>spec extractor"]
+        L1["ChatOpenAI"]
+        O1["StrOutputParser"]
+        P1 --> L1 --> O1
+    end
+
+    subgraph S2["Step 2 — Transformation"]
+        P2["ChatPromptTemplate<br/>JSON formatter"]
+        L2["ChatOpenAI"]
+        O2["StrOutputParser"]
+        P2 --> L2 --> O2
+    end
+
+    Out["📦 JSON output<br/>{ cpu, memory, storage }"]
+
+    In --> P1
+    O1 -- "specifications<br/>(plain text)" --> P2
+    O2 --> Out
+
+    classDef io fill:#fff4d6,stroke:#b58900,color:#333
+    class In,Out io
+```
+
+LCEL composition mirrors the diagram: `prompt | llm | parser` for each step, with the first step's output piped in as `{"specifications": extraction_chain}` to the second step's prompt ([`src/chain_prompt.py:107-130`](src/chain_prompt.py)).
+
 Each step in the chain:
 1. **Receives input** from the previous step (or user)
 2. **Processes** the input through an LLM call or logic function
