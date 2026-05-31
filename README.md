@@ -200,6 +200,19 @@ One-row-per-pattern index for fast navigation. Each row links to the pattern's d
 input → extract_data → transform → validate → final_output
 ```
 
+```mermaid
+%%{init: {'look':'handDrawn','theme':'neutral'}}%%
+flowchart LR
+    In["📝 'laptop: 3.5 GHz octa-core,<br/>16GB RAM, 1TB NVMe SSD'"]
+    P1[["prompt₁<br/>spec extractor"]]
+    L1{{ChatOpenAI}}
+    Mid["📋 CPU · RAM · Storage<br/>(plain text)"]
+    P2[["prompt₂<br/>JSON formatter"]]
+    L2{{ChatOpenAI}}
+    Out["📦 { cpu, memory,<br/>storage }"]
+    In --> P1 --> L1 --> Mid --> P2 --> L2 --> Out
+```
+
 **When to use:**
 - Multi-step transformations (data extraction → analysis → formatting)
 - Tasks requiring intermediate validation
@@ -219,6 +232,21 @@ input → extract_data → transform → validate → final_output
 ```python
 # Dynamic routing based on query classification
 user_query → classifier → [technical_expert | sales_agent | support_bot]
+```
+
+```mermaid
+%%{init: {'look':'handDrawn','theme':'neutral'}}%%
+flowchart LR
+    Q["💬 user request"]
+    C{{"classifier<br/>(LLM)"}}
+    B[booking_handler]
+    I[info_handler]
+    U[unclear_handler]
+    R["✉️ response"]
+    Q --> C
+    C -- booking --> B --> R
+    C -- info --> I --> R
+    C -- unclear --> U --> R
 ```
 
 **When to use:**
@@ -244,6 +272,24 @@ task_b(5s) →          vs.         task_b(5s) → combine → output
 task_c(5s) → output               task_c(5s) ↗
 ```
 
+```mermaid
+%%{init: {'look':'handDrawn','theme':'neutral'}}%%
+flowchart LR
+    Doc["📄 document"]
+    S[summarize chain]
+    Q[question-gen chain]
+    K[key-terms chain]
+    Syn[["RunnableParallel<br/>→ synthesize"]]
+    Out["📊 unified output"]
+    Doc --> S
+    Doc --> Q
+    Doc --> K
+    S --> Syn
+    Q --> Syn
+    K --> Syn
+    Syn --> Out
+```
+
 **When to use:**
 - Multiple API calls (search engines, databases, external services)
 - Parallel data processing (analyze multiple documents)
@@ -266,6 +312,20 @@ One of the four core agentic design patterns (Ng, 2024), reflection enables AI t
 # Single-shot: 5/10 quality        # With reflection: 8.5/10 quality
 input → generate → done            input → generate → critique → 
                                           refine → critique → final
+```
+
+```mermaid
+%%{init: {'look':'handDrawn','theme':'neutral'}}%%
+flowchart LR
+    Task["✏️ 'write factorial(n)'"]
+    P["Producer<br/>(LLM)"]
+    Draft["📄 draft code"]
+    Cr["Critic<br/>(LLM)"]
+    Fb["📋 feedback"]
+    Rv["Reviser<br/>(LLM)"]
+    Final["✅ final code"]
+    Task --> P --> Draft --> Cr --> Fb --> Rv --> Final
+    Rv -. iterate .-> Cr
 ```
 
 **When to use:**
@@ -294,6 +354,22 @@ Essential for grounding LLM outputs in real-world data and actions, tool use is 
 # Without tools: Limited to training data
 # With tools: Access real-time data and take actions
 user_query → LLM decides → call_weather_api(location) → integrate_result → response
+```
+
+```mermaid
+%%{init: {'look':'handDrawn','theme':'neutral'}}%%
+flowchart LR
+    Case["🎫 support case<br/>CUST-1001 · Miami"]
+    Agent{{"create_agent<br/>(LangChain)"}}
+    CRM[("CRM lookup<br/>tier · SLA")]
+    Wx[("Open-Meteo<br/>weather API")]
+    Resp["📨 triage decision"]
+    Case --> Agent
+    Agent -- "parallel tool calls" --> CRM
+    Agent -- "parallel tool calls" --> Wx
+    CRM --> Agent
+    Wx --> Agent
+    Agent --> Resp
 ```
 
 **When to use:**
@@ -326,6 +402,21 @@ A fundamental capability for agentic systems (Ng, 2024), enabling AI to decompos
 complex_goal → analyze → decompose → plan_steps → execute_sequentially → final_result
 ```
 
+```mermaid
+%%{init: {'look':'handDrawn','theme':'neutral'}}%%
+flowchart LR
+    Inc["🚨 incident + context"]
+    Pl["planner_node"]
+    Plan["📋 ordered actions"]
+    Ex["executor_node"]
+    Rv{"reviewer_node"}
+    Done["✅ resolved"]
+    Inc --> Pl --> Plan --> Ex --> Rv
+    Rv -- complete --> Done
+    Rv -- next action --> Ex
+    Rv -- replan --> Pl
+```
+
 **When to use:**
 - Multi-step workflows requiring orchestration (research reports, data pipelines)
 - Tasks with interdependent operations
@@ -353,6 +444,27 @@ Multi-agent systems, highlighted in both the Agentic RAG survey (Singh et al., 2
 ```python
 # Agents as a team: specialize roles + coordinate communication
 user_goal → manager/planner → [researcher | coder | designer | writer | reviewer] → synthesize → final_output
+```
+
+```mermaid
+%%{init: {'look':'handDrawn','theme':'neutral'}}%%
+flowchart LR
+    Goal["🎯 research goal"]
+    Pl[planner_agent]
+    Plan["📋 plan steps"]
+    Ex{executor_agent}
+    R["research_agent<br/>arXiv · Tavily · Wiki"]
+    W[writer_agent]
+    Ed[editor_agent]
+    Out["📑 final report"]
+    Goal --> Pl --> Plan --> Ex
+    Ex --> R
+    Ex --> W
+    Ex --> Ed
+    R --> Ex
+    W --> Ex
+    Ed --> Ex
+    Ex --> Out
 ```
 
 **When to use:**
@@ -394,6 +506,18 @@ user_query → Thought (reason) → Action (tool) → Observation (result) →
              Thought (adapt) → Action → Observation → Final Answer
 ```
 
+```mermaid
+%%{init: {'look':'handDrawn','theme':'neutral'}}%%
+flowchart LR
+    Q["❓ query"]
+    T["💭 Thought<br/>(reasoning trace)"]
+    A["⚡ Action<br/>search / calculate"]
+    O["👁️ Observation<br/>(tool result)"]
+    F["✅ Final answer"]
+    Q --> T --> A --> O --> T
+    T -. "enough info?" .-> F
+```
+
 **When to use:**
 - Multi-step research requiring information lookup and verification
 - Complex problem-solving where the solution path isn't predetermined
@@ -430,6 +554,21 @@ user_query → LLM → response (may hallucinate)
 user_query → retrieve_relevant_docs → augment_context → LLM → grounded_response
 ```
 
+```mermaid
+%%{init: {'look':'handDrawn','theme':'neutral'}}%%
+flowchart LR
+    Q["❓ 'how do I reset<br/>my password?'"]
+    Idx[("📚 support docs<br/>vector store")]
+    Ret["Hybrid retriever<br/>BM25 + dense"]
+    Ctx["📑 top-k chunks<br/>+ citations"]
+    LLM{{ChatOpenAI}}
+    Ans["✅ grounded answer<br/>+ sources"]
+    Q --> Ret
+    Idx -.-> Ret
+    Ret --> Ctx --> LLM --> Ans
+    Q -. "+ question" .-> LLM
+```
+
 **When to use:**
 - Dynamic or frequently updated information (documentation, product catalogs)
 - Private/proprietary knowledge bases
@@ -457,6 +596,22 @@ agent_action → execute → result
 
 # With HITL: Human checkpoint
 agent_proposal → human_review → [approve|reject|modify] → execute → result
+```
+
+```mermaid
+%%{init: {'look':'handDrawn','theme':'neutral'}}%%
+flowchart LR
+    Brief["📝 content brief"]
+    Gen["LLM draft"]
+    Draft["📄 draft"]
+    H{"👤 human<br/>review"}
+    Pub["📢 published"]
+    Audit[("🗂️ audit_log.json")]
+    Brief --> Gen --> Draft --> H
+    H -- approve --> Pub
+    H -- edit --> Pub
+    H -- reject --> Gen
+    H -. log decision .-> Audit
 ```
 
 **When to use:**
@@ -516,6 +671,19 @@ text → prompt_json_request → parse_string_json → runtime_fail
 text → response_schema(Pydantic/JSON Schema) → validated_object → safe_automation
 ```
 
+```mermaid
+%%{init: {'look':'handDrawn','theme':'neutral'}}%%
+flowchart LR
+    Inv["🧾 raw invoice text<br/>'Vendor: Northwind…'"]
+    Naive["naive prompt<br/>+ regex parse"]
+    Fail["❌ runtime error<br/>missing / wrong fields"]
+    Schema[["ExtractedInvoice<br/>(Pydantic schema)"]]
+    LLM{{"ChatOpenAI<br/>.with_structured_output"}}
+    Valid["✅ typed object<br/>vendor · total · due_date"]
+    Inv --> Naive --> Fail
+    Inv --> Schema --> LLM --> Valid
+```
+
 **Key benefits:** Schema guarantees, lower parsing failures, safer agent loops
 
 [**📖 Learn More →**](./foundational_design_patterns/11_structured_outputs/README.md) · [**🔎 Pi Analysis →**](./foundational_design_patterns/11_structured_outputs/pi.md)
@@ -527,6 +695,19 @@ text → response_schema(Pydantic/JSON Schema) → validated_object → safe_aut
 ```python
 # Observe → Think → Act loop for UI tasks
 screenshot/state → reasoning → ui_action(click/type/navigate) → observation → iterate
+```
+
+```mermaid
+%%{init: {'look':'handDrawn','theme':'neutral'}}%%
+flowchart LR
+    Goal["🎯 'find LLM info<br/>on Wikipedia'"]
+    Snap["📸 screenshot /<br/>page state"]
+    Think["💭 LLM reasoning"]
+    Act["⚡ click · type · fetch"]
+    Obs["👁️ new page state"]
+    Done["✅ result"]
+    Goal --> Snap --> Think --> Act --> Obs --> Snap
+    Think -. "task complete?" .-> Done
 ```
 
 **Key benefits:** Legacy-system automation, UI QA workflows, non-API task coverage
