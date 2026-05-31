@@ -18,33 +18,73 @@ Input → Step 1 (LLM/Logic) → Step 2 (LLM/Logic) → Step 3 (LLM/Logic) → F
 
 ```mermaid
 flowchart LR
-    In["📝 Input text<br/><i>'The new laptop features a 3.5 GHz<br/>octa-core processor, 16GB RAM, 1TB NVMe SSD'</i>"]
+    User["👤 <b>Input text</b><br/>━━━━━━━━━━━━━<br/>The new laptop features<br/>a 3.5 GHz octa-core<br/>processor, 16GB of RAM,<br/>and a 1TB NVMe SSD."]
 
-    subgraph S1["Step 1 — Extraction"]
-        P1["ChatPromptTemplate<br/>spec extractor"]
-        L1["ChatOpenAI"]
-        O1["StrOutputParser"]
-        P1 --> L1 --> O1
+    subgraph S1["🔍 Step 1 — Extraction&nbsp;&nbsp;<i>prompt | llm | parser</i>"]
+        direction TB
+        Sys1["💬 <b>System</b><br/>━━━━━━━━━<br/>technical-spec<br/>extraction expert<br/>focus: CPU, RAM, storage"]
+        LLM1["🧠 ChatOpenAI<br/>temperature=0"]
+        Parse1["📄 StrOutputParser"]
+        Sys1 --> LLM1 --> Parse1
     end
 
-    subgraph S2["Step 2 — Transformation"]
-        P2["ChatPromptTemplate<br/>JSON formatter"]
-        L2["ChatOpenAI"]
-        O2["StrOutputParser"]
-        P2 --> L2 --> O2
+    Mid["📋 <b>Intermediate</b> (plain text)<br/>━━━━━━━━━━━━━━━<br/>CPU&nbsp;&nbsp;&nbsp;&nbsp;: 3.5 GHz octa-core<br/>Memory&nbsp;: 16 GB RAM<br/>Storage: 1 TB NVMe SSD"]
+
+    subgraph S2["🔄 Step 2 — Transformation&nbsp;&nbsp;<i>prompt | llm | parser</i>"]
+        direction TB
+        Sys2["💬 <b>System</b><br/>━━━━━━━━━<br/>data-formatting expert<br/>output JSON only<br/>keys: cpu, memory, storage"]
+        LLM2["🧠 ChatOpenAI<br/>temperature=0"]
+        Parse2["📄 StrOutputParser"]
+        Sys2 --> LLM2 --> Parse2
     end
 
-    Out["📦 JSON output<br/>{ cpu, memory, storage }"]
+    JSON["📦 <b>Final JSON</b><br/>━━━━━━━━━━━━━━<br/>cpu&nbsp;&nbsp;&nbsp;&nbsp;→ 3.5 GHz octa-core<br/>memory&nbsp;→ 16 GB<br/>storage → 1 TB NVMe SSD"]
 
-    In --> P1
-    O1 -- "specifications<br/>(plain text)" --> P2
-    O2 --> Out
+    User ==> S1
+    S1 ==> Mid
+    Mid ==> S2
+    S2 ==> JSON
 
-    classDef io fill:#fff4d6,stroke:#b58900,color:#333
-    class In,Out io
+    classDef input fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,color:#0d47a1
+    classDef output fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:#1b5e20
+    classDef intermediate fill:#fff3e0,stroke:#ef6c00,stroke-width:2px,stroke-dasharray:5 3,color:#e65100
+    classDef prompt fill:#f3e5f5,stroke:#7b1fa2,color:#4a148c
+    classDef llm fill:#fce4ec,stroke:#c2185b,color:#880e4f
+    classDef parser fill:#f1f8e9,stroke:#558b2f,color:#33691e
+
+    class User input
+    class JSON output
+    class Mid intermediate
+    class Sys1,Sys2 prompt
+    class LLM1,LLM2 llm
+    class Parse1,Parse2 parser
 ```
 
-LCEL composition mirrors the diagram: `prompt | llm | parser` for each step, with the first step's output piped in as `{"specifications": extraction_chain}` to the second step's prompt ([`src/chain_prompt.py:107-130`](src/chain_prompt.py)).
+#### Why two LLM calls instead of one?
+
+```mermaid
+flowchart LR
+    subgraph Anti["❌ Single-prompt (anti-pattern)"]
+        direction TB
+        AIn["Input text"] --> AP["One mega-prompt:<br/>'Extract AND format as JSON'"]
+        AP --> ALLM["ChatOpenAI"]
+        ALLM --> AOut["JSON (hopefully)"]
+    end
+    subgraph Pro["✅ Prompt chain"]
+        direction TB
+        PIn["Input text"] --> PE["Extract<br/>(specialist)"]
+        PE --> PMid["Inspectable<br/>intermediate"]
+        PMid --> PT["Format JSON<br/>(specialist)"]
+        PT --> POut["JSON"]
+    end
+
+    classDef anti fill:#ffebee,stroke:#c62828,color:#b71c1c
+    classDef pro fill:#e8f5e9,stroke:#2e7d32,color:#1b5e20
+    class AIn,AP,ALLM,AOut anti
+    class PIn,PE,PMid,PT,POut pro
+```
+
+The intermediate plain-text extraction is **inspectable** — when the final JSON is wrong, you can tell whether extraction or formatting broke. LCEL composition mirrors the diagram: `prompt | llm | parser` for each step, with the first step's output piped in as `{"specifications": extraction_chain}` to the second step's prompt ([`src/chain_prompt.py:107-130`](src/chain_prompt.py)).
 
 Each step in the chain:
 1. **Receives input** from the previous step (or user)
