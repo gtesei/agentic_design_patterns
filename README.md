@@ -19,7 +19,7 @@
 This repo is built around four commitments. They explain what stays in and what gets cut.
 
 1. **Lean, not exhaustive.** This is *not* a catalog of hundreds of patterns that no human will ever read, understand, or remember. It is a **lean catalog meant to be understood and memorized**. Long patterns lists are not features; they are noise.
-2. **Hard cap: at most 28 patterns.** If a pattern is not necessary, we remove it. If something new is added, something else gets dropped. The ceiling is a forcing function, not an aspiration. *Status (2026-06): 28 patterns today, settled after the `exploration_discovery → deep_research` merge. Cuts and merges are justified in [`diff.md`](./diff.md).*
+2. **Hard cap: at most 28 patterns.** If a pattern is not necessary, we remove it. If something new is added, something else gets dropped. The ceiling is a forcing function, not an aspiration.
 3. **Demos must actually work.** Every demo runs in an **automated weekly smoke test, for both Python *and* TypeScript** — and it must pass. (See [`.github/workflows/weekly-smoke.yml`](./.github/workflows/weekly-smoke.yml).) Educational code that doesn't run is educational code that lies.
 4. **Concrete relevance, not just papers.** For each pattern we measure how it shows up in **real coding agents** — currently [Pi](https://github.com/earendil-works/pi) — and write it down in a `pi.md` inside each pattern folder, plus a [repo-wide roll-up with a coverage heat map](./pi.md). We also maintain [`diff.md`](./diff.md) to disambiguate commonly-confused pattern pairs: **if two patterns can't be cleanly told apart, one of them probably doesn't belong here**. A pattern that only exists in a paper somewhere is a signal it may not belong either.
 
