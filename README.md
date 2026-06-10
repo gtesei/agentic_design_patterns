@@ -19,7 +19,7 @@
 This repo is built around four commitments. They explain what stays in and what gets cut.
 
 1. **Lean, not exhaustive.** This is *not* a catalog of hundreds of patterns that no human will ever read, understand, or remember. It is a **lean catalog meant to be understood and memorized**. Long patterns lists are not features; they are noise.
-2. **Hard cap: at most 24 patterns.** If a pattern is not necessary, we remove it. If something new is added, something else gets dropped. The ceiling is a forcing function, not an aspiration. *Status (2026-05): 29 patterns today; **pruning is actively in progress** toward the 24-cap, with each cut justified in [`diff.md`](./diff.md).*
+2. **Hard cap: at most 28 patterns.** If a pattern is not necessary, we remove it. If something new is added, something else gets dropped. The ceiling is a forcing function, not an aspiration. *Status (2026-06): 28 patterns today, settled after the `exploration_discovery → deep_research` merge. Cuts and merges are justified in [`diff.md`](./diff.md).*
 3. **Demos must actually work.** Every demo runs in an **automated weekly smoke test, for both Python *and* TypeScript** — and it must pass. (See [`.github/workflows/weekly-smoke.yml`](./.github/workflows/weekly-smoke.yml).) Educational code that doesn't run is educational code that lies.
 4. **Concrete relevance, not just papers.** For each pattern we measure how it shows up in **real coding agents** — currently [Pi](https://github.com/earendil-works/pi) — and write it down in a `pi.md` inside each pattern folder, plus a [repo-wide roll-up with a coverage heat map](./pi.md). We also maintain [`diff.md`](./diff.md) to disambiguate commonly-confused pattern pairs: **if two patterns can't be cleanly told apart, one of them probably doesn't belong here**. A pattern that only exists in a paper somewhere is a signal it may not belong either.
 
@@ -58,7 +58,7 @@ AI evolves too quickly for traditional books to stay current, especially in fast
 
 **Currently available Pi analyses:**
 - Foundational: [Prompt Chaining](./foundational_design_patterns/1_prompt_chain/pi.md), [Routing](./foundational_design_patterns/2_routing/pi.md), [Parallelization](./foundational_design_patterns/3_parallelization/pi.md), [Reflection](./foundational_design_patterns/4_reflection/pi.md), [Tool Use](./foundational_design_patterns/5_tool_use/pi.md), [Planning](./foundational_design_patterns/6_planning/pi.md), [Multi-Agent Collaboration](./foundational_design_patterns/7_multi_agent_collaboration/pi.md), [ReAct](./foundational_design_patterns/8_react/pi.md), [HITL](./foundational_design_patterns/10_hitl/pi.md), [Structured Outputs](./foundational_design_patterns/11_structured_outputs/pi.md), [Computer Use](./foundational_design_patterns/12_computer_use/pi.md)
-- Reasoning: [Tree of Thoughts](./reasoning/tree_of_thoughts/pi.md), [Graph of Thoughts](./reasoning/graph_of_thoughts/pi.md), [Exploration & Discovery](./reasoning/exploration_discovery/pi.md), [Deep Research](./reasoning/deep_research/pi.md)
+- Reasoning: [Tree of Thoughts](./reasoning/tree_of_thoughts/pi.md), [Graph of Thoughts](./reasoning/graph_of_thoughts/pi.md), [Deep Research](./reasoning/deep_research/pi.md)
 - Reliability: [Error Recovery](./reliability/error_recovery/pi.md), [Guardrails](./reliability/guardrails/pi.md)
 - Orchestration: [Goal Management](./orchestration/goal_management/pi.md), [Subagents](./orchestration/subagents/pi.md), [Skills](./orchestration/skills/pi.md), [Agent Communication](./orchestration/agent_communication/pi.md), [MCP](./orchestration/mcp/pi.md), [Prioritization](./orchestration/prioritization/pi.md)
 - Observability: [Evaluation & Monitoring](./observability/evaluation_monitoring/pi.md), [Resource Optimization](./observability/resource_optimization/pi.md)
@@ -117,7 +117,6 @@ agentic_design_patterns/
 ├── reasoning/                  # Advanced reasoning patterns
 │   ├── tree_of_thoughts/       # Systematic exploration
 │   ├── graph_of_thoughts/      # Non-hierarchical reasoning
-│   ├── exploration_discovery/  # Novel solution discovery
 │   └── deep_research/          # Iterative research loops
 │
 ├── reliability/                # Safety and resilience
@@ -173,21 +172,20 @@ One-row-per-pattern index for fast navigation. Each row links to the pattern's d
 | 12 | [Computer Use](./foundational_design_patterns/12_computer_use/) | Foundational | [pi](./foundational_design_patterns/12_computer_use/pi.md) | ✓ |
 | 13 | [Tree of Thoughts](./reasoning/tree_of_thoughts/) | Reasoning | [pi](./reasoning/tree_of_thoughts/pi.md) | — |
 | 14 | [Graph of Thoughts](./reasoning/graph_of_thoughts/) | Reasoning | [pi](./reasoning/graph_of_thoughts/pi.md) | — |
-| 15 | [Exploration & Discovery](./reasoning/exploration_discovery/) | Reasoning | [pi](./reasoning/exploration_discovery/pi.md) | — |
-| 16 | [Deep Research](./reasoning/deep_research/) | Reasoning | [pi](./reasoning/deep_research/pi.md) | — |
-| 17 | [Error Recovery](./reliability/error_recovery/) | Reliability | [pi](./reliability/error_recovery/pi.md) | — |
-| 18 | [Guardrails](./reliability/guardrails/) | Reliability | [pi](./reliability/guardrails/pi.md) | — |
-| 19 | [Goal Management](./orchestration/goal_management/) | Orchestration | [pi](./orchestration/goal_management/pi.md) | — |
-| 20 | [Subagents](./orchestration/subagents/) | Orchestration | [pi](./orchestration/subagents/pi.md) | — |
-| 21 | [Skills](./orchestration/skills/) | Orchestration | [pi](./orchestration/skills/pi.md) | — |
-| 22 | [Agent Communication](./orchestration/agent_communication/) | Orchestration | [pi](./orchestration/agent_communication/pi.md) | — |
-| 23 | [MCP](./orchestration/mcp/) | Orchestration | [pi](./orchestration/mcp/pi.md) | — |
-| 24 | [Prioritization](./orchestration/prioritization/) | Orchestration | [pi](./orchestration/prioritization/pi.md) | — |
-| 25 | [Evaluation & Monitoring](./observability/evaluation_monitoring/) | Observability | [pi](./observability/evaluation_monitoring/pi.md) | — |
-| 26 | [Resource Optimization](./observability/resource_optimization/) | Observability | [pi](./observability/resource_optimization/pi.md) | — |
-| 27 | [Memory Management](./memory/memory_management/) | Memory | [pi](./memory/memory_management/pi.md) | — |
-| 28 | [Context Management](./memory/context_management/) | Memory | [pi](./memory/context_management/pi.md) | — |
-| 29 | [Adaptive Learning](./learning/adaptive_learning/) | Learning | [pi](./learning/adaptive_learning/pi.md) | — |
+| 15 | [Deep Research](./reasoning/deep_research/) | Reasoning | [pi](./reasoning/deep_research/pi.md) | — |
+| 16 | [Error Recovery](./reliability/error_recovery/) | Reliability | [pi](./reliability/error_recovery/pi.md) | — |
+| 17 | [Guardrails](./reliability/guardrails/) | Reliability | [pi](./reliability/guardrails/pi.md) | — |
+| 18 | [Goal Management](./orchestration/goal_management/) | Orchestration | [pi](./orchestration/goal_management/pi.md) | — |
+| 19 | [Subagents](./orchestration/subagents/) | Orchestration | [pi](./orchestration/subagents/pi.md) | — |
+| 20 | [Skills](./orchestration/skills/) | Orchestration | [pi](./orchestration/skills/pi.md) | — |
+| 21 | [Agent Communication](./orchestration/agent_communication/) | Orchestration | [pi](./orchestration/agent_communication/pi.md) | — |
+| 22 | [MCP](./orchestration/mcp/) | Orchestration | [pi](./orchestration/mcp/pi.md) | — |
+| 23 | [Prioritization](./orchestration/prioritization/) | Orchestration | [pi](./orchestration/prioritization/pi.md) | — |
+| 24 | [Evaluation & Monitoring](./observability/evaluation_monitoring/) | Observability | [pi](./observability/evaluation_monitoring/pi.md) | — |
+| 25 | [Resource Optimization](./observability/resource_optimization/) | Observability | [pi](./observability/resource_optimization/pi.md) | — |
+| 26 | [Memory Management](./memory/memory_management/) | Memory | [pi](./memory/memory_management/pi.md) | — |
+| 27 | [Context Management](./memory/context_management/) | Memory | [pi](./memory/context_management/pi.md) | — |
+| 28 | [Adaptive Learning](./learning/adaptive_learning/) | Learning | [pi](./learning/adaptive_learning/pi.md) | — |
 
 ---
 
@@ -887,40 +885,6 @@ flowchart LR
 
 ---
 
-### [Exploration & Discovery](./reasoning/exploration_discovery/)
-**Discover novel solutions through guided exploration**
-```python
-# Epsilon-greedy: Balance exploration vs. exploitation
-query → [explore_new | exploit_best] → evaluate → update_strategy → iterate
-```
-
-```mermaid
----
-title: Exploration & Discovery — ε-greedy Strategy
----
-%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
-flowchart LR
-    Q([query])
-
-    D{ε-greedy}
-    Ex[explore<br/>new path]
-    Ep[exploit<br/>best known]
-    Ev[evaluate]
-    U[update strategy]
-
-    Q --> D
-    D -- "ε" --> Ex
-    D -- "1 - ε" --> Ep
-    Ex & Ep --> Ev --> U
-    U -. "iterate" .-> Q
-```
-
-**Key benefits:** Novel solution discovery, avoiding premature convergence, adaptive exploration
-
-[**📖 Learn More →**](./reasoning/exploration_discovery/README.md) · [**🔎 Pi Analysis →**](./reasoning/exploration_discovery/pi.md)
-
----
-
 ### [Deep Research](./reasoning/deep_research/)
 **Run iterative research loops with gap-driven follow-up queries**
 ```python
@@ -1596,29 +1560,28 @@ GitHub Actions runs the reliability gate on pushes and pull requests:
 **Phase 3: Advanced Reasoning**
 11. [Tree of Thoughts](./reasoning/tree_of_thoughts/) - Systematic exploration
 12. [Graph of Thoughts](./reasoning/graph_of_thoughts/) - Multi-perspective reasoning
-13. [Exploration & Discovery](./reasoning/exploration_discovery/) - Novel solutions
 
 **Phase 4: Production Patterns**
-14. [Error Recovery](./reliability/error_recovery/) - Resilience
-15. [Guardrails](./reliability/guardrails/) - Safety
-16. [Evaluation & Monitoring](./observability/evaluation_monitoring/) - Metrics
-17. [Resource Optimization](./observability/resource_optimization/) - Cost/performance
+13. [Error Recovery](./reliability/error_recovery/) - Resilience
+14. [Guardrails](./reliability/guardrails/) - Safety
+15. [Evaluation & Monitoring](./observability/evaluation_monitoring/) - Metrics
+16. [Resource Optimization](./observability/resource_optimization/) - Cost/performance
 
 **Phase 5: Orchestration & Memory**
-18. [Goal Management](./orchestration/goal_management/) - Objective tracking
-19. [Agent Communication](./orchestration/agent_communication/) - Messaging
-20. [MCP](./orchestration/mcp/) - Standardized integration
-21. [Prioritization](./orchestration/prioritization/) - Task ranking
-22. [Memory Management](./memory/memory_management/) - Context retention
-23. [Context Management](./memory/context_management/) - Optimization
+17. [Goal Management](./orchestration/goal_management/) - Objective tracking
+18. [Agent Communication](./orchestration/agent_communication/) - Messaging
+19. [MCP](./orchestration/mcp/) - Standardized integration
+20. [Prioritization](./orchestration/prioritization/) - Task ranking
+21. [Memory Management](./memory/memory_management/) - Context retention
+22. [Context Management](./memory/context_management/) - Optimization
 
 **Phase 6: Continuous Improvement**
-24. [Adaptive Learning](./learning/adaptive_learning/) - Learning from feedback
-25. [Structured Outputs](./foundational_design_patterns/11_structured_outputs/) - Schema reliability
-26. [Computer Use](./foundational_design_patterns/12_computer_use/) - Browser/UI automation
-27. [Subagents](./orchestration/subagents/) - Orchestrator-worker topology
-28. [Skills](./orchestration/skills/) - Capability packages
-29. [Deep Research](./reasoning/deep_research/) - Iterative research loops
+23. [Adaptive Learning](./learning/adaptive_learning/) - Learning from feedback
+24. [Structured Outputs](./foundational_design_patterns/11_structured_outputs/) - Schema reliability
+25. [Computer Use](./foundational_design_patterns/12_computer_use/) - Browser/UI automation
+26. [Subagents](./orchestration/subagents/) - Orchestrator-worker topology
+27. [Skills](./orchestration/skills/) - Capability packages
+28. [Deep Research](./reasoning/deep_research/) - Iterative research loops
 
 Each pattern builds on concepts from previous ones. Start with Phase 1, then explore other phases based on your needs.
 

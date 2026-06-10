@@ -13,7 +13,7 @@ Educational, hands-on catalog of agentic-AI design patterns. Originally Python (
 Patterns live in 7 top-level category directories:
 
 - `foundational_design_patterns/{1_prompt_chain, 2_routing, 3_parallelization, 4_reflection, 5_tool_use, 6_planning, 7_multi_agent_collaboration, 8_react, 9_rag, 10_hitl, 11_structured_outputs, 12_computer_use}`
-- `reasoning/{tree_of_thoughts, graph_of_thoughts, exploration_discovery, deep_research}`
+- `reasoning/{tree_of_thoughts, graph_of_thoughts, deep_research}`
 - `reliability/{error_recovery, guardrails}`
 - `orchestration/{goal_management, subagents, skills, agent_communication, mcp, prioritization}`
 - `observability/{evaluation_monitoring, resource_optimization}`
@@ -165,7 +165,6 @@ Current pattern directories that support Pi analysis:
 - `foundational_design_patterns/12_computer_use`
 - `reasoning/tree_of_thoughts`
 - `reasoning/graph_of_thoughts`
-- `reasoning/exploration_discovery`
 - `reasoning/deep_research`
 - `reliability/error_recovery`
 - `reliability/guardrails`

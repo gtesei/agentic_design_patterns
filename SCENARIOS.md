@@ -43,8 +43,7 @@ We deliberately **dropped** two candidates from the original six:
 | `12_computer_use` *(new)* | **Browser Ops** | Operate a legacy back-office portal (no API) for ticket lookup |
 | `tree_of_thoughts` | Coding Agent | Explore multiple debug hypotheses for a flaky test *(verifiable: test passes or doesn't)* |
 | `graph_of_thoughts` | Incident Response | Multi-perspective outage analysis: technical / customer-impact / business |
-| `exploration_discovery` | *(merged into `deep_research`)* | — |
-| `deep_research` *(new)* | Deep Research | Plan → search → read → reflect → cited synthesis |
+| `deep_research` *(absorbs former `exploration_discovery`)* | Deep Research | Plan → search → read → reflect → cited synthesis |
 | `error_recovery` | Incident Response | Retries + fallback when a runbook step fails mid-incident |
 | `guardrails` | Support Ops | PII detection + policy enforcement on agent responses |
 | `goal_management` | Incident Response | Hierarchical decomposition: incident goal → contain / communicate / remediate |
@@ -105,7 +104,7 @@ Authors: read the section for your scenario, use the fixtures, don't invent new 
 
 **Canonical happy path.** Question → planner emits 3 sub-queries → parallel search across corpus + web mock → top hits read → "what's still missing?" → 2 follow-up queries → synthesized brief with inline citations.
 
-**Patterns using this scenario**: parallelization, multi_agent_collaboration (peer), rag (advanced), exploration_discovery (merged), deep_research (new), subagents.
+**Patterns using this scenario**: parallelization, multi_agent_collaboration (peer), rag (advanced), deep_research (absorbs former exploration_discovery), subagents.
 
 ### 4. Incident Response — "Aurora Telecom SRE"
 

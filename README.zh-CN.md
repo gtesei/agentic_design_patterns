@@ -19,7 +19,7 @@
 本仓库围绕四条承诺构建。它们决定了什么留下、什么被删除。
 
 1. **精炼，不求大而全。** 这**不是**一个包含成百上千个、没人会真正读懂或记得住的模式的目录。它是一份**面向人类理解与记忆的精炼目录**。冗长的模式清单不是优点，而是噪音。
-2. **硬上限：最多 24 个模式。** 如果某个模式并非必需，就把它移除。新增一个，就要删掉另一个。这个上限是一种强制约束，而不是远期目标。*现状（2026-05）：目前为 29 个模式；**正在主动精简**，向 24 上限收敛，每一次删减的理由都会记录在 [`diff.md`](./diff.md) 中。*
+2. **硬上限：最多 28 个模式。** 如果某个模式并非必需，就把它移除。新增一个，就要删掉另一个。这个上限是一种强制约束，而不是远期目标。*现状（2026-06）：目前为 28 个模式，在 `exploration_discovery → deep_research` 合并之后稳定下来。每一次删减与合并的理由都会记录在 [`diff.md`](./diff.md) 中。*
 3. **示例必须真的能跑起来。** 每个示例都会在**自动化的每周冒烟测试**中运行，同时覆盖 **Python 与 TypeScript**，并且必须通过。（见 [`.github/workflows/weekly-smoke.yml`](./.github/workflows/weekly-smoke.yml)。）跑不起来的教学代码就是在说谎的教学代码。
 4. **要看具体相关性，而不只是论文。** 对每一个模式，我们都会衡量它在**真实编码 Agent**中的呈现方式 —— 目前对标的是 [Pi](https://github.com/earendil-works/pi) —— 并把分析结果写入每个模式目录下的 `pi.md`，同时提供一份[包含覆盖度热力图的仓库级汇总](./pi.md)。我们还维护一份 [`diff.md`](./diff.md) 来澄清那些常被混淆的模式对：**如果两个模式无法被清晰地区分开来，那么其中一个大概率不该留在这里**。一个只存在于某篇论文里的模式，同样是它可能不属于这里的信号。
 
@@ -58,7 +58,7 @@ AI 演进的速度太快，传统书籍很难保持时效，尤其是在智能�
 
 **当前已提供的 Pi 分析：**
 - 基础（Foundational）：[Prompt Chaining](./foundational_design_patterns/1_prompt_chain/pi.md)、[Routing](./foundational_design_patterns/2_routing/pi.md)、[Parallelization](./foundational_design_patterns/3_parallelization/pi.md)、[Reflection](./foundational_design_patterns/4_reflection/pi.md)、[Tool Use](./foundational_design_patterns/5_tool_use/pi.md)、[Planning](./foundational_design_patterns/6_planning/pi.md)、[Multi-Agent Collaboration](./foundational_design_patterns/7_multi_agent_collaboration/pi.md)、[ReAct](./foundational_design_patterns/8_react/pi.md)、[HITL](./foundational_design_patterns/10_hitl/pi.md)、[Structured Outputs](./foundational_design_patterns/11_structured_outputs/pi.md)、[Computer Use](./foundational_design_patterns/12_computer_use/pi.md)
-- 推理（Reasoning）：[Tree of Thoughts](./reasoning/tree_of_thoughts/pi.md)、[Graph of Thoughts](./reasoning/graph_of_thoughts/pi.md)、[Exploration & Discovery](./reasoning/exploration_discovery/pi.md)、[Deep Research](./reasoning/deep_research/pi.md)
+- 推理（Reasoning）：[Tree of Thoughts](./reasoning/tree_of_thoughts/pi.md)、[Graph of Thoughts](./reasoning/graph_of_thoughts/pi.md)、[Deep Research](./reasoning/deep_research/pi.md)
 - 可靠性（Reliability）：[Error Recovery](./reliability/error_recovery/pi.md)、[Guardrails](./reliability/guardrails/pi.md)
 - 编排（Orchestration）：[Goal Management](./orchestration/goal_management/pi.md)、[Subagents](./orchestration/subagents/pi.md)、[Skills](./orchestration/skills/pi.md)、[Agent Communication](./orchestration/agent_communication/pi.md)、[MCP](./orchestration/mcp/pi.md)、[Prioritization](./orchestration/prioritization/pi.md)
 - 可观测性（Observability）：[Evaluation & Monitoring](./observability/evaluation_monitoring/pi.md)、[Resource Optimization](./observability/resource_optimization/pi.md)
@@ -117,7 +117,6 @@ agentic_design_patterns/
 ├── reasoning/                  # 进阶推理模式
 │   ├── tree_of_thoughts/       # 系统化探索
 │   ├── graph_of_thoughts/      # 非层级化推理
-│   ├── exploration_discovery/  # 新方案发现
 │   └── deep_research/          # 迭代研究循环
 │
 ├── reliability/                # 安全与韧性
@@ -173,21 +172,20 @@ agentic_design_patterns/
 | 12 | [Computer Use](./foundational_design_patterns/12_computer_use/) | 基础 | [pi](./foundational_design_patterns/12_computer_use/pi.md) | ✓ |
 | 13 | [Tree of Thoughts](./reasoning/tree_of_thoughts/) | 推理 | [pi](./reasoning/tree_of_thoughts/pi.md) | — |
 | 14 | [Graph of Thoughts](./reasoning/graph_of_thoughts/) | 推理 | [pi](./reasoning/graph_of_thoughts/pi.md) | — |
-| 15 | [Exploration & Discovery](./reasoning/exploration_discovery/) | 推理 | [pi](./reasoning/exploration_discovery/pi.md) | — |
-| 16 | [Deep Research](./reasoning/deep_research/) | 推理 | [pi](./reasoning/deep_research/pi.md) | — |
-| 17 | [Error Recovery](./reliability/error_recovery/) | 可靠性 | [pi](./reliability/error_recovery/pi.md) | — |
-| 18 | [Guardrails](./reliability/guardrails/) | 可靠性 | [pi](./reliability/guardrails/pi.md) | — |
-| 19 | [Goal Management](./orchestration/goal_management/) | 编排 | [pi](./orchestration/goal_management/pi.md) | — |
-| 20 | [Subagents](./orchestration/subagents/) | 编排 | [pi](./orchestration/subagents/pi.md) | — |
-| 21 | [Skills](./orchestration/skills/) | 编排 | [pi](./orchestration/skills/pi.md) | — |
-| 22 | [Agent Communication](./orchestration/agent_communication/) | 编排 | [pi](./orchestration/agent_communication/pi.md) | — |
-| 23 | [MCP](./orchestration/mcp/) | 编排 | [pi](./orchestration/mcp/pi.md) | — |
-| 24 | [Prioritization](./orchestration/prioritization/) | 编排 | [pi](./orchestration/prioritization/pi.md) | — |
-| 25 | [Evaluation & Monitoring](./observability/evaluation_monitoring/) | 可观测性 | [pi](./observability/evaluation_monitoring/pi.md) | — |
-| 26 | [Resource Optimization](./observability/resource_optimization/) | 可观测性 | [pi](./observability/resource_optimization/pi.md) | — |
-| 27 | [Memory Management](./memory/memory_management/) | 记忆 | [pi](./memory/memory_management/pi.md) | — |
-| 28 | [Context Management](./memory/context_management/) | 记忆 | [pi](./memory/context_management/pi.md) | — |
-| 29 | [Adaptive Learning](./learning/adaptive_learning/) | 学习 | [pi](./learning/adaptive_learning/pi.md) | — |
+| 15 | [Deep Research](./reasoning/deep_research/) | 推理 | [pi](./reasoning/deep_research/pi.md) | — |
+| 16 | [Error Recovery](./reliability/error_recovery/) | 可靠性 | [pi](./reliability/error_recovery/pi.md) | — |
+| 17 | [Guardrails](./reliability/guardrails/) | 可靠性 | [pi](./reliability/guardrails/pi.md) | — |
+| 18 | [Goal Management](./orchestration/goal_management/) | 编排 | [pi](./orchestration/goal_management/pi.md) | — |
+| 19 | [Subagents](./orchestration/subagents/) | 编排 | [pi](./orchestration/subagents/pi.md) | — |
+| 20 | [Skills](./orchestration/skills/) | 编排 | [pi](./orchestration/skills/pi.md) | — |
+| 21 | [Agent Communication](./orchestration/agent_communication/) | 编排 | [pi](./orchestration/agent_communication/pi.md) | — |
+| 22 | [MCP](./orchestration/mcp/) | 编排 | [pi](./orchestration/mcp/pi.md) | — |
+| 23 | [Prioritization](./orchestration/prioritization/) | 编排 | [pi](./orchestration/prioritization/pi.md) | — |
+| 24 | [Evaluation & Monitoring](./observability/evaluation_monitoring/) | 可观测性 | [pi](./observability/evaluation_monitoring/pi.md) | — |
+| 25 | [Resource Optimization](./observability/resource_optimization/) | 可观测性 | [pi](./observability/resource_optimization/pi.md) | — |
+| 26 | [Memory Management](./memory/memory_management/) | 记忆 | [pi](./memory/memory_management/pi.md) | — |
+| 27 | [Context Management](./memory/context_management/) | 记忆 | [pi](./memory/context_management/pi.md) | — |
+| 28 | [Adaptive Learning](./learning/adaptive_learning/) | 学习 | [pi](./learning/adaptive_learning/pi.md) | — |
 
 ---
 
@@ -573,19 +571,6 @@ input → generate_perspectives → connect_thoughts → aggregate → synthesis
 
 ---
 
-### [Exploration & Discovery（探索与发现）](./reasoning/exploration_discovery/)
-**通过有引导的探索发现新解法**
-```python
-# Epsilon-greedy：在探索与利用之间取得平衡
-query → [explore_new | exploit_best] → evaluate → update_strategy → iterate
-```
-
-**主要收益：** 发现新解、避免过早收敛、自适应探索
-
-[**📖 了解更多 →**](./reasoning/exploration_discovery/README.md) · [**🔎 Pi 分析 →**](./reasoning/exploration_discovery/pi.md)
-
----
-
 ### [Deep Research（深度研究）](./reasoning/deep_research/)
 **通过差距驱动的追问，运行迭代式研究循环**
 ```python
@@ -946,29 +931,28 @@ GitHub Actions 会在推送和 PR 上执行可靠性闸门：
 **第 3 阶段：进阶推理**
 11. [Tree of Thoughts](./reasoning/tree_of_thoughts/) - 系统化探索
 12. [Graph of Thoughts](./reasoning/graph_of_thoughts/) - 多视角推理
-13. [Exploration & Discovery](./reasoning/exploration_discovery/) - 新解发现
 
 **第 4 阶段：生产化模式**
-14. [Error Recovery](./reliability/error_recovery/) - 韧性
-15. [Guardrails](./reliability/guardrails/) - 安全
-16. [Evaluation & Monitoring](./observability/evaluation_monitoring/) - 指标
-17. [Resource Optimization](./observability/resource_optimization/) - 成本/性能
+13. [Error Recovery](./reliability/error_recovery/) - 韧性
+14. [Guardrails](./reliability/guardrails/) - 安全
+15. [Evaluation & Monitoring](./observability/evaluation_monitoring/) - 指标
+16. [Resource Optimization](./observability/resource_optimization/) - 成本/性能
 
 **第 5 阶段：编排与记忆**
-18. [Goal Management](./orchestration/goal_management/) - 目标追踪
-19. [Agent Communication](./orchestration/agent_communication/) - 消息传递
-20. [MCP](./orchestration/mcp/) - 标准化集成
-21. [Prioritization](./orchestration/prioritization/) - 任务排序
-22. [Memory Management](./memory/memory_management/) - 上下文保留
-23. [Context Management](./memory/context_management/) - 优化
+17. [Goal Management](./orchestration/goal_management/) - 目标追踪
+18. [Agent Communication](./orchestration/agent_communication/) - 消息传递
+19. [MCP](./orchestration/mcp/) - 标准化集成
+20. [Prioritization](./orchestration/prioritization/) - 任务排序
+21. [Memory Management](./memory/memory_management/) - 上下文保留
+22. [Context Management](./memory/context_management/) - 优化
 
 **第 6 阶段：持续改进**
-24. [Adaptive Learning](./learning/adaptive_learning/) - 从反馈中学习
-25. [Structured Outputs](./foundational_design_patterns/11_structured_outputs/) - Schema 可靠性
-26. [Computer Use](./foundational_design_patterns/12_computer_use/) - 浏览器/UI 自动化
-27. [Subagents](./orchestration/subagents/) - Orchestrator–Worker 拓扑
-28. [Skills](./orchestration/skills/) - 能力包
-29. [Deep Research](./reasoning/deep_research/) - 迭代式研究循环
+23. [Adaptive Learning](./learning/adaptive_learning/) - 从反馈中学习
+24. [Structured Outputs](./foundational_design_patterns/11_structured_outputs/) - Schema 可靠性
+25. [Computer Use](./foundational_design_patterns/12_computer_use/) - 浏览器/UI 自动化
+26. [Subagents](./orchestration/subagents/) - Orchestrator–Worker 拓扑
+27. [Skills](./orchestration/skills/) - 能力包
+28. [Deep Research](./reasoning/deep_research/) - 迭代式研究循环
 
 每个模式都建立在前面模式的概念之上。请从第 1 阶段开始，然后按需探索其他阶段。
 

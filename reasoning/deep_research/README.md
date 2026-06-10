@@ -131,6 +131,10 @@ flowchart LR
 - **Tool Use**: each search is a tool call.
 - **Memory Management**: across rounds, the evidence store IS the memory.
 
+## Related framings (absorbed)
+
+This pattern absorbs the older **Exploration & Discovery** framing (ε-greedy: balance *explore* vs. *exploit*). The plan → search → reflect → synthesize loop here is the structured, citation-aware successor: gap-analysis plays the role the ε-greedy explore-decision used to play, but on accumulated evidence rather than abstract policy state. The standalone `reasoning/exploration_discovery/` chapter was removed in 2026-06; consult git history if you want the pure ε-greedy demo.
+
 ## Demos in this directory
 
 - `src/deep_research_basic.py`: two-round iterative loop.
