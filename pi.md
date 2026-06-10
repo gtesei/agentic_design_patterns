@@ -1,8 +1,8 @@
 # Pi Across the Agentic Design Patterns — Summary
 
-Roll-up of the 28 per-pattern `pi.md` analyses in this repo. Each per-pattern doc answers *"does Pi implement this pattern, and how?"*. This file aggregates those verdicts into a heat map plus a compact per-pattern dossier.
+Roll-up of the 27 per-pattern `pi.md` analyses in this repo. Each per-pattern doc answers *"does Pi implement this pattern, and how?"*. This file aggregates those verdicts into a heat map plus a compact per-pattern dossier.
 
-Source `pi.md` files accessed: **2026-05-17**. Rebuild this summary if any per-pattern doc is updated.
+Source `pi.md` files accessed: **2026-05-17**. Rebuild this summary if any per-pattern doc is updated. Note: 2026-06 — `reasoning/exploration_discovery` was merged into `reasoning/deep_research`; its score-3 Pi dossier was removed from this roll-up.
 
 > **Pi** here refers to the Pi coding-agent framework (`packages/coding-agent`, `packages/agent`, `packages/ai`) — the underlying SDK, not the CLI surface alone.
 
@@ -23,13 +23,13 @@ Source `pi.md` files accessed: **2026-05-17**. Rebuild this summary if any per-p
 
 ## 2. Coverage at a glance
 
-28 patterns analyzed.
+27 patterns analyzed.
 
 | Band | Count | Patterns |
 |:---:|:---:|---|
 | **5 — Core**          | 6 | Parallelization · Tool Use · ReAct · HITL · Skills · Context Management |
 | **4 — Strong**        | 5 | Structured Outputs · Error Recovery · Guardrails · Subagents · Resource Optimization |
-| **3 — Substantial**   | 5 | Planning · Multi-Agent Collaboration · Exploration & Discovery · Evaluation & Monitoring · Memory Management |
+| **3 — Substantial**   | 4 | Planning · Multi-Agent Collaboration · Evaluation & Monitoring · Memory Management |
 | **2 — Partial**       | 4 | Routing · Reflection · Goal Management · Agent Communication |
 | **1 — Minimal**       | 5 | Prompt Chaining · Computer Use · Tree of Thoughts · Deep Research · Prioritization |
 | **0 — Not implemented** | 3 | Graph of Thoughts · MCP · Adaptive Learning |
@@ -46,30 +46,29 @@ Source `pi.md` files accessed: **2026-05-17**. Rebuild this summary if any per-p
 | 5  | [Tool Use](./foundational_design_patterns/5_tool_use/pi.md)                             | Foundational   | 5 | 🟩🟩🟩🟩🟩 |
 | 8  | [ReAct](./foundational_design_patterns/8_react/pi.md)                                   | Foundational   | 5 | 🟩🟩🟩🟩🟩 |
 | 10 | [Human-in-the-Loop](./foundational_design_patterns/10_hitl/pi.md)                       | Foundational   | 5 | 🟩🟩🟩🟩🟩 |
-| 21 | [Skills](./orchestration/skills/pi.md)                                                  | Orchestration  | 5 | 🟩🟩🟩🟩🟩 |
-| 28 | [Context Management](./memory/context_management/pi.md)                                 | Memory         | 5 | 🟩🟩🟩🟩🟩 |
+| 20 | [Skills](./orchestration/skills/pi.md)                                                  | Orchestration  | 5 | 🟩🟩🟩🟩🟩 |
+| 27 | [Context Management](./memory/context_management/pi.md)                                 | Memory         | 5 | 🟩🟩🟩🟩🟩 |
 | 11 | [Structured Outputs](./foundational_design_patterns/11_structured_outputs/pi.md)        | Foundational   | 4 | 🟩🟩🟩🟩⬜ |
-| 17 | [Error Recovery](./reliability/error_recovery/pi.md)                                    | Reliability    | 4 | 🟩🟩🟩🟩⬜ |
-| 18 | [Guardrails](./reliability/guardrails/pi.md)                                            | Reliability    | 4 | 🟩🟩🟩🟩⬜ |
-| 20 | [Subagents](./orchestration/subagents/pi.md)                                            | Orchestration  | 4 | 🟩🟩🟩🟩⬜ |
-| 26 | [Resource Optimization](./observability/resource_optimization/pi.md)                    | Observability  | 4 | 🟩🟩🟩🟩⬜ |
+| 16 | [Error Recovery](./reliability/error_recovery/pi.md)                                    | Reliability    | 4 | 🟩🟩🟩🟩⬜ |
+| 17 | [Guardrails](./reliability/guardrails/pi.md)                                            | Reliability    | 4 | 🟩🟩🟩🟩⬜ |
+| 19 | [Subagents](./orchestration/subagents/pi.md)                                            | Orchestration  | 4 | 🟩🟩🟩🟩⬜ |
+| 25 | [Resource Optimization](./observability/resource_optimization/pi.md)                    | Observability  | 4 | 🟩🟩🟩🟩⬜ |
 | 6  | [Planning](./foundational_design_patterns/6_planning/pi.md)                             | Foundational   | 3 | 🟩🟩🟩⬜⬜ |
 | 7  | [Multi-Agent Collaboration](./foundational_design_patterns/7_multi_agent_collaboration/pi.md) | Foundational   | 3 | 🟩🟩🟩⬜⬜ |
-| 15 | [Exploration & Discovery](./reasoning/exploration_discovery/pi.md)                      | Reasoning      | 3 | 🟩🟩🟩⬜⬜ |
-| 25 | [Evaluation & Monitoring](./observability/evaluation_monitoring/pi.md)                  | Observability  | 3 | 🟩🟩🟩⬜⬜ |
-| 27 | [Memory Management](./memory/memory_management/pi.md)                                   | Memory         | 3 | 🟩🟩🟩⬜⬜ |
+| 24 | [Evaluation & Monitoring](./observability/evaluation_monitoring/pi.md)                  | Observability  | 3 | 🟩🟩🟩⬜⬜ |
+| 26 | [Memory Management](./memory/memory_management/pi.md)                                   | Memory         | 3 | 🟩🟩🟩⬜⬜ |
 | 2  | [Routing](./foundational_design_patterns/2_routing/pi.md)                               | Foundational   | 2 | 🟩🟩⬜⬜⬜ |
 | 4  | [Reflection](./foundational_design_patterns/4_reflection/pi.md)                         | Foundational   | 2 | 🟩🟩⬜⬜⬜ |
-| 19 | [Goal Management](./orchestration/goal_management/pi.md)                                | Orchestration  | 2 | 🟩🟩⬜⬜⬜ |
-| 22 | [Agent Communication](./orchestration/agent_communication/pi.md)                        | Orchestration  | 2 | 🟩🟩⬜⬜⬜ |
+| 18 | [Goal Management](./orchestration/goal_management/pi.md)                                | Orchestration  | 2 | 🟩🟩⬜⬜⬜ |
+| 21 | [Agent Communication](./orchestration/agent_communication/pi.md)                        | Orchestration  | 2 | 🟩🟩⬜⬜⬜ |
 | 1  | [Prompt Chaining](./foundational_design_patterns/1_prompt_chain/pi.md)                  | Foundational   | 1 | 🟩⬜⬜⬜⬜ |
 | 12 | [Computer Use](./foundational_design_patterns/12_computer_use/pi.md)                    | Foundational   | 1 | 🟩⬜⬜⬜⬜ |
 | 13 | [Tree of Thoughts](./reasoning/tree_of_thoughts/pi.md)                                  | Reasoning      | 1 | 🟩⬜⬜⬜⬜ |
-| 16 | [Deep Research](./reasoning/deep_research/pi.md)                                        | Reasoning      | 1 | 🟩⬜⬜⬜⬜ |
-| 24 | [Prioritization](./orchestration/prioritization/pi.md)                                  | Orchestration  | 1 | 🟩⬜⬜⬜⬜ |
+| 15 | [Deep Research](./reasoning/deep_research/pi.md)                                        | Reasoning      | 1 | 🟩⬜⬜⬜⬜ |
+| 23 | [Prioritization](./orchestration/prioritization/pi.md)                                  | Orchestration  | 1 | 🟩⬜⬜⬜⬜ |
 | 14 | [Graph of Thoughts](./reasoning/graph_of_thoughts/pi.md)                                | Reasoning      | 0 | ⬜⬜⬜⬜⬜ |
-| 23 | [MCP](./orchestration/mcp/pi.md)                                                        | Orchestration  | 0 | ⬜⬜⬜⬜⬜ |
-| 29 | [Adaptive Learning](./learning/adaptive_learning/pi.md)                                 | Learning       | 0 | ⬜⬜⬜⬜⬜ |
+| 22 | [MCP](./orchestration/mcp/pi.md)                                                        | Orchestration  | 0 | ⬜⬜⬜⬜⬜ |
+| 28 | [Adaptive Learning](./learning/adaptive_learning/pi.md)                                 | Learning       | 0 | ⬜⬜⬜⬜⬜ |
 
 ---
 
@@ -172,14 +171,7 @@ Compact summary of every per-pattern `pi.md`: the one-line verdict, the key Pi c
 - **Citation.** `packages/coding-agent/src/core/session-manager.ts:1108-1145`
 - **Main gap.** No graph-shaped reasoning state, no recombination / merge nodes.
 
-#### 15. Exploration & Discovery — score **3 / 5** (Substantial)
-[full pi.md →](./reasoning/exploration_discovery/pi.md)
-- **Verdict.** Exploration is supported via three distributed mechanisms: system-prompt exploration guidelines, a read-only tool bundle (`createReadOnlyToolDefinitions`), and a dedicated `scout` subagent with `scout-and-plan` workflow.
-- **Closest construct.** Read-only tool bundle plus `scout` subagent role definition.
-- **Citation.** `packages/coding-agent/examples/extensions/subagent/agents/scout.md:2-21`
-- **Main gap.** No typed evidence graph or durable retrieval index; results passed as plain text.
-
-#### 16. Deep Research — score **1 / 5** (Minimal)
+#### 15. Deep Research — score **1 / 5** (Minimal)
 [full pi.md →](./reasoning/deep_research/pi.md)
 - **Verdict.** Deep research is not implemented as a first-class pattern; Pi only ships adjacent infrastructure (deep-research model IDs in registry, a prompt mention of `brave-search` via bash skill, chained recon examples).
 - **Closest construct.** Model registry entries for `o3-deep-research` / `o4-mini-deep-research` and external skills.
@@ -188,14 +180,14 @@ Compact summary of every per-pattern `pi.md`: the one-line verdict, the key Pi c
 
 ### Reliability patterns
 
-#### 17. Error Recovery — score **4 / 5** (Strong)
+#### 16. Error Recovery — score **4 / 5** (Strong)
 [full pi.md →](./reliability/error_recovery/pi.md)
 - **Verdict.** Pi has substantial error recovery: configurable exponential-backoff retries for transient provider errors, automatic compact-and-retry on context overflow, and tool-failure isolation into structured error results.
 - **Closest construct.** `_isRetryableError` / `_handleRetryableError` plus overflow-triggered auto-compaction.
 - **Citation.** `packages/coding-agent/src/core/agent-session.ts:2410-2505`
 - **Main gap.** Retryability is regex over provider error strings; overflow recovery is one-shot and compaction is lossy.
 
-#### 18. Guardrails — score **4 / 5** (Strong)
+#### 17. Guardrails — score **4 / 5** (Strong)
 [full pi.md →](./reliability/guardrails/pi.md)
 - **Verdict.** Guardrails are meaningfully implemented as a policy layer: `tool_call` blocking hook plus reference extensions for command approval, protected paths, and an OS-level sandboxed bash wrapper.
 - **Closest construct.** `tool_call` extension event returning `{ block, reason }` with sandbox tool replacement.
@@ -204,42 +196,42 @@ Compact summary of every per-pattern `pi.md`: the one-line verdict, the key Pi c
 
 ### Orchestration patterns
 
-#### 19. Goal Management — score **2 / 5** (Partial)
+#### 18. Goal Management — score **2 / 5** (Partial)
 [full pi.md →](./orchestration/goal_management/pi.md)
 - **Verdict.** Pi explicitly excludes built-in plan mode and todos from core; goal management exists only via opt-in `todo` and `plan-mode` reference extensions with extension-persisted state.
 - **Closest construct.** `todo` tool reconstructing state from session entries plus `plan-mode` phase switching.
 - **Citation.** `packages/coding-agent/examples/extensions/plan-mode/index.ts:38-97`
 - **Main gap.** No standardized goal-management primitive in core; behavior varies per installation.
 
-#### 20. Subagents — score **4 / 5** (Strong)
+#### 19. Subagents — score **4 / 5** (Strong)
 [full pi.md →](./orchestration/subagents/pi.md)
 - **Verdict.** Subagents are fully implemented as an opt-in reference extension with true process-level context isolation, three orchestration modes (single / parallel / chain), and markdown-defined agent roles with frontmatter.
 - **Closest construct.** Subagent extension spawning `pi --mode json -p --no-session` subprocesses.
 - **Citation.** `packages/coding-agent/examples/extensions/subagent/index.ts:265-310`
 - **Main gap.** Extension-only (not core); hardcoded concurrency caps (4 / 8); chain communication is plain text via `{previous}`.
 
-#### 21. Skills — score **5 / 5** (Core)
+#### 20. Skills — score **5 / 5** (Core)
 [full pi.md →](./orchestration/skills/pi.md)
 - **Verdict.** Skills are built-in at both framework and app layers, spec-conformant to agentskills.io, with progressive disclosure via compact metadata index and on-demand body loading, plus `/skill:name` explicit invocation.
 - **Closest construct.** `SKILL.md` discovery with `<available_skills>` index in system prompt and `_expandSkillCommand`.
 - **Citation.** `packages/coding-agent/src/core/skills.ts`
 - **Main gap.** No registry / marketplace, no skill versioning or composition, two duplicated implementations (framework + app).
 
-#### 22. Agent Communication — score **2 / 5** (Partial)
+#### 21. Agent Communication — score **2 / 5** (Partial)
 [full pi.md →](./orchestration/agent_communication/pi.md)
 - **Verdict.** Agent communication is pragmatic and convention-based: subprocess JSON-event capture, `{previous}` text chaining, session handoff, and an extension event bus, but no typed A2A protocol.
 - **Closest construct.** Subagent subprocess JSON event stream plus `pi.events` inter-extension bus.
 - **Citation.** `packages/coding-agent/examples/extensions/subagent/index.ts:304-338`
 - **Main gap.** No versioned typed protocol; communication is mostly text-based and extension-level.
 
-#### 24. Prioritization — score **1 / 5** (Minimal)
+#### 23. Prioritization — score **1 / 5** (Minimal)
 [full pi.md →](./orchestration/prioritization/pi.md)
 - **Verdict.** Pi has narrow ordering mechanisms (queue-drain modes, steering-before-followup, resource precedence ranks) but no general-purpose goal / task prioritization system.
 - **Closest construct.** `PendingMessageQueue` with `QueueMode` and steering / followUp queues.
 - **Citation.** `packages/agent/src/agent.ts:118-144`
 - **Main gap.** No importance scoring or strategic prioritization over competing objectives.
 
-#### 23. Model Context Protocol (MCP) — score **0 / 5** (Not implemented)
+#### 22. Model Context Protocol (MCP) — score **0 / 5** (Not implemented)
 [full pi.md →](./orchestration/mcp/pi.md)
 - **Verdict.** MCP is explicitly and intentionally not implemented; the docs state MCP belongs in extensions, and the closest in-tree mechanism is `resources_discover` for local resource discovery only.
 - **Closest construct.** `resources_discover` extension event for local skill / prompt / theme paths (not MCP).
@@ -248,14 +240,14 @@ Compact summary of every per-pattern `pi.md`: the one-line verdict, the key Pi c
 
 ### Observability patterns
 
-#### 25. Evaluation & Monitoring — score **3 / 5** (Substantial)
+#### 24. Evaluation & Monitoring — score **3 / 5** (Substantial)
 [full pi.md →](./observability/evaluation_monitoring/pi.md)
 - **Verdict.** Monitoring is meaningfully implemented (structured lifecycle events, streaming assistant deltas, `--mode json` machine output, live cost / token / context footer), but built-in evaluation against references is absent.
 - **Closest construct.** `AgentSessionEvent` stream covering turns, tools, compaction, retries.
 - **Citation.** `packages/coding-agent/src/core/agent-session.ts:120-140`
 - **Main gap.** No built-in evaluator that scores outputs against references or runs benchmarks.
 
-#### 26. Resource Optimization — score **4 / 5** (Strong)
+#### 25. Resource Optimization — score **4 / 5** (Strong)
 [full pi.md →](./observability/resource_optimization/pi.md)
 - **Verdict.** Resource optimization is one of Pi's stronger areas: proactive compaction with reserve headroom, structured checkpoint summaries, provider-side prompt caching and session affinity, and explicit per-call cost accounting.
 - **Closest construct.** `shouldCompact` proactive trigger plus `sessionId`-based prompt cache routing.
@@ -264,14 +256,14 @@ Compact summary of every per-pattern `pi.md`: the one-line verdict, the key Pi c
 
 ### Memory patterns
 
-#### 27. Memory Management — score **3 / 5** (Substantial)
+#### 26. Memory Management — score **3 / 5** (Substantial)
 [full pi.md →](./memory/memory_management/pi.md)
 - **Verdict.** Pi implements branchable session persistence as a framework primitive (`SessionRepo` interface, JSONL append-only storage, `uuidv7` entries, fork by `entryId`) but no semantic / vector memory or recall-as-tool.
 - **Closest construct.** `JsonlSessionRepo` with `fork(metadata, { entryId, position })` and `CustomEntry` sidecar.
 - **Citation.** `packages/agent/src/harness/session/jsonl-repo.ts`
 - **Main gap.** No vector store / embedding retrieval, no memory-as-tool exposed to LLM, CWD-scoped only.
 
-#### 28. Context Management — score **5 / 5** (Core)
+#### 27. Context Management — score **5 / 5** (Core)
 [full pi.md →](./memory/context_management/pi.md)
 - **Verdict.** Context engineering is comprehensive: cwd-to-root `AGENTS.md` / `CLAUDE.md` project-context walk, explicit system-prompt assembly, `transformContext` framework hook, plus ~845 lines of compaction with branch summarization and split-turn handling.
 - **Closest construct.** `loadProjectContextFiles` walk plus dual-layer compaction with `shouldCompact` + LLM summarization.
@@ -280,7 +272,7 @@ Compact summary of every per-pattern `pi.md`: the one-line verdict, the key Pi c
 
 ### Learning patterns
 
-#### 29. Adaptive Learning — score **0 / 5** (Not implemented)
+#### 28. Adaptive Learning — score **0 / 5** (Not implemented)
 [full pi.md →](./learning/adaptive_learning/pi.md)
 - **Verdict.** Adaptive learning is not meaningfully implemented; the word *adaptive* in Pi refers to provider-side adaptive thinking (per-call reasoning effort), not learning from experience over time.
 - **Closest construct.** Extension `appendEntry` could persist learning state, but no in-repo feedback loop uses it.
