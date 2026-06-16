@@ -1,0 +1,14 @@
+---
+title: Tree of Thoughts
+---
+%%{init: {'look':'handDrawn','theme':'base','themeVariables':{'background':'#f5ecd9','primaryColor':'#ede0bd','primaryBorderColor':'#6b4423','primaryTextColor':'#3e2723','lineColor':'#6b4423','clusterBkg':'#efe5cd','clusterBorder':'#c5b393','edgeLabelBackground':'#f5ecd9','tertiaryColor':'#efe5cd','tertiaryBorderColor':'#c5b393','tertiaryTextColor':'#3e2723','fontFamily':'Caveat, Patrick Hand, cursive'}}}%%
+flowchart TB
+    Q([problem])
+    Sol([solution])
+
+    Q --> Ta[thought a] & Tb[thought b] & Tc[thought c]
+    Ta & Tb & Tc --> E1{evaluate}
+    E1 -- "best" --> Ta1[a · 1] & Ta2[a · 2]
+    Ta1 & Ta2 --> E2{evaluate}
+    E2 --> Sol
+    E1 -. "backtrack" .-> Tb
